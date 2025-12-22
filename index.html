@@ -17,7 +17,7 @@
         #picker-container { position: relative; margin-top: 15px; border: 3px solid #333; display: inline-block; cursor: crosshair; line-height: 0; max-width: 100%; }
         #imageCanvas { max-width: 100%; height: auto; display: block; }
         
-        /* Only RGB Inputs */
+        /* Simple RGB Inputs */
         .rgb-inputs { display: flex; justify-content: center; gap: 10px; margin-top: 20px; margin-bottom: 20px; }
         .rgb-field { width: 65px; padding: 12px; border: 2px solid #ccc; border-radius: 8px; text-align: center; font-weight: 900; font-size: 16px; }
         
@@ -25,12 +25,12 @@
         .btn-update { background: var(--primary); color: white; }
         .btn-save { background: var(--secondary); color: white; margin-top: 30px; font-size: 20px; }
         
-        .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-top: 20px; }
+        .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; margin-top: 20px; }
         .color-card { border: 1px solid #000; background: #fff; }
-        .color-swatch { width: 100%; height: 90px; border-bottom: 1px solid #000; }
+        .color-swatch { width: 100%; height: 80px; border-bottom: 1px solid #000; }
         
-        /* Smaller Bold RGB Text */
-        .color-info { padding: 10px 5px; font-size: 15px; font-weight: 900; text-align: center; font-family: 'Arial Black', sans-serif; color: #000; }
+        /* Very Small Bold RGB Text */
+        .color-info { padding: 8px 2px; font-size: 13px; font-weight: 900; text-align: center; font-family: 'Arial Black', sans-serif; color: #000; }
         
         #downloadArea { background: white; padding: 25px; border: 1px solid #eee; margin-top: 20px; }
     </style>
@@ -42,7 +42,7 @@
 
     <div class="control-panel">
         <div class="box">
-            <label><b>1. UPLOAD PHOTO & PICK COLOR</b></label><br>
+            <label><b>1. PHOTO PICKER</b></label><br>
             <input type="file" id="upload" accept="image/*" style="margin-top:10px;">
             <div id="picker-container">
                 <canvas id="imageCanvas"></canvas>
@@ -50,7 +50,7 @@
         </div>
 
         <div class="box">
-            <label><b>2. MANUAL RGB CHANNELS ONLY</b></label>
+            <label><b>2. INPUT RGB CODE</b></label>
             
             <div class="rgb-inputs">
                 <input type="number" id="r" class="rgb-field" placeholder="R" value="26">
@@ -58,14 +58,12 @@
                 <input type="number" id="b" class="rgb-field" placeholder="B" value="126">
             </div>
 
-            <div id="previewBox" style="height:70px; background:rgb(26,35,126); border:2px solid #000; margin-bottom:20px; border-radius:8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; text-shadow: 1px 1px 2px #000;">COLOR PREVIEW</div>
-            
             <button class="btn btn-update" onclick="generateFromInputs()">GENERATE PALETTE</button>
         </div>
     </div>
 
     <div id="downloadArea">
-        <h3 style="text-align: center; text-transform: uppercase; color: #333; margin-bottom: 25px;">Premium Color Palette (Deep to Light)</h3>
+        <h3 style="text-align: center; text-transform: uppercase; color: #333; margin-bottom: 25px;">Premium Color Palette</h3>
         <div id="palette" class="palette-grid"></div>
     </div>
 
@@ -78,7 +76,6 @@
     const rIn = document.getElementById('r');
     const gIn = document.getElementById('g');
     const bIn = document.getElementById('b');
-    const preview = document.getElementById('previewBox');
 
     document.getElementById('upload').addEventListener('change', function(e) {
         const reader = new FileReader();
@@ -103,18 +100,13 @@
         rIn.value = p[0];
         gIn.value = p[1];
         bIn.value = p[2];
-        updateUI(p[0], p[1], p[2]);
+        generatePalette(p[0], p[1], p[2]);
     });
 
     function generateFromInputs() {
         let r = parseInt(rIn.value) || 0;
         let g = parseInt(gIn.value) || 0;
         let b = parseInt(bIn.value) || 0;
-        updateUI(r, g, b);
-    }
-
-    function updateUI(r, g, b) {
-        preview.style.backgroundColor = `rgb(${r},${g},${b})`;
         generatePalette(r, g, b);
     }
 
@@ -139,7 +131,7 @@
             palette.innerHTML += `
                 <div class="color-card">
                     <div class="color-swatch" style="background:rgb(${nr},${ng},${nb})"></div>
-                    <div class="color-info">${nr}, ${ng}, ${nb}</div>
+                    <div class="color-info">${nr},${ng},${nb}</div>
                 </div>`;
         }
     }
@@ -153,7 +145,8 @@
         });
     }
 
-    updateUI(26, 35, 126);
+    // Default load
+    generatePalette(26, 35, 126);
 </script>
 </body>
 </html>
