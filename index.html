@@ -7,31 +7,30 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { --primary: #1a237e; --secondary: #2e7d32; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; padding: 20px; }
-        .main-container { max-width: 1200px; margin: auto; background: #fff; padding: 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
-        .header { text-align: center; font-size: 30px; font-weight: 800; color: var(--primary); margin-bottom: 30px; text-transform: uppercase; border-bottom: 4px solid var(--primary); padding-bottom: 10px; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f7f6; margin: 0; padding: 15px; }
+        .main-container { max-width: 1200px; margin: auto; background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; font-size: 28px; font-weight: 800; color: var(--primary); margin-bottom: 25px; border-bottom: 3px solid var(--primary); padding-bottom: 10px; text-transform: uppercase; }
         
-        .control-panel { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 20px; margin-bottom: 30px; }
-        .box { padding: 20px; border: 2px solid #e0e0e0; border-radius: 15px; background: #fafafa; position: relative; }
+        .control-panel { display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px; }
+        .box { flex: 1; min-width: 300px; padding: 20px; border: 2px solid #ddd; border-radius: 12px; background: #fcfcfc; text-align: center; }
         
-        /* Image Interaction */
-        #canvasWrapper { position: relative; display: inline-block; cursor: crosshair; max-width: 100%; border: 2px solid #ddd; border-radius: 10px; overflow: hidden; }
-        canvas { max-width: 100%; display: block; }
+        /* Picker Area */
+        #picker-container { position: relative; margin-top: 15px; border: 2px solid #333; display: inline-block; cursor: crosshair; line-height: 0; max-width: 100%; }
+        #imageCanvas { max-width: 100%; height: auto; display: block; }
         
-        .rgb-inputs { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
-        .rgb-field { width: 70px; padding: 12px; border: 2px solid var(--primary); border-radius: 8px; text-align: center; font-weight: bold; font-size: 16px; }
+        .rgb-inputs { display: flex; justify-content: center; gap: 8px; margin: 15px 0; }
+        .rgb-field { width: 65px; padding: 10px; border: 2px solid var(--primary); border-radius: 5px; text-align: center; font-weight: bold; font-size: 16px; }
         
-        .btn { padding: 15px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px; width: 100%; transition: 0.3s; }
-        .btn-gen { background: var(--primary); color: white; margin-top: 10px; }
-        .btn-save { background: var(--secondary); color: white; margin-top: 30px; font-size: 20px; }
+        .btn { padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.2s; font-size: 16px; }
+        .btn-save { background: var(--secondary); color: white; margin-top: 20px; font-size: 18px; }
         
-        .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 20px; }
+        /* Grid for 40 colors */
+        .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; margin-top: 20px; }
         .color-card { border: 1px solid #000; background: #fff; }
-        .color-swatch { width: 100%; height: 100px; border-bottom: 1px solid #000; }
-        .color-info { padding: 10px; font-size: 13px; font-weight: bold; text-align: center; font-family: monospace; }
+        .color-swatch { width: 100%; height: 85px; border-bottom: 1px solid #000; }
+        .color-info { padding: 8px; font-size: 11px; font-weight: bold; text-align: center; font-family: monospace; line-height: 1.4; }
         
-        #downloadArea { background: white; padding: 20px; border-radius: 10px; }
-        .instruction { font-size: 14px; color: #666; margin-top: 5px; }
+        #downloadArea { background: white; padding: 20px; border: 1px solid #eee; margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -41,117 +40,130 @@
 
     <div class="control-panel">
         <div class="box">
-            <label><b>📷 ছবি আপলোড করুন এবং রঙের ওপর ক্লিক করুন:</b></label><br><br>
-            <input type="file" id="uploadFile" accept="image/*"><br><br>
-            <div id="canvasWrapper">
+            <label><b>১. ছবি আপলোড করুন</b></label><br>
+            <input type="file" id="upload" accept="image/*" style="margin-top:10px;">
+            <div id="picker-container">
                 <canvas id="imageCanvas"></canvas>
             </div>
-            <p class="instruction">* ছবির যেকোনো জায়গায় ক্লিক করলে রঙ সিলেক্ট হবে।</p>
+            <p style="color:red; font-size:13px; font-weight:bold; margin-top:10px;">* ছবির যেকোনো অংশে ক্লিক করলে নিচে কালার শেড তৈরি হবে</p>
         </div>
 
         <div class="box">
-            <label><b>🎨 RGB ভ্যালু (ম্যানুয়াল বা ক্লিক করে):</b></label>
+            <label><b>২. বর্তমান কালার (RGB)</b></label>
             <div class="rgb-inputs">
-                <input type="number" id="r" class="rgb-field" value="255">
-                <input type="number" id="g" class="rgb-field" value="255">
-                <input type="number" id="b" class="rgb-field" value="255">
+                <input type="number" id="r" class="rgb-field" value="26">
+                <input type="number" id="g" class="rgb-field" value="35">
+                <input type="number" id="b" class="rgb-field" value="126">
             </div>
-            <button class="btn btn-gen" onclick="generateShades()">জেনারেট শেডস</button>
-            <div id="selectedPreview" style="width:100%; height:50px; margin-top:15px; border:2px solid #000; border-radius:5px; background: #fff; display: flex; align-items: center; justify-content: center; font-weight: bold;">SELECTED COLOR</div>
+            <div id="previewBox" style="height:70px; background:rgb(26,35,126); border:2px solid #000; margin-bottom:15px; border-radius:5px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; text-shadow: 1px 1px 2px #000;">SELECTED</div>
+            <button class="btn" style="background:var(--primary); color:white;" onclick="generatePalette()">Update Palette</button>
         </div>
     </div>
 
     <div id="downloadArea">
-        <h2 style="text-align: center; color: #333;">PREMIUM COLOR SHADES</h2>
+        <h3 style="text-align: center; text-transform: uppercase; color: #333; margin-bottom: 20px;">Premium Palette: Deep to Light (40 Shades)</h3>
         <div id="palette" class="palette-grid"></div>
     </div>
 
-    <button class="btn btn-save" onclick="saveImage()">SAVE AS HIGH QUALITY IMAGE (300 DPI)</button>
+    <button class="btn btn-save" onclick="downloadImage()">SAVE AS HIGH QUALITY IMAGE (300 DPI)</button>
 </div>
 
 <script>
     const canvas = document.getElementById('imageCanvas');
-    const ctx = canvas.getContext('2d');
-    const uploadFile = document.getElementById('uploadFile');
-    const rInput = document.getElementById('r');
-    const gInput = document.getElementById('g');
-    const bInput = document.getElementById('b');
-    const preview = document.getElementById('selectedPreview');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    const rIn = document.getElementById('r');
+    const gIn = document.getElementById('g');
+    const bIn = document.getElementById('b');
+    const preview = document.getElementById('previewBox');
 
-    // 1. Upload Image to Canvas
-    uploadFile.addEventListener('change', function(e) {
+    // ছবি আপলোড এবং ক্যানভাসে সেট করা
+    document.getElementById('upload').addEventListener('change', function(e) {
         const reader = new FileReader();
         reader.onload = function(event) {
             const img = new Image();
             img.onload = function() {
+                // ক্যানভাসে ছবির আসল পিক্সেল সাইজ রাখা
                 canvas.width = img.width;
                 canvas.height = img.height;
                 ctx.drawImage(img, 0, 0);
+                // ডিফল্টভাবে মাঝখানের একটি পিক্সেল সিলেক্ট করা
+                autoPickCenter();
             }
             img.src = event.target.result;
         }
         reader.readAsDataURL(e.target.files[0]);
     });
 
-    // 2. Click on Image to Pick Color
-    canvas.addEventListener('mousedown', function(e) {
+    // নির্ভুল কালার পিকার ফাংশন
+    canvas.addEventListener('click', function(e) {
         const rect = canvas.getBoundingClientRect();
+        // ডিসপ্লে সাইজ থেকে আসল পিক্সেল পজিশন বের করা
         const x = (e.clientX - rect.left) * (canvas.width / rect.width);
         const y = (e.clientY - rect.top) * (canvas.height / rect.height);
         
         const pixel = ctx.getImageData(x, y, 1, 1).data;
-        rInput.value = pixel[0];
-        gInput.value = pixel[1];
-        bInput.value = pixel[2];
-        
-        preview.style.background = `rgb(${pixel[0]},${pixel[1]},${pixel[2]})`;
-        generateShades(); // ক্লিক করার সাথে সাথে শেড তৈরি হবে
+        updateInputs(pixel[0], pixel[1], pixel[2]);
     });
 
-    // 3. Generate 40 Premium Shades
-    function generateShades() {
-        const r = parseInt(rInput.value);
-        const g = parseInt(gInput.value);
-        const b = parseInt(bInput.value);
+    function updateInputs(r, g, b) {
+        rIn.value = r;
+        gIn.value = g;
+        bIn.value = b;
+        preview.style.backgroundColor = `rgb(${r},${g},${b})`;
+        generatePalette();
+    }
+
+    function autoPickCenter() {
+        const pixel = ctx.getImageData(canvas.width / 2, canvas.height / 2, 1, 1).data;
+        updateInputs(pixel[0], pixel[1], pixel[2]);
+    }
+
+    // ৪০টি শেড জেনারেটর: Deep থেকে Light
+    function generatePalette() {
+        const r = parseInt(rIn.value);
+        const g = parseInt(gIn.value);
+        const b = parseInt(bIn.value);
         const palette = document.getElementById('palette');
         palette.innerHTML = '';
 
         for (let i = 0; i < 40; i++) {
             let nr, ng, nb;
-            if (i < 20) {
-                // Light Shades (Tint) - 20 levels
-                nr = Math.round(r + (255 - r) * (1 - i / 20));
-                ng = Math.round(g + (255 - g) * (1 - i / 20));
-                nb = Math.round(b + (255 - b) * (1 - i / 20));
-            } else {
-                // Dark Shades (Shade) - 20 levels
-                let factor = 1 - ((i - 19) / 21);
+            if (i < 30) {
+                // প্রথম ২০টি: একদম ডার্ক/ব্ল্যাক থেকে শুরু হয়ে আপনার রঙ পর্যন্ত (Deep)
+                let factor = i / 25; 
                 nr = Math.round(r * factor);
                 ng = Math.round(g * factor);
                 nb = Math.round(b * factor);
+            } else {
+                // পরের ২০টি: আপনার রঙ থেকে শুরু হয়ে সাদা পর্যন্ত (Light)
+                let factor = (i - 25) / 25;
+                nr = Math.round(r + (255 - r) * factor);
+                ng = Math.round(g + (255 - g) * factor);
+                nb = Math.round(b + (255 - b) * factor);
             }
 
             const hex = "#" + ((1 << 24) + (nr << 16) + (ng << 8) + nb).toString(16).slice(1).toUpperCase();
             palette.innerHTML += `
                 <div class="color-card">
                     <div class="color-swatch" style="background:rgb(${nr},${ng},${nb})"></div>
-                    <div class="color-info">RGB: ${nr},${ng},${nb}<br>HEX: ${hex}</div>
+                    <div class="color-info">RGB: ${nr},${ng},${nb}<br>${hex}</div>
                 </div>`;
         }
     }
 
-    // 4. Save Image
-    function saveImage() {
-        html2canvas(document.querySelector("#downloadArea"), { scale: 3 }).then(canvas => {
+    // ডাউনলোড ফাংশন
+    function downloadImage() {
+        const area = document.querySelector("#downloadArea");
+        html2canvas(area, {scale: 2}).then(canvas => {
             const link = document.createElement('a');
-            link.download = 'Raha-Design-Sector-Palette.png';
+            link.download = 'Raha-Digital-Palette.png';
             link.href = canvas.toDataURL();
             link.click();
         });
     }
 
-    // Default load
-    generateShades();
+    // শুরুতে একটি ডিফল্ট প্যালেট দেখানো
+    generatePalette();
 </script>
 
 </body>
