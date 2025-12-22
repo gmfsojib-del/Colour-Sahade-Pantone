@@ -2,12 +2,15 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <title>প্রিমিয়াম ডাইনামিক কালার মাস্টার</title>
-    <script src="html2canvas.min.js"></script>
+    <title>Raha Digital Print - Design Sector</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #eceff1; padding: 20px; }
         .main-container { max-width: 1100px; margin: auto; background: #fff; padding: 30px; border-radius: 20px; box-shadow: 0 15px 50px rgba(0,0,0,0.15); text-align: center; }
         
-        .header { font-size: 26px; font-weight: 800; color: #1a237e; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
+        /* আপনার নতুন হেডলাইন স্টাইল */
+        .brand-header { font-size: 32px; font-weight: 800; color: #1a237e; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 2px; }
+        .sub-header { font-size: 18px; color: #546e7a; margin-bottom: 30px; font-weight: 600; border-bottom: 2px solid #1a237e; display: inline-block; padding-bottom: 5px; }
 
         .control-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
         .input-box { padding: 20px; border: 1px solid #cfd8dc; border-radius: 15px; background: #f8f9fa; transition: 0.3s; }
@@ -17,29 +20,27 @@
         .rgb-field { width: 70px; }
         .rgb-field label { display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: #455a64; }
         .rgb-field input { width: 100%; padding: 10px; border: 2px solid #b0bec5; border-radius: 8px; font-weight: bold; text-align: center; font-size: 16px; }
-        .rgb-field input:focus { border-color: #1a237e; outline: none; }
 
         .btn { padding: 14px 25px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; width: 100%; margin-top: 15px; }
         .btn-blue { background: #1a237e; color: white; }
-        .btn-blue:hover { background: #0d47a1; }
         .btn-green { background: #2e7d32; color: white; margin-top: 30px; font-size: 20px; display: none; height: 65px; box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3); }
 
         #imageCanvas { border: 5px solid #263238; border-radius: 12px; cursor: crosshair; max-width: 100%; height: auto; margin-top: 20px; display: block; margin-left: auto; margin-right: auto; background: #fff; }
         
         #downloadArea { background: white; padding: 25px; margin-top: 30px; border: 1px solid #ddd; border-radius: 5px; }
         .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
-        .color-card { border: 1px solid #000; background: #fff; transition: 0.2s; }
+        .color-card { border: 1px solid #000; background: #fff; }
         .color-swatch { width: 100%; height: 110px; border-bottom: 1px solid #000; }
         .color-info { padding: 12px; font-size: 15px; font-weight: bold; color: #000; font-family: monospace; }
 
         .upload-label { font-weight: bold; font-size: 16px; color: #1a237e; display: block; margin-bottom: 10px; }
-        input[type="file"] { font-size: 14px; color: #546e7a; }
     </style>
 </head>
 <body>
 
 <div class="main-container">
-    <div class="header">Premium RGB Shade Generator</div>
+    <div class="brand-header">Raha Digital Print</div>
+    <div class="sub-header">Design Sector</div>
     
     <div class="control-panel">
         <div class="input-box">
@@ -111,26 +112,18 @@
 
     function generatePremiumShades(r, g, b) {
         palette.innerHTML = "";
-        
-        // অ্যালগরিদম: এটি ২৫৫ থেকে ০ পর্যন্ত রেঞ্জকে সূক্ষ্মভাবে ভাগ করে কমপক্ষে ২০টি শেড নিশ্চিত করবে
-        // যদি কালার খুব লাইট হয় তবে ডার্কের দিকে বেশি যাবে, ডার্ক হলে লাইটের দিকে বেশি যাবে।
-        
         let shades = [];
-        let totalSteps = 45; // আমরা ৪৫টি পর্যন্ত পজিশন চেক করবো
+        let totalSteps = 45;
 
         for (let i = 0; i < totalSteps; i++) {
-            let offset = (i - (totalSteps/2.5)) * 6; // সূক্ষ্ম গ্যাপ তৈরির জন্য
-            
+            let offset = (i - (totalSteps/2.5)) * 6;
             let nr = Math.max(0, Math.min(255, r + offset));
             let ng = Math.max(0, Math.min(255, g + offset));
             let nb = Math.max(0, Math.min(255, b + offset));
-
             let colorKey = `${nr},${ng},${nb}`;
             
-            // ডুপ্লিকেট কালার এবং পিওর হোয়াইট/ব্ল্যাক ফিল্টার (যদি অনেক বেশি হয়ে যায়)
             if (!shades.includes(colorKey)) {
                 shades.push(colorKey);
-                
                 const card = document.createElement('div');
                 card.className = 'color-card';
                 card.innerHTML = `
@@ -140,8 +133,6 @@
                 palette.appendChild(card);
             }
         }
-        
-        // কমপক্ষে ২০টি শেড নিশ্চিত করার জন্য গ্রিড আপডেট
         downloadBtn.style.display = "block";
     }
 
@@ -150,11 +141,10 @@
         html2canvas(area, { 
             scale: 3, 
             useCORS: true, 
-            backgroundColor: "#ffffff",
-            logging: false 
+            backgroundColor: "#ffffff"
         }).then(canvas => {
             const link = document.createElement('a');
-            link.download = 'Premium_Palette_300DPI.png';
+            link.download = 'Raha_Digital_Palette.png';
             link.href = canvas.toDataURL("image/png");
             link.click();
         });
