@@ -11,7 +11,6 @@
         .main-container { max-width: 1250px; margin: auto; background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
         .header { text-align: center; font-size: 28px; font-weight: 800; color: var(--primary); margin-bottom: 25px; border-bottom: 4px solid var(--primary); padding-bottom: 10px; text-transform: uppercase; }
         
-        /* Layout */
         .main-layout { display: flex; gap: 20px; flex-wrap: wrap; }
         .content-area { flex: 3; min-width: 320px; }
         .history-sidebar { flex: 1; min-width: 250px; background: #fcfcfc; padding: 15px; border-radius: 12px; border: 2px solid #ddd; height: fit-content; }
@@ -60,7 +59,7 @@
 
             <div class="box box-ai">
                 <label style="color: var(--ai-color);"><b>✨ AI COLOR MATCHER (AUTO SUGGEST)</b></label>
-                <p style="font-size: 12px; color: #666; margin: 5px 0;">Uploead Image</p>
+                <p style="font-size: 12px; color: #666; margin: 5px 0;">স্ক্রিনশট আপলোড করলে অটোমেটিক ৫টি ম্যাচিং কালার আসবে</p>
                 <input type="file" id="aiUpload" accept="image/*" style="margin: 10px 0;">
                 <div id="aiMatchingResult" class="palette-grid"></div>
             </div>
@@ -153,13 +152,12 @@
                 const resultDiv = document.getElementById('aiMatchingResult');
                 resultDiv.innerHTML = '';
 
-                // ইমেজের ৫টি গুরুত্বপূর্ণ পজিশন থেকে কালার নেয়া
                 const points = [
-                    [img.width * 0.5, img.height * 0.5], // Center
-                    [img.width * 0.25, img.height * 0.25], // Top-Left
-                    [img.width * 0.75, img.height * 0.25], // Top-Right
-                    [img.width * 0.25, img.height * 0.75], // Bottom-Left
-                    [img.width * 0.75, img.height * 0.75]  // Bottom-Right
+                    [img.width * 0.5, img.height * 0.5],
+                    [img.width * 0.25, img.height * 0.25],
+                    [img.width * 0.75, img.height * 0.25],
+                    [img.width * 0.25, img.height * 0.75],
+                    [img.width * 0.75, img.height * 0.75]
                 ];
 
                 points.forEach(pt => {
@@ -231,10 +229,12 @@
         setTimeout(() => toast.style.display = 'none', 1500);
     }
 
-    // --- History ---
+    // --- History Logic (Updated to prevent duplicates) ---
     function saveToHistory(r, g, b) {
         let colorStr = `${r},${g},${b}`;
-        if (history[0] !== colorStr) {
+        
+        // চেক করবে এই কালারটি অলরেডি হিস্টোরি লিস্টে আছে কি না
+        if (!history.includes(colorStr)) {
             history.unshift(colorStr);
             if (history.length > 12) history.pop();
             localStorage.setItem('rahaColorHistory', JSON.stringify(history));
@@ -282,4 +282,3 @@
 
 </body>
 </html>
-
