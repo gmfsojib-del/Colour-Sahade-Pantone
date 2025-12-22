@@ -6,7 +6,7 @@
     <title>Raha Digital Print - Design Sector</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        :root { --primary: #1a237e; --secondary: #2e7d32; }
+        :root { --primary: #1a237e; --secondary: #2e7d32; --ai-color: #00695c; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 15px; }
         .main-container { max-width: 1250px; margin: auto; background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
         .header { text-align: center; font-size: 28px; font-weight: 800; color: var(--primary); margin-bottom: 25px; border-bottom: 4px solid var(--primary); padding-bottom: 10px; text-transform: uppercase; }
@@ -17,6 +17,8 @@
         .history-sidebar { flex: 1; min-width: 250px; background: #fcfcfc; padding: 15px; border-radius: 12px; border: 2px solid #ddd; height: fit-content; }
         
         .box { padding: 20px; border: 2px solid #ddd; border-radius: 12px; background: #fff; text-align: center; margin-bottom: 20px; }
+        .box-ai { border: 2px solid var(--ai-color); background: #f0fdfa; }
+
         #picker-container { position: relative; margin-top: 15px; border: 3px solid #333; display: inline-block; cursor: crosshair; line-height: 0; max-width: 100%; }
         #imageCanvas { max-width: 100%; height: auto; display: block; }
         
@@ -49,15 +51,22 @@
     <div class="main-layout">
         <div class="content-area">
             <div class="box">
-                <label><b>1. PHOTO PICKER</b></label><br>
+                <label><b>1. PHOTO PICKER (MANUAL)</b></label><br>
                 <input type="file" id="upload" accept="image/*" style="margin-top:10px;">
                 <div id="picker-container">
                     <canvas id="imageCanvas"></canvas>
                 </div>
             </div>
 
+            <div class="box box-ai">
+                <label style="color: var(--ai-color);"><b>✨ AI COLOR MATCHER (AUTO SUGGEST)</b></label>
+                <p style="font-size: 12px; color: #666; margin: 5px 0;">স্ক্রিনশট আপলোড করলে অটোমেটিক ৫টি ম্যাচিং কালার আসবে</p>
+                <input type="file" id="aiUpload" accept="image/*" style="margin: 10px 0;">
+                <div id="aiMatchingResult" class="palette-grid"></div>
+            </div>
+
             <div class="box">
-                <label><b>2. INPUT RGB CODE</b></label>
+                <label><b>3. INPUT RGB CODE</b></label>
                 <div class="rgb-inputs">
                     <input type="number" id="r" class="rgb-field" placeholder="R" value="26">
                     <input type="number" id="g" class="rgb-field" placeholder="G" value="35">
@@ -95,10 +104,8 @@
     const gIn = document.getElementById('g');
     const bIn = document.getElementById('b');
     
-    // হিস্টোরি ডেটা লোড
     let history = JSON.parse(localStorage.getItem('rahaColorHistory')) || [];
 
-    // আরজিবি থেকে হেক্স কনভার্টার (স্ক্রিনে দেখাবে না, শুধু কপি হবে)
     function rgbToHex(rgbStr) {
         let parts = rgbStr.split(',');
         return "#" + parts.map(x => {
@@ -107,7 +114,7 @@
         }).join('');
     }
 
-    // ইমেজ আপলোড
+    // --- Photo Picker Logic ---
     document.getElementById('upload').addEventListener('change', function(e) {
         const reader = new FileReader();
         reader.onload = function(event) {
@@ -122,7 +129,6 @@
         reader.readAsDataURL(e.target.files[0]);
     });
 
-    // কালার পিকার
     canvas.addEventListener('mousedown', function(e) {
         const rect = canvas.getBoundingClientRect();
         const x = (e.clientX - rect.left) * (canvas.width / rect.width);
@@ -132,6 +138,46 @@
         generatePalette(p[0], p[1], p[2]);
     });
 
+    // --- AI Color Matcher Logic ---
+    document.getElementById('aiUpload').addEventListener('change', function(e) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const img = new Image();
+            img.onload = function() {
+                const tempCanvas = document.createElement('canvas');
+                const tCtx = tempCanvas.getContext('2d');
+                tempCanvas.width = img.width;
+                tempCanvas.height = img.height;
+                tCtx.drawImage(img, 0, 0);
+
+                const resultDiv = document.getElementById('aiMatchingResult');
+                resultDiv.innerHTML = '';
+
+                // ইমেজের ৫টি গুরুত্বপূর্ণ পজিশন থেকে কালার নেয়া
+                const points = [
+                    [img.width * 0.5, img.height * 0.5], // Center
+                    [img.width * 0.25, img.height * 0.25], // Top-Left
+                    [img.width * 0.75, img.height * 0.25], // Top-Right
+                    [img.width * 0.25, img.height * 0.75], // Bottom-Left
+                    [img.width * 0.75, img.height * 0.75]  // Bottom-Right
+                ];
+
+                points.forEach(pt => {
+                    const data = tCtx.getImageData(pt[0], pt[1], 1, 1).data;
+                    const rgb = `${data[0]},${data[1]},${data[2]}`;
+                    resultDiv.innerHTML += `
+                        <div class="color-card" onclick="copyCode('${rgb}')" ondblclick="copyHex('${rgb}')" style="border: 2px solid var(--ai-color)">
+                            <div class="color-swatch" style="background:rgb(${rgb}); height:60px;"></div>
+                            <div class="color-info" style="font-size:11px;">${rgb}</div>
+                        </div>`;
+                });
+            }
+            img.src = event.target.result;
+        }
+        reader.readAsDataURL(e.target.files[0]);
+    });
+
+    // --- Palette Generation ---
     function generateFromInputs() {
         let r = parseInt(rIn.value) || 0;
         let g = parseInt(gIn.value) || 0;
@@ -158,8 +204,6 @@
                 nb = Math.round(b + (255 - b) * factor);
             }
             let rgbText = `${nr},${ng},${nb}`;
-            
-            // কার্ড তৈরি (Single Click এ RGB, Double Click এ Hex)
             palette.innerHTML += `
                 <div class="color-card" onclick="copyCode('${rgbText}')" ondblclick="copyHex('${rgbText}')">
                     <div class="color-swatch" style="background:rgb(${rgbText})"></div>
@@ -168,13 +212,12 @@
         }
     }
 
-    // কপি ফাংশন (RGB)
+    // --- Copy & Toast ---
     function copyCode(text) {
         navigator.clipboard.writeText(text);
         showToast("RGB: " + text + " Copied!");
     }
 
-    // কপি ফাংশন (Hex)
     function copyHex(rgbText) {
         const hex = rgbToHex(rgbText);
         navigator.clipboard.writeText(hex);
@@ -188,7 +231,7 @@
         setTimeout(() => toast.style.display = 'none', 1500);
     }
 
-    // হিস্টোরি ফাংশনালিটি
+    // --- History ---
     function saveToHistory(r, g, b) {
         let colorStr = `${r},${g},${b}`;
         if (history[0] !== colorStr) {
@@ -233,7 +276,6 @@
         });
     }
 
-    // Initial Load
     updateHistoryUI();
     generatePalette(26, 35, 126);
 </script>
