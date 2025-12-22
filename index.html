@@ -6,6 +6,14 @@
     <title>Raha Digital Print - Design Sector</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
+        /* হিস্টোরি লেআউট এবং কপির মেসেজ */
+.main-layout { display: flex; gap: 20px; flex-wrap: wrap; }
+.content-area { flex: 3; min-width: 300px; }
+.history-sidebar { flex: 1; min-width: 250px; background: #fcfcfc; padding: 15px; border-radius: 12px; border: 2px solid #ddd; height: fit-content; }
+.history-item { display: flex; align-items: center; gap: 10px; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer; border-radius: 6px; }
+.history-item:hover { background: #f0f0f0; }
+.history-color { width: 35px; height: 35px; border-radius: 4px; border: 1px solid #000; }
+.copy-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 12px 25px; border-radius: 30px; display: none; z-index: 1000; font-weight: bold; }
         :root { --primary: #1a237e; --secondary: #2e7d32; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 15px; }
         .main-container { max-width: 1200px; margin: auto; background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
@@ -40,7 +48,12 @@
 <div class="main-container">
     <div class="header">Raha Digital Print - Design Sector</div>
 
-    <div class="control-panel">
+    <div class="main-layout"> <div class="content-area"></div> <div class="history-sidebar">
+        <h3 style="margin-top:0; color:#1a237e; font-size: 18px; border-bottom: 2px solid #1a237e;">SEARCH HISTORY</h3>
+        <div id="historyList"></div>
+        <button onclick="clearHistory()" style="margin-top:15px; background:none; border:none; color:red; cursor:pointer; font-weight:bold; font-size:12px;">CLEAR ALL HISTORY</button>
+    </div>
+</div> <div id="copyToast" class="copy-toast">RGB Code Copied!</div>
         <div class="box">
             <label><b>1. PHOTO PICKER</b></label><br>
             <input type="file" id="upload" accept="image/*" style="margin-top:10px;">
@@ -147,6 +160,29 @@
 
     // Default load
     generatePalette(26, 35, 126);
+    // ক্লিক করলে কপি হওয়ার জন্য এই ফাংশনটি লাগবে
+    function copyCode(text) {
+        navigator.clipboard.writeText(text);
+        const toast = document.getElementById('copyToast');
+        toast.style.display = 'block';
+        setTimeout(() => toast.style.display = 'none', 1500);
+    }
+
+    // হিস্টোরি লিস্ট আপডেট করার জন্য এই ফাংশনটি লাগবে
+    function updateHistoryUI() {
+        const list = document.getElementById('historyList');
+        if(list && typeof history !== 'undefined') {
+            list.innerHTML = history.map(col => `
+                <div class="history-item" onclick="loadHistory('${col}')" style="display: flex; align-items: center; gap: 10px; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
+                    <div class="history-color" style="width: 35px; height: 35px; border-radius: 4px; border: 1px solid #000; background:rgb(${col})"></div>
+                    <span style="font-size:12px; font-weight:bold;">RGB(${col})</span>
+                </div>
+            `).join('');
+        }
+    }
+    
+    // পেজ লোড হওয়ার সময় হিস্টোরি দেখানোর জন্য এটি কল করতে হবে
+    updateHistoryUI();
 </script>
 
 
@@ -158,6 +194,7 @@
 </html>
 </body>
 </html>
+
 
 
 
