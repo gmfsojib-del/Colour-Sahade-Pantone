@@ -80,6 +80,9 @@
         
         .copy-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 12px 25px; border-radius: 30px; display: none; z-index: 3000; font-weight: bold; }
         footer { text-align: center; padding: 20px; font-weight: bold; color: #1a237e; }
+        
+        /* Initial state for Hunt Section */
+        #huntSection { display: none; }
     </style>
 </head>
 <body>
@@ -178,7 +181,6 @@
 
     const categories = ["Pastel", "Vintage", "Retro", "Neon", "Gold", "Nature", "Summer", "Happy", "Night", "Earth"];
 
-    // (Hunt data stays same as provided)
     const huntData = {
         'Pastel': [['#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7'], ['#F3E5F5', '#E1F5FE', '#E8F5E9', '#FFFDE7'], ['#B2F7EF', '#EFF7F6', '#F7D1CD', '#E2CFC4'], ['#FCE1E4', '#FCF4DD', '#DDEDEA', '#DAEAF6'], ['#E8D7F1', '#D3BCC0', '#A5668B', '#69306D'], ['#F08080', '#F4978E', '#F8AD9D', '#FBC4AB'], ['#FF99C8', '#FCF6BD', '#D0F4DE', '#A9DEF9'], ['#E4C1F9', '#D0F4DE', '#FCF6BD', '#FF99C8'], ['#F6EAC2', '#FFD4B2', '#FFBFA3', '#FFADAD'], ['#A0C4FF', '#BDB2FF', '#FFC6FF', '#FFFFFC'], ['#DEE2FF', '#E8E8E8', '#FEEAFA', '#F1F1F1'], ['#B9FBC0', '#98F5E1', '#8EECF5', '#A3C4F3'], ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9'], ['#BAE1FF', '#D1D1D1', '#E2F0CB', '#FFDAC1'], ['#FF9AA2', '#FFB7B2', '#FFDAC1', '#E2F0CB'], ['#C7CEEA', '#B5EAD7', '#E2F0CB', '#FFDAC1'], ['#FAD0C4', '#FFD1FF', '#E0C3FC', '#8EC5FC'], ['#FFDEE9', '#B5FFFC', '#FFFFFF', '#D9AFD9'], ['#A18CD1', '#FBC2EB', '#8FD3F4', '#84FAB0'], ['#FBED64', '#7AFFAF', '#7158E2', '#CD84F1']],
         'Vintage': [['#634832', '#967E67', '#D4A373', '#FEFAE0'], ['#264653', '#2A9D8F', '#E9C46A', '#F4A261'], ['#582F0E', '#7F4F24', '#936639', '#A68A64'], ['#B6AD90', '#C2C5AA', '#A4AC86', '#656D4A'], ['#333D29', '#414833', '#656D4A', '#A4AC86'], ['#7D4F50', '#D1BE9C', '#AA998F', '#E0D8DE'], ['#2C3E50', '#E67E22', '#ECF0F1', '#95A5A6'], ['#1A1A1A', '#4A4A4A', '#9B9B9B', '#D8D8D8'], ['#3E2723', '#5D4037', '#8D6E63', '#D7CCC8'], ['#1B5E20', '#388E3C', '#66BB6A', '#C8E6C9'], ['#827397', '#4D4C7D', '#363062', '#E9D5CA'], ['#433520', '#025955', '#00917C', '#FDE8CD'], ['#5F4B32', '#967E67', '#D4A373', '#FEFAE0'], ['#403D39', '#CCC5B9', '#FFFCF2', '#EB5E28'], ['#252422', '#403D39', '#CCC5B9', '#FFFCF2'], ['#1D3557', '#457B9D', '#A8DADC', '#F1FAEE'], ['#6D597A', '#B56576', '#E56B6F', '#EAAC8B'], ['#283618', '#606C38', '#FEFAE0', '#DDA15E'], ['#540B0E', '#9E2A2B', '#E09F3E', '#FFF3B0'], ['#3D5A80', '#98C1D9', '#E0FBFC', '#EE6C4D']],
@@ -200,7 +202,13 @@
         item.onclick = () => {
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             item.classList.add('active');
+            
+            // Show the section and load data
+            document.getElementById('huntSection').style.display = 'block';
             filterHunt(cat);
+
+            // Smooth scroll to the section so user knows it loaded
+            document.getElementById('huntSection').scrollIntoView({ behavior: 'smooth' });
         };
         catMenu.appendChild(item);
     });
@@ -209,15 +217,17 @@
         const grid = document.getElementById('huntGrid');
         document.getElementById('huntTitle').innerHTML = `<b>🌈 EXPLORE ${cat.toUpperCase()} HUNTS</b>`;
         grid.innerHTML = '';
-        const items = huntData[cat] || huntData['Pastel'];
-        items.forEach(p => {
-            grid.innerHTML += `<div class="hunt-card" onclick="copyHex('${p[0]}')">
-                <div class="c-layer" style="background:${p[0]}"></div>
-                <div class="c-layer" style="background:${p[1]}"></div>
-                <div class="c-layer" style="background:${p[2]}"></div>
-                <div class="c-layer" style="background:${p[3]}"></div>
-            </div>`;
-        });
+        const items = huntData[cat];
+        if(items) {
+            items.forEach(p => {
+                grid.innerHTML += `<div class="hunt-card" onclick="copyHex('${p[0]}')">
+                    <div class="c-layer" style="background:${p[0]}"></div>
+                    <div class="c-layer" style="background:${p[1]}"></div>
+                    <div class="c-layer" style="background:${p[2]}"></div>
+                    <div class="c-layer" style="background:${p[3]}"></div>
+                </div>`;
+            });
+        }
     }
 
     function rgbToHex(r, g, b) {
@@ -345,7 +355,7 @@
     function downloadImage() { html2canvas(document.querySelector("#downloadArea"), {scale: 3}).then(c => { const a = document.createElement('a'); a.download = 'Raha-Palette.png'; a.href = c.toDataURL(); a.click(); }); }
 
     updateHistoryUI();
-    filterHunt('Pastel');
+    // Initially do NOT call filterHunt so it stays empty until click
     generatePalette(26, 35, 126);
 </script>
 </body>
