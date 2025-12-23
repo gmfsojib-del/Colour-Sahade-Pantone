@@ -42,19 +42,13 @@
         .color-swatch { width: 100%; height: 90px; border-bottom: 1px solid #000; }
         .color-info { padding: 4px 2px; font-size: 13px; font-weight: 900; text-align: center; color: #000; }
         
-        /* Hunt Styles - added scroll for 20+ palettes */
+        /* Hunt Styles */
         .hunt-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; height: 180px; display: flex; flex-direction: column; margin-bottom: 10px; }
         .c-layer { width: 100%; transition: 0.2s; position: relative; }
         .c-layer:hover::after { content: 'Copy'; position: absolute; right: 5px; top: 5px; background: rgba(0,0,0,0.5); color: #fff; padding: 2px 5px; border-radius: 4px; font-size: 10px; }
 
         /* Scroll Area for Hunts */
-        #huntGrid { 
-            max-height: 500px; 
-            overflow-y: auto; 
-            padding: 10px; 
-            border: 1px solid #eee; 
-            border-radius: 10px;
-        }
+        #huntGrid { max-height: 500px; overflow-y: auto; padding: 10px; border: 1px solid #eee; border-radius: 10px; }
 
         /* Modal Styles */
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
@@ -121,7 +115,7 @@
                 <div class="box" id="huntSection">
                     <label id="huntTitle"><b>🌈 EXPLORE TRENDING HUNTS</b></label>
                     <div id="huntGrid" class="palette-grid" style="margin-top:15px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
-                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -183,17 +177,18 @@
     const bIn = document.getElementById('b');
     let history = JSON.parse(localStorage.getItem('rahaColorHistory')) || [];
 
-    const categories = ["Pastel", "Vintage", "Retro", "Neon", "Gold", "Light", "Dark", "Warm", "Cold", "Summer", "Fall", "Winter", "Spring", "Happy", "Nature", "Earth", "Night"];
+    const categories = ["Pastel", "Vintage", "Retro", "Neon", "Gold", "Nature", "Summer", "Happy", "Night", "Earth"];
 
     const huntData = {
-        'Pastel': [['#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7'], ['#F3E5F5', '#E1F5FE', '#E8F5E9', '#FFFDE7'], ['#B2F7EF', '#EFF7F6', '#F7D1CD', '#E2CFC4'], ['#FCE1E4', '#FCF4DD', '#DDEDEA', '#DAEAF6'], ['#E8D7F1', '#D3BCC0', '#A5668B', '#69306D'], ['#F08080', '#F4978E', '#F8AD9D', '#FBC4AB'], ['#FF99C8', '#FCF6BD', '#D0F4DE', '#A9DEF9'], ['#E4C1F9', '#D0F4DE', '#FCF6BD', '#FF99C8'], ['#F6EAC2', '#FFD4B2', '#FFBFA3', '#FFADAD'], ['#A0C4FF', '#BDB2FF', '#FFC6FF', '#FFFFFC']],
-        'Vintage': [['#634832', '#967E67', '#D4A373', '#FEFAE0'], ['#264653', '#2A9D8F', '#E9C46A', '#F4A261'], ['#582F0E', '#7F4F24', '#936639', '#A68A64'], ['#B6AD90', '#C2C5AA', '#A4AC86', '#656D4A'], ['#333D29', '#414833', '#656D4A', '#A4AC86'], ['#7D4F50', '#D1BE9C', '#AA998F', '#E0D8DE'], ['#2C3E50', '#E67E22', '#ECF0F1', '#95A5A6'], ['#1A1A1A', '#4A4A4A', '#9B9B9B', '#D8D8D8'], ['#3E2723', '#5D4037', '#8D6E63', '#D7CCC8'], ['#1B5E20', '#388E3C', '#66BB6A', '#C8E6C9']],
-        'Neon': [['#00F5FF', '#00FF41', '#FF00FF', '#FFFF00'], ['#FF3131', '#FF5E13', '#77EE11', '#08F7FE'], ['#FF0055', '#00FF99', '#00CCFF', '#FFFF00'], ['#BF00FF', '#FF00BF', '#00FFBF', '#FFBF00'], ['#39FF14', '#FF1493', '#00BFFF', '#FFD700'], ['#7FFF00', '#FF00FF', '#00FFFF', '#FF4500']],
+        'Pastel': [['#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7'], ['#F3E5F5', '#E1F5FE', '#E8F5E9', '#FFFDE7'], ['#B2F7EF', '#EFF7F6', '#F7D1CD', '#E2CFC4'], ['#FCE1E4', '#FCF4DD', '#DDEDEA', '#DAEAF6'], ['#E8D7F1', '#D3BCC0', '#A5668B', '#69306D'], ['#F08080', '#F4978E', '#F8AD9D', '#FBC4AB'], ['#FF99C8', '#FCF6BD', '#D0F4DE', '#A9DEF9'], ['#E4C1F9', '#D0F4DE', '#FCF6BD', '#FF99C8'], ['#F6EAC2', '#FFD4B2', '#FFBFA3', '#FFADAD'], ['#A0C4FF', '#BDB2FF', '#FFC6FF', '#FFFFFC'], ['#DEE2FF', '#E8E8E8', '#FEEAFA', '#F1F1F1'], ['#B9FBC0', '#98F5E1', '#8EECF5', '#A3C4F3']],
+        'Vintage': [['#634832', '#967E67', '#D4A373', '#FEFAE0'], ['#264653', '#2A9D8F', '#E9C46A', '#F4A261'], ['#582F0E', '#7F4F24', '#936639', '#A68A64'], ['#B6AD90', '#C2C5AA', '#A4AC86', '#656D4A'], ['#333D29', '#414833', '#656D4A', '#A4AC86'], ['#7D4F50', '#D1BE9C', '#AA998F', '#E0D8DE'], ['#2C3E50', '#E67E22', '#ECF0F1', '#95A5A6'], ['#1A1A1A', '#4A4A4A', '#9B9B9B', '#D8D8D8'], ['#3E2723', '#5D4037', '#8D6E63', '#D7CCC8'], ['#1B5E20', '#388E3C', '#66BB6A', '#C8E6C9'], ['#827397', '#4D4C7D', '#363062', '#E9D5CA'], ['#433520', '#025955', '#00917C', '#FDE8CD']],
+        'Retro': [['#E07A5F', '#3D405B', '#81B29A', '#F2CC8F'], ['#ffbe0b', '#fb5607', '#ff006e', '#8338ec'], ['#264653', '#2a9d8f', '#e9c46a', '#f4a261'], ['#d00000', '#ffba08', '#3f88c5', '#032b43'], ['#606c38', '#283618', '#fefae0', '#dda15e'], ['#ef476f', '#ffd166', '#06d6a0', '#118ab2'], ['#2b2d42', '#8d99ae', '#edf2f4', '#ef233c'], ['#003049', '#d62828', '#f77f00', '#fcbf49'], ['#7209b7', '#3f37c9', '#4361ee', '#4cc9f0'], ['#ff9f1c', '#ffbf69', '#ffffff', '#cbf3f0']],
+        'Neon': [['#00F5FF', '#00FF41', '#FF00FF', '#FFFF00'], ['#FF3131', '#FF5E13', '#77EE11', '#08F7FE'], ['#FF0055', '#00FF99', '#00CCFF', '#FFFF00'], ['#BF00FF', '#FF00BF', '#00FFBF', '#FFBF00'], ['#39FF14', '#FF1493', '#00BFFF', '#FFD700'], ['#7FFF00', '#FF00FF', '#00FFFF', '#FF4500'], ['#000000', '#FF0000', '#FFFB00', '#00FF00'], ['#05FFA1', '#B967FF', '#05B2FF', '#FF4848']],
+        'Nature': [['#11998e', '#38ef7d', '#56ab2f', '#a8e063'], ['#134E5E', '#71B280', '#084594', '#21e6c1'], ['#00b09b', '#96c93d', '#20bf55', '#01baef'], ['#2d5a27', '#4b7d3f', '#7ba160', '#c2d5a8'], ['#1b4332', '#2d6a4f', '#409167', '#95d5b2'], ['#31572c', '#4f772d', '#90be6d', '#ecf39e'], ['#40513B', '#609966', '#9DC08B', '#EDF1D6'], ['#004445', '#2C7873', '#6FB98F', '#FAF1E6']],
         'Gold': [['#D4AF37', '#FFD700', '#CFB53B', '#F5E1A4'], ['#432818', '#99582A', '#BB9457', '#FFE6A7'], ['#BF953F', '#FCF6BA', '#B38728', '#FBF5B7'], ['#8A6623', '#C7A317', '#D1B000', '#F7EF8A'], ['#E6BE8A', '#D4AF37', '#996515', '#71491E'], ['#DAA520', '#FFD700', '#F0E68C', '#B8860B']],
-        'Summer': [['#FF9A8B', '#FF6A88', '#FF99AC', '#FBBC05'], ['#00B4DB', '#0083B0', '#FDC830', '#F37335'], ['#FF5F6D', '#FFC371', '#F12711', '#F5AF19'], ['#4facfe', '#00f2fe', '#f093fb', '#f5576c'], ['#FA709A', '#FEE140', '#00C6FB', '#005BEA'], ['#FF9A9E', '#FAD0C4', '#FAD0C4', '#FFD1FF']],
-        'Nature': [['#11998e', '#38ef7d', '#56ab2f', '#a8e063'], ['#134E5E', '#71B280', '#084594', '#21e6c1'], ['#00b09b', '#96c93d', '#20bf55', '#01baef'], ['#2d5a27', '#4b7d3f', '#7ba160', '#c2d5a8'], ['#1b4332', '#2d6a4f', '#409167', '#95d5b2'], ['#31572c', '#4f772d', '#90be6d', '#ecf39e']],
-        'Happy': [['#f9d423', '#ff4e50', '#f12711', '#f5af19'], ['#8E2DE2', '#4A00E0', '#FF0099', '#493240'], ['#ff9a9e', '#fecfef', '#feada6', '#fbb2d0'], ['#fccb90', '#d57eeb', '#00f2fe', '#66a6ff'], ['#84fab0', '#8fd3f4', '#fccb90', '#d57eeb'], ['#a1c4fd', '#c2e9fb', '#fdfcfb', '#e2d1c3']],
-        'Retro': [['#E07A5F', '#3D405B', '#81B29A', '#F2CC8F'], ['#F4F1DE', '#E07A5F', '#3D405B', '#F2CC8F'], ['#ffbe0b', '#fb5607', '#ff006e', '#8338ec'], ['#264653', '#2a9d8f', '#e9c46a', '#f4a261'], ['#d00000', '#ffba08', '#3f88c5', '#032b43'], ['#606c38', '#283618', '#fefae0', '#dda15e']]
+        'Summer': [['#FF9A8B', '#FF6A88', '#FF99AC', '#FBBC05'], ['#00B4DB', '#0083B0', '#FDC830', '#F37335'], ['#FF5F6D', '#FFC371', '#F12711', '#F5AF19'], ['#4facfe', '#00f2fe', '#f093fb', '#f5576c'], ['#FA709A', '#FEE140', '#00C6FB', '#005BEA'], ['#FF9A9E', '#FAD0C4', '#FAD0C4', '#FFD1FF'], ['#FBDA61', '#FF5ACD', '#21D4FD', '#B721FF'], ['#08AEEA', '#2AF598', '#FEE140', '#FA709A']],
+        'Night': [['#0F0C29', '#302B63', '#24243E', '#FFFFFF'], ['#232526', '#414345', '#000000', '#FFFFFF'], ['#000428', '#004e92', '#000000', '#00d2ff'], ['#021B79', '#0575E6', '#2196F3', '#BBDEFB'], ['#2C3E50', '#4CA1AF', '#2C3E50', '#000000'], ['#141E30', '#243B55', '#243B55', '#FFFFFF']],
+        'Happy': [['#f9d423', '#ff4e50', '#f12711', '#f5af19'], ['#8E2DE2', '#4A00E0', '#FF0099', '#493240'], ['#ff9a9e', '#fecfef', '#feada6', '#fbb2d0'], ['#fccb90', '#d57eeb', '#00f2fe', '#66a6ff'], ['#84fab0', '#8fd3f4', '#fccb90', '#d57eeb'], ['#a1c4fd', '#c2e9fb', '#fdfcfb', '#e2d1c3']]
     };
 
     const catMenu = document.getElementById('categoryMenu');
