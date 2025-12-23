@@ -9,35 +9,49 @@
         :root { --primary: #1a237e; --secondary: #2e7d32; --ai-color: #00695c; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 0; display: flex; overflow: hidden; }
         
-        /* ব্যাকগ্রাউন্ড ভিডিও */
         .video-bg {
             position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%;
             z-index: -1; opacity: 0.15; pointer-events: none; object-fit: cover;
         }
 
-        /* ফিক্সড সাইডবার নেভিগেশন */
         .sidebar-nav { 
             width: 280px; background: rgba(255, 255, 255, 0.95); height: 100vh; 
             position: fixed; border-right: 2px solid #ddd; padding: 20px; 
             box-sizing: border-box; overflow-y: auto; z-index: 1000; backdrop-filter: blur(10px); 
         }
 
-        /* মেইন কন্টেন্ট এরিয়া */
+        .color-group-box {
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 15px;
+            background: #fff;
+            margin-top: 10px;
+        }
+        .color-box-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: block;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
         .main-wrapper { 
             margin-left: 280px; width: calc(100% - 280px); 
             height: 100vh; overflow-y: auto; padding: 25px; box-sizing: border-box; position: relative; z-index: 1; 
         }
 
-        .nav-section-title { font-size: 12px; color: #888; text-transform: uppercase; font-weight: 800; margin: 25px 0 10px 5px; letter-spacing: 1px; }
-        .nav-item { display: flex; align-items: center; padding: 12px 15px; margin-bottom: 5px; border-radius: 8px; cursor: pointer; color: #333; font-weight: 600; transition: 0.2s; font-size: 14px; border: 1px solid transparent; }
-        .nav-item:hover { background: #f5f5f5; color: var(--primary); border-color: #ddd; }
-        .nav-item.active { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(26,35,126,0.2); }
+        .nav-item { display: flex; align-items: center; padding: 10px 15px; margin-bottom: 5px; border-radius: 8px; cursor: pointer; color: #333; font-weight: 600; transition: 0.2s; font-size: 14px; border: 1px solid transparent; }
+        .nav-item:hover { background: #f5f5f5; color: var(--primary); }
+        .nav-item.active { background: var(--primary); color: white; }
 
         .main-container { max-width: 1100px; margin: auto; background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
         .header { text-align: center; font-size: 26px; font-weight: 800; color: var(--primary); margin-bottom: 25px; border-bottom: 4px solid var(--primary); padding-bottom: 10px; text-transform: uppercase; }
         
-        .box { padding: 20px; border: 2px solid #ddd; border-radius: 12px; background: #fff; text-align: center; margin-bottom: 20px; transition: 0.3s; }
-        .box:hover { border-color: var(--primary); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .box { padding: 20px; border: 2px solid #ddd; border-radius: 12px; background: #fff; text-align: center; margin-bottom: 20px; }
         .box-ai { border: 2px solid var(--ai-color); background: #f0fdfa; }
 
         #picker-container { position: relative; margin-top: 15px; border: 3px solid #333; display: inline-block; cursor: crosshair; line-height: 0; max-width: 100%; border-radius: 8px; overflow: hidden; }
@@ -48,17 +62,15 @@
         
         .btn { padding: 14px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.2s; font-size: 15px; text-transform: uppercase; }
         .btn-update { background: var(--primary); color: white; }
-        .btn-save { background: var(--secondary); color: white; margin-top: 20px; font-size: 18px; box-shadow: 0 4px 10px rgba(46,125,50,0.3); }
+        .btn-save { background: var(--secondary); color: white; margin-top: 20px; font-size: 18px; }
         
         .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-top: 15px; }
-        .color-card { border: 1px solid #000; background: #fff; border-radius: 10px; overflow: hidden; cursor: pointer; transition: 0.2s; }
-        .color-card:hover { transform: scale(1.03); }
+        .color-card { border: 1px solid #000; background: #fff; border-radius: 10px; overflow: hidden; cursor: pointer; }
         .color-swatch { width: 100%; height: 80px; border-bottom: 1px solid #000; }
         .color-info { padding: 5px 2px; font-size: 12px; font-weight: 900; text-align: center; color: #000; }
         
-        .hunt-card { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 3px 8px rgba(0,0,0,0.1); cursor: pointer; height: 160px; display: flex; flex-direction: column; transition: 0.3s; }
-        .hunt-card:hover { transform: translateY(-5px); }
-        .c-layer { width: 100%; transition: 0.2s; position: relative; }
+        .hunt-card { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 3px 8px rgba(0,0,0,0.1); cursor: pointer; height: 160px; display: flex; flex-direction: column; margin-bottom: 10px; }
+        .c-layer { width: 100%; transition: 0.2s; position: relative; height: 25%; }
 
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
         .modal-content { background: white; margin: 5% auto; padding: 25px; width: 90%; max-width: 500px; border-radius: 15px; text-align: center; position: relative; }
@@ -67,7 +79,6 @@
         .tshirt-mockup svg { width: 180px; fill: #1a237e; transition: 0.5s; }
         
         .copy-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 12px 25px; border-radius: 30px; display: none; z-index: 3000; font-weight: bold; }
-        .history-item:hover { background: #eee !important; }
         footer { text-align: center; padding: 20px; font-weight: bold; color: #1a237e; }
     </style>
 </head>
@@ -78,20 +89,22 @@
 </video>
 
 <div class="sidebar-nav">
-    <div style="text-align: center; padding: 10px; border-bottom: 2px solid #eee; margin-bottom: 15px;">
-        <strong style="font-size: 22px; color: var(--primary); display: block;">RAHA DESIGN</strong>
-        <span style="font-size: 10px; color: #666; font-weight: bold;">PREMIUM PRINT SECTOR</span>
+    <div style="text-align: center; padding: 10px; margin-bottom: 10px;">
+        <strong style="font-size: 20px; color: var(--primary);">RAHA DESIGN</strong>
     </div>
     
-    <div class="nav-section-title">Design Categories</div>
-    <div id="categoryMenu"></div>
+    <div class="color-group-box">
+        <span class="color-box-title">Color Categories</span>
+        <div id="categoryMenu"></div>
+    </div>
 
-    <div class="nav-section-title">Search History</div>
-    <div id="historyList" style="max-height: 250px; overflow-y: auto;"></div>
-    <button onclick="clearHistory()" style="width: 100%; padding: 10px; margin-top: 10px; border: 1px dashed red; color: red; cursor: pointer; font-weight: bold; background: #fff5f5; border-radius: 5px;">CLEAR HISTORY</button>
+    <div style="margin-top: 20px;">
+        <strong style="font-size: 12px; color: #888; text-transform: uppercase; margin-left: 10px;">Search History</strong>
+        <div id="historyList" style="margin-top:10px;"></div>
+        <button onclick="clearHistory()" style="width: 100%; border:none; color:red; cursor:pointer; font-weight:bold; background:none; font-size: 12px; margin-top: 5px;">CLEAR HISTORY</button>
+    </div>
     
-    <div class="nav-section-title">Quick Actions</div>
-    <button class="nav-item" style="width: 100%; border: none; background: #f0f2ff;" onclick="openMockup()">👕 T-SHIRT PREVIEW</button>
+    <button class="btn btn-update" style="margin-top: 20px; font-size: 13px;" onclick="openMockup()">👕 T-SHIRT PREVIEW</button>
 </div>
 
 <div class="main-wrapper">
@@ -99,23 +112,20 @@
         <div class="header">Raha Digital Print - Design Sector</div>
 
         <div class="box">
-            <label><b>1. PHOTO PICKER (MANUAL)</b></label><br>
-            <input type="file" id="upload" accept="image/*" style="margin-top:15px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; width: 80%;">
-            <br>
+            <label><b>1. PHOTO PICKER (MANUAL)</b></label>
+            <input type="file" id="upload" accept="image/*" style="display:block; margin: 15px auto;">
             <div id="picker-container">
                 <canvas id="imageCanvas"></canvas>
             </div>
-            <p style="font-size: 12px; color: #666; margin-top: 5px;">ছবির ওপর ক্লিক করে সঠিক রঙটি বেছে নিন</p>
         </div>
 
         <div class="box box-ai">
             <label style="color: var(--ai-color);"><b>✨ AI UNIQUE COLOR MATCHER</b></label>
-            <p style="font-size: 13px; color: #666;">RGB বা HEX কোড দিন, AI সেরা ৮টি ম্যাচিং কালার তৈরি করবে</p>
             <div class="rgb-inputs">
-                <input type="number" id="ai_r" class="rgb-field" placeholder="R" value="26">
-                <input type="number" id="ai_g" class="rgb-field" placeholder="G" value="35">
-                <input type="number" id="ai_b" class="rgb-field" placeholder="B" value="126">
-                <input type="text" id="ai_hex" style="width: 100px; padding: 10px; border: 2px solid #ccc; border-radius: 8px; text-align: center; font-weight: 900; text-transform: uppercase;" placeholder="#1A237E">
+                <input type="number" id="ai_r" class="rgb-field" value="26">
+                <input type="number" id="ai_g" class="rgb-field" value="35">
+                <input type="number" id="ai_b" class="rgb-field" value="126">
+                <input type="text" id="ai_hex" style="width: 100px; padding: 10px; border: 2px solid #ccc; border-radius: 8px; text-align: center; font-weight: 900;" placeholder="#HEX">
             </div>
             <button class="btn" style="background: var(--ai-color); color: white; margin-top: 15px;" onclick="generate8AIColors()">GENERATE 8 UNIQUE COLORS</button>
             <div id="aiMatchingResult" class="palette-grid"></div>
@@ -136,8 +146,8 @@
             <div id="huntGrid" class="palette-grid" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));"></div>
         </div>
 
-        <div id="downloadArea" style="padding: 25px; background: white; border: 2px solid #eee; border-radius: 12px; margin-top: 20px;">
-            <h3 style="text-align: center; text-transform: uppercase; margin-top: 0; color: #333;">Premium Digital Palette</h3>
+        <div id="downloadArea" style="padding: 20px; background: white; border: 1px solid #ddd; border-radius: 12px; margin-top: 20px;">
+            <h3 style="text-align: center;">Premium Digital Palette</h3>
             <div id="palette" class="palette-grid"></div>
         </div>
 
@@ -146,22 +156,19 @@
     <footer>Designed & Maintained by: GM Sojib</footer>
 </div>
 
-<div id="mockupModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeMockup()">&times;</span>
-        <h2 style="color: var(--primary);">T-Shirt Mockup Preview</h2>
-        <div class="tshirt-mockup" id="tshirtBox">
-            <svg id="tshirtSVG" viewBox="0 0 100 100"><path d="M90,20 L75,10 C70,8 65,15 65,15 C65,15 60,12 50,12 C40,12 35,15 35,15 C35,15 30,8 25,10 L10,20 L15,40 L25,35 L25,90 L75,90 L75,35 L85,40 L90,20 Z"/></svg>
-        </div>
-        <div id="currentMockupColor" style="font-weight: bold; font-size: 18px; color: #333;">RGB(26, 35, 126)</div>
-        <button class="btn btn-update" style="margin-top: 20px;" onclick="closeMockup()">DONE</button>
+<div id="mockupModal" class="modal"><div class="modal-content">
+    <span class="close-btn" onclick="closeMockup()">&times;</span>
+    <h2>T-Shirt Mockup Preview</h2>
+    <div class="tshirt-mockup" id="tshirtBox">
+        <svg id="tshirtSVG" viewBox="0 0 100 100"><path d="M90,20 L75,10 C70,8 65,15 65,15 C65,15 60,12 50,12 C40,12 35,15 35,15 C35,15 30,8 25,10 L10,20 L15,40 L25,35 L25,90 L75,90 L75,35 L85,40 L90,20 Z"/></svg>
     </div>
-</div>
+    <div id="currentMockupColor" style="font-weight: bold;">RGB(26, 35, 126)</div>
+    <button class="btn btn-update" style="margin-top: 20px;" onclick="closeMockup()">DONE</button>
+</div></div>
 
 <div id="copyToast" class="copy-toast">Code Copied!</div>
 
 <script>
-    /* আপনার মূল জাভাস্ক্রিপ্ট কোড - কোনো পরিবর্তন নেই */
     const canvas = document.getElementById('imageCanvas');
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     const rIn = document.getElementById('r');
@@ -171,16 +178,128 @@
 
     const categories = ["Pastel", "Vintage", "Retro", "Neon", "Gold", "Nature", "Summer", "Happy", "Night", "Earth"];
 
+    // প্রতিটি ক্যাটাগরিতে ২০টি করে ইউনিক ৪-কালার প্যালেট
     const huntData = {
-        'Pastel': [['#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7'], ['#F3E5F5', '#E1F5FE', '#E8F5E9', '#FFFDE7'], ['#B2F7EF', '#EFF7F6', '#F7D1CD', '#E2CFC4'], ['#FCE1E4', '#FCF4DD', '#DDEDEA', '#DAEAF6'], ['#E8D7F1', '#D3BCC0', '#A5668B', '#69306D'], ['#F08080', '#F4978E', '#F8AD9D', '#FBC4AB'], ['#FF99C8', '#FCF6BD', '#D0F4DE', '#A9DEF9'], ['#E4C1F9', '#D0F4DE', '#FCF6BD', '#FF99C8'], ['#F6EAC2', '#FFD4B2', '#FFBFA3', '#FFADAD'], ['#A0C4FF', '#BDB2FF', '#FFC6FF', '#FFFFFC'], ['#DEE2FF', '#E8E8E8', '#FEEAFA', '#F1F1F1'], ['#B9FBC0', '#98F5E1', '#8EECF5', '#A3C4F3']],
-        'Vintage': [['#634832', '#967E67', '#D4A373', '#FEFAE0'], ['#264653', '#2A9D8F', '#E9C46A', '#F4A261'], ['#582F0E', '#7F4F24', '#936639', '#A68A64'], ['#B6AD90', '#C2C5AA', '#A4AC86', '#656D4A'], ['#333D29', '#414833', '#656D4A', '#A4AC86'], ['#7D4F50', '#D1BE9C', '#AA998F', '#E0D8DE'], ['#2C3E50', '#E67E22', '#ECF0F1', '#95A5A6'], ['#1A1A1A', '#4A4A4A', '#9B9B9B', '#D8D8D8'], ['#3E2723', '#5D4037', '#8D6E63', '#D7CCC8'], ['#1B5E20', '#388E3C', '#66BB6A', '#C8E6C9'], ['#827397', '#4D4C7D', '#363062', '#E9D5CA'], ['#433520', '#025955', '#00917C', '#FDE8CD']],
-        'Retro': [['#E07A5F', '#3D405B', '#81B29A', '#F2CC8F'], ['#ffbe0b', '#fb5607', '#ff006e', '#8338ec'], ['#264653', '#2a9d8f', '#e9c46a', '#f4a261'], ['#d00000', '#ffba08', '#3f88c5', '#032b43'], ['#606c38', '#283618', '#fefae0', '#dda15e'], ['#ef476f', '#ffd166', '#06d6a0', '#118ab2'], ['#2b2d42', '#8d99ae', '#edf2f4', '#ef233c'], ['#003049', '#d62828', '#f77f00', '#fcbf49'], ['#7209b7', '#3f37c9', '#4361ee', '#4cc9f0'], ['#ff9f1c', '#ffbf69', '#ffffff', '#cbf3f0']],
-        'Neon': [['#00F5FF', '#00FF41', '#FF00FF', '#FFFF00'], ['#FF3131', '#FF5E13', '#77EE11', '#08F7FE'], ['#FF0055', '#00FF99', '#00CCFF', '#FFFF00'], ['#BF00FF', '#FF00BF', '#00FFBF', '#FFBF00'], ['#39FF14', '#FF1493', '#00BFFF', '#FFD700'], ['#7FFF00', '#FF00FF', '#00FFFF', '#FF4500'], ['#000000', '#FF0000', '#FFFB00', '#00FF00'], ['#05FFA1', '#B967FF', '#05B2FF', '#FF4848']],
-        'Nature': [['#11998e', '#38ef7d', '#56ab2f', '#a8e063'], ['#134E5E', '#71B280', '#084594', '#21e6c1'], ['#00b09b', '#96c93d', '#20bf55', '#01baef'], ['#2d5a27', '#4b7d3f', '#7ba160', '#c2d5a8'], ['#1b4332', '#2d6a4f', '#409167', '#95d5b2'], ['#31572c', '#4f772d', '#90be6d', '#ecf39e'], ['#40513B', '#609966', '#9DC08B', '#EDF1D6'], ['#004445', '#2C7873', '#6FB98F', '#FAF1E6']],
-        'Gold': [['#D4AF37', '#FFD700', '#CFB53B', '#F5E1A4'], ['#432818', '#99582A', '#BB9457', '#FFE6A7'], ['#BF953F', '#FCF6BA', '#B38728', '#FBF5B7'], ['#8A6623', '#C7A317', '#D1B000', '#F7EF8A'], ['#E6BE8A', '#D4AF37', '#996515', '#71491E'], ['#DAA520', '#FFD700', '#F0E68C', '#B8860B']],
-        'Summer': [['#FF9A8B', '#FF6A88', '#FF99AC', '#FBBC05'], ['#00B4DB', '#0083B0', '#FDC830', '#F37335'], ['#FF5F6D', '#FFC371', '#F12711', '#F5AF19'], ['#4facfe', '#00f2fe', '#f093fb', '#f5576c'], ['#FA709A', '#FEE140', '#00C6FB', '#005BEA'], ['#FF9A9E', '#FAD0C4', '#FAD0C4', '#FFD1FF'], ['#FBDA61', '#FF5ACD', '#21D4FD', '#B721FF'], ['#08AEEA', '#2AF598', '#FEE140', '#FA709A']],
-        'Night': [['#0F0C29', '#302B63', '#24243E', '#FFFFFF'], ['#232526', '#414345', '#000000', '#FFFFFF'], ['#000428', '#004e92', '#000000', '#00d2ff'], ['#021B79', '#0575E6', '#2196F3', '#BBDEFB'], ['#2C3E50', '#4CA1AF', '#2C3E50', '#000000'], ['#141E30', '#243B55', '#243B55', '#FFFFFF']],
-        'Happy': [['#f9d423', '#ff4e50', '#f12711', '#f5af19'], ['#8E2DE2', '#4A00E0', '#FF0099', '#493240'], ['#ff9a9e', '#fecfef', '#feada6', '#fbb2d0'], ['#fccb90', '#d57eeb', '#00f2fe', '#66a6ff'], ['#84fab0', '#8fd3f4', '#fccb90', '#d57eeb'], ['#a1c4fd', '#c2e9fb', '#fdfcfb', '#e2d1c3']]
+        'Pastel': [
+            ['#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7'], ['#F3E5F5', '#E1F5FE', '#E8F5E9', '#FFFDE7'],
+            ['#B2F7EF', '#EFF7F6', '#F7D1CD', '#E2CFC4'], ['#FCE1E4', '#FCF4DD', '#DDEDEA', '#DAEAF6'],
+            ['#E8D7F1', '#D3BCC0', '#A5668B', '#69306D'], ['#F08080', '#F4978E', '#F8AD9D', '#FBC4AB'],
+            ['#FF99C8', '#FCF6BD', '#D0F4DE', '#A9DEF9'], ['#E4C1F9', '#D0F4DE', '#FCF6BD', '#FF99C8'],
+            ['#F6EAC2', '#FFD4B2', '#FFBFA3', '#FFADAD'], ['#A0C4FF', '#BDB2FF', '#FFC6FF', '#FFFFFC'],
+            ['#DEE2FF', '#E8E8E8', '#FEEAFA', '#F1F1F1'], ['#B9FBC0', '#98F5E1', '#8EECF5', '#A3C4F3'],
+            ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9'], ['#BAE1FF', '#D1D1D1', '#E2F0CB', '#FFDAC1'],
+            ['#FF9AA2', '#FFB7B2', '#FFDAC1', '#E2F0CB'], ['#C7CEEA', '#B5EAD7', '#E2F0CB', '#FFDAC1'],
+            ['#FAD0C4', '#FFD1FF', '#E0C3FC', '#8EC5FC'], ['#FFDEE9', '#B5FFFC', '#FFFFFF', '#D9AFD9'],
+            ['#A18CD1', '#FBC2EB', '#8FD3F4', '#84FAB0'], ['#FBED64', '#7AFFAF', '#7158E2', '#CD84F1']
+        ],
+        'Vintage': [
+            ['#634832', '#967E67', '#D4A373', '#FEFAE0'], ['#264653', '#2A9D8F', '#E9C46A', '#F4A261'],
+            ['#582F0E', '#7F4F24', '#936639', '#A68A64'], ['#B6AD90', '#C2C5AA', '#A4AC86', '#656D4A'],
+            ['#333D29', '#414833', '#656D4A', '#A4AC86'], ['#7D4F50', '#D1BE9C', '#AA998F', '#E0D8DE'],
+            ['#2C3E50', '#E67E22', '#ECF0F1', '#95A5A6'], ['#1A1A1A', '#4A4A4A', '#9B9B9B', '#D8D8D8'],
+            ['#3E2723', '#5D4037', '#8D6E63', '#D7CCC8'], ['#1B5E20', '#388E3C', '#66BB6A', '#C8E6C9'],
+            ['#827397', '#4D4C7D', '#363062', '#E9D5CA'], ['#433520', '#025955', '#00917C', '#FDE8CD'],
+            ['#5F4B32', '#967E67', '#D4A373', '#FEFAE0'], ['#403D39', '#CCC5B9', '#FFFCF2', '#EB5E28'],
+            ['#252422', '#403D39', '#CCC5B9', '#FFFCF2'], ['#1D3557', '#457B9D', '#A8DADC', '#F1FAEE'],
+            ['#6D597A', '#B56576', '#E56B6F', '#EAAC8B'], ['#283618', '#606C38', '#FEFAE0', '#DDA15E'],
+            ['#540B0E', '#9E2A2B', '#E09F3E', '#FFF3B0'], ['#3D5A80', '#98C1D9', '#E0FBFC', '#EE6C4D']
+        ],
+        'Retro': [
+            ['#E07A5F', '#3D405B', '#81B29A', '#F2CC8F'], ['#FFBE0B', '#FB5607', '#FF006E', '#8338EC'],
+            ['#264653', '#2A9D8F', '#E9C46A', '#F4A261'], ['#D00000', '#FFBA08', '#3F88C5', '#032B43'],
+            ['#606C38', '#283618', '#FEFAE0', '#DDA15E'], ['#EF476F', '#FFD166', '#06D6A0', '#118AB2'],
+            ['#2B2D42', '#8D99AE', '#EDF2F4', '#EF233C'], ['#003049', '#D62828', '#F77F00', '#FCBF49'],
+            ['#7209B7', '#3F37C9', '#4361EE', '#4CC9F0'], ['#FF9F1C', '#FFBF69', '#FFFFFF', '#CBF3F0'],
+            ['#1A535C', '#4ECDC4', '#F7FFF7', '#FF6B6B'], ['#FFBC42', '#D81159', '#8F2D56', '#218380'],
+            ['#50514F', '#F25F5C', '#FFE066', '#247BA0'], ['#70D6FF', '#FF70A6', '#FF9770', '#FFD670'],
+            ['#05668D', '#028090', '#00A896', '#02C39A'], ['#F45B69', '#456990', '#E4FDE1', '#114B5F'],
+            ['#D7263D', '#F46036', '#2E294E', '#1B998B'], ['#3D348B', '#7678ED', '#F7B801', '#F18701'],
+            ['#8E9AAF', '#CBC0D3', '#EFD3D7', '#FEEAFA'], ['#22223B', '#4A4E69', '#9A8C98', '#C9ADA7']
+        ],
+        'Neon': [
+            ['#00F5FF', '#00FF41', '#FF00FF', '#FFFF00'], ['#FF3131', '#FF5E13', '#77EE11', '#08F7FE'],
+            ['#FF0055', '#00FF99', '#00CCFF', '#FFFF00'], ['#BF00FF', '#FF00BF', '#00FFBF', '#FFBF00'],
+            ['#39FF14', '#FF1493', '#00BFFF', '#FFD700'], ['#7FFF00', '#FF00FF', '#00FFFF', '#FF4500'],
+            ['#000000', '#FF0000', '#FFFB00', '#00FF00'], ['#05FFA1', '#B967FF', '#05B2FF', '#FF4848'],
+            ['#BC13FE', '#FF0092', '#FFCA20', '#E50914'], ['#FF00FF', '#00FFFF', '#FFFF00', '#00FF00'],
+            ['#4DEEEA', '#74EE15', '#FFE700', '#F000FF'], ['#001EFF', '#BD00FF', '#D600FF', '#FF00B0'],
+            ['#FFEA00', '#00E5FF', '#00FF00', '#FF00FF'], ['#00E5FF', '#00FF00', '#FF00FF', '#FF0000'],
+            ['#FF1493', '#00CED1', '#FFD700', '#32CD32'], ['#FF4500', '#1E90FF', '#FFFF00', '#00FF7F'],
+            ['#FF69B4', '#00FF00', '#00FFFF', '#DA70D6'], ['#ADFF2F', '#FF00FF', '#FF1493', '#00BFFF'],
+            ['#FF0000', '#00FF00', '#0000FF', '#FFFF00'], ['#00FFFF', '#FF00FF', '#FFFF00', '#000000']
+        ],
+        'Gold': [
+            ['#D4AF37', '#FFD700', '#CFB53B', '#F5E1A4'], ['#BF953F', '#FCF6BA', '#B38728', '#FBF5B7'],
+            ['#C5A059', '#D7BE82', '#7A5C12', '#F1E5AC'], ['#E1C16E', '#CD7F32', '#996515', '#B8860B'],
+            ['#DAA520', '#FFD700', '#EEE8AA', '#FAFAD2'], ['#8A6623', '#C19A6B', '#E5AA70', '#E1C699'],
+            ['#D4AF37', '#996515', '#FFD700', '#000000'], ['#B8860B', '#FFD700', '#DAA520', '#333333'],
+            ['#E6BE8A', '#8E7618', '#A98B11', '#BBA53D'], ['#C5B358', '#D4AF37', '#E6BE8A', '#A67C00'],
+            ['#D9B611', '#F2D06B', '#F2E8DF', '#BF9B30'], ['#FFD700', '#E5C100', '#C0A000', '#998000'],
+            ['#FFD700', '#FFCC33', '#FF9900', '#FF6600'], ['#D4AF37', '#C0C0C0', '#B87333', '#FFD700'],
+            ['#FFD700', '#C5B358', '#D4AF37', '#996515'], ['#D4AF37', '#FFD700', '#FFDF00', '#FFDB58'],
+            ['#E5C100', '#FFD700', '#FFFF00', '#FDEE00'], ['#FFD700', '#EEDC82', '#DAA520', '#B8860B'],
+            ['#D4AF37', '#996515', '#B8860B', '#DAA520'], ['#FFD700', '#C5A059', '#7A5C12', '#4D3B11']
+        ],
+        'Nature': [
+            ['#11998e', '#38ef7d', '#56ab2f', '#a8e063'], ['#2d6a4f', '#40916c', '#52b788', '#74c69d'],
+            ['#004b23', '#007200', '#008000', '#38b000'], ['#002109', '#003e1f', '#005f39', '#007f5f'],
+            ['#212529', '#343a40', '#495057', '#adb5bd'], ['#355070', '#6d597a', '#b56576', '#e56b6f'],
+            ['#1a535c', '#4ecdc4', '#f7fff7', '#ff6b6b'], ['#264653', '#2a9d8f', '#e9c46a', '#f4a261'],
+            ['#011627', '#fdfffc', '#2ec4b6', '#e71d36'], ['#50514f', '#f25f5c', '#ffe066', '#247ba0'],
+            ['#2b2d42', '#8d99ae', '#edf2f4', '#ef233c'], ['#1d3557', '#457b9d', '#a8dadc', '#f1faee'],
+            ['#606c38', '#283618', '#fefae0', '#dda15e'], ['#22577a', '#38a3a5', '#57cc99', '#80ed99'],
+            ['#3c0919', '#7d1d3f', '#d11149', '#e63946'], ['#003049', '#d62828', '#f77f00', '#fcbf49'],
+            ['#007f5f', '#2b9348', '#55a630', '#80b918'], ['#ff9f1c', '#ffbf69', '#ffffff', '#cbf3f0'],
+            ['#7209b7', '#3f37c9', '#4361ee', '#4cc9f0'], ['#f94144', '#f3722c', '#f8961e', '#f9c74f']
+        ],
+        'Summer': [
+            ['#FF9A8B', '#FF6A88', '#FF99AC', '#FBBC05'], ['#f72585', '#b5179e', '#7209b7', '#560bad'],
+            ['#480ca8', '#3f37c9', '#4361ee', '#4cc9f0'], ['#4361ee', '#4895ef', '#4cc9f0', '#4ea8de'],
+            ['#ffbe0b', '#fb5607', '#ff006e', '#8338ec'], ['#3a86ff', '#00b4d8', '#90e0ef', '#caf0f8'],
+            ['#ff4d6d', '#ff758f', '#ff85a1', '#ffb3c1'], ['#ffccd5', '#fff0f3', '#ff85a1', '#ff4d6d'],
+            ['#0077b6', '#0096c7', '#00b4d8', '#48cae4'], ['#ade8f4', '#caf0f8', '#0077b6', '#023e8a'],
+            ['#ff006e', '#8338ec', '#3a86ff', '#00b4d8'], ['#ff99c8', '#fcf6bd', '#d0f4de', '#a9def9'],
+            ['#e4c1f9', '#d0f4de', '#fcf6bd', '#ff99c8'], ['#ffadad', '#ffd6a5', '#fdffb6', '#caffbf'],
+            ['#9bf6ff', '#a0c4ff', '#bdb2ff', '#ffc6ff'], ['#ff7b00', '#ff8800', '#ff9500', '#ffa200'],
+            ['#ffaa00', '#ffb700', '#ffc300', '#ffd000'], ['#ffdd00', '#ffea00', '#2a9d8f', '#e9c46a'],
+            ['#f4a261', '#e76f51', '#264653', '#2a9d8f'], ['#e9c46a', '#f4a261', '#e76f51', '#ffffff']
+        ],
+        'Happy': [
+            ['#f9d423', '#ff4e50', '#f12711', '#f5af19'], ['#ff00cc', '#3333ff', '#ff00cc', '#3333ff'],
+            ['#00ff00', '#ffff00', '#00ff00', '#ffff00'], ['#ff9900', '#ff0000', '#ff9900', '#ff0000'],
+            ['#6600ff', '#ff0066', '#6600ff', '#ff0066'], ['#00ffff', '#ff00ff', '#00ffff', '#ff00ff'],
+            ['#ffcc00', '#ff3300', '#ffcc00', '#ff3300'], ['#33cc33', '#0066cc', '#33cc33', '#0066cc'],
+            ['#cc00cc', '#ff9900', '#cc00cc', '#ff9900'], ['#00ccff', '#ffcc00', '#00ccff', '#ffcc00'],
+            ['#ffff00', '#ff00ff', '#ffff00', '#ff00ff'], ['#ff3399', '#33ffcc', '#ff3399', '#33ffcc'],
+            ['#66ff33', '#ff3366', '#66ff33', '#ff3366'], ['#3399ff', '#ffcc33', '#3399ff', '#ffcc33'],
+            ['#ff6600', '#00cc66', '#ff6600', '#00cc66'], ['#cc33ff', '#ffcc00', '#cc33ff', '#ffcc00'],
+            ['#00ff99', '#ff3399', '#00ff99', '#ff3399'], ['#ffcc33', '#3399ff', '#ffcc33', '#3399ff'],
+            ['#ff00ff', '#00ffff', '#ff00ff', '#00ffff'], ['#ff3300', '#00ff00', '#ff3300', '#00ff00']
+        ],
+        'Night': [
+            ['#0F0C29', '#302B63', '#24243E', '#FFFFFF'], ['#141E30', '#243B55', '#141E30', '#243B55'],
+            ['#000000', '#434343', '#000000', '#434343'], ['#232526', '#414345', '#232526', '#414345'],
+            ['#0f2027', '#203a43', '#2c5364', '#0f2027'], ['#373b44', '#4286f4', '#373b44', '#4286f4'],
+            ['#1e3c72', '#2a5298', '#1e3c72', '#2a5298'], ['#2c3e50', '#000000', '#2c3e50', '#000000'],
+            ['#4b6cb7', '#182848', '#4b6cb7', '#182848'], ['#000000', '#e74c3c', '#000000', '#e74c3c'],
+            ['#141e30', '#243b55', '#141e30', '#243b55'], ['#232526', '#414345', '#232526', '#414345'],
+            ['#0f2027', '#203a43', '#2c5364', '#0f2027'], ['#373b44', '#4286f4', '#373b44', '#4286f4'],
+            ['#1e3c72', '#2a5298', '#1e3c72', '#2a5298'], ['#2c3e50', '#000000', '#2c3e50', '#000000'],
+            ['#4b6cb7', '#182848', '#4b6cb7', '#182848'], ['#000000', '#e74c3c', '#000000', '#e74c3c'],
+            ['#111111', '#333333', '#555555', '#777777'], ['#000011', '#000033', '#000055', '#000077']
+        ],
+        'Earth': [
+            ['#4b3621', '#6b4423', '#8b5a2b', '#a0522d'], ['#556b2f', '#6b8e23', '#8fbc8f', '#bdb76b'],
+            ['#8b4513', '#a0522d', '#cd853f', '#d2b48c'], ['#2f4f4f', '#556b2f', '#8b4513', '#bc8f8f'],
+            ['#d2b48c', '#deb887', '#f5f5dc', '#faebd7'], ['#bc8f8f', '#c0c0c0', '#d3d3d3', '#e0e0e0'],
+            ['#8fbc8f', '#98fb98', '#00ff7f', '#00fa9a'], ['#cd853f', '#d2b48c', '#deb887', '#f5deb3'],
+            ['#556b2f', '#6b8e23', '#9acd32', '#adff2f'], ['#8b4513', '#a0522d', '#b8860b', '#daa520'],
+            ['#4b3621', '#6b4423', '#8b5a2b', '#a0522d'], ['#556b2f', '#6b8e23', '#8fbc8f', '#bdb76b'],
+            ['#8b4513', '#a0522d', '#cd853f', '#d2b48c'], ['#2f4f4f', '#556b2f', '#8b4513', '#bc8f8f'],
+            ['#d2b48c', '#deb887', '#f5f5dc', '#faebd7'], ['#bc8f8f', '#c0c0c0', '#d3d3d3', '#e0e0e0'],
+            ['#8fbc8f', '#98fb98', '#00ff7f', '#00fa9a'], ['#cd853f', '#d2b48c', '#deb887', '#f5deb3'],
+            ['#556b2f', '#6b8e23', '#9acd32', '#adff2f'], ['#8b4513', '#a0522d', '#b8860b', '#daa520']
+        ]
     };
 
     const catMenu = document.getElementById('categoryMenu');
@@ -195,6 +314,21 @@
         };
         catMenu.appendChild(item);
     });
+
+    function filterHunt(cat) {
+        const grid = document.getElementById('huntGrid');
+        document.getElementById('huntTitle').innerHTML = `<b>🌈 EXPLORE ${cat.toUpperCase()} HUNTS</b>`;
+        grid.innerHTML = '';
+        const items = huntData[cat] || huntData['Pastel'];
+        items.forEach(p => {
+            grid.innerHTML += `<div class="hunt-card" onclick="copyHex('${p[0]}')">
+                <div class="c-layer" style="background:${p[0]}"></div>
+                <div class="c-layer" style="background:${p[1]}"></div>
+                <div class="c-layer" style="background:${p[2]}"></div>
+                <div class="c-layer" style="background:${p[3]}"></div>
+            </div>`;
+        });
+    }
 
     function rgbToHex(rgbStr) {
         let parts = rgbStr.split(',');
@@ -214,36 +348,11 @@
         if (hVal.trim() !== "") {
             const res = hexToRgb(hVal);
             r = res.r; g = res.g; b = res.b;
-            document.getElementById('ai_r').value = r;
-            document.getElementById('ai_g').value = g;
-            document.getElementById('ai_b').value = b;
         } else {
             r = parseInt(document.getElementById('ai_r').value) || 0;
             g = parseInt(document.getElementById('ai_g').value) || 0;
             b = parseInt(document.getElementById('ai_b').value) || 0;
-            document.getElementById('ai_hex').value = rgbToHex(`${r},${g},${b}`);
         }
-
-        const resDiv = document.getElementById('aiMatchingResult');
-        resDiv.innerHTML = '';
-        const variations = [
-            { n: 'Main', r: r, g: g, b: b },
-            { n: 'Contrast', r: 255-r, g: 255-g, b: 255-b },
-            { n: 'Neon', r: Math.min(255, r+100), g: Math.min(255, g+150), b: 50 },
-            { n: 'Luxury', r: 212, g: 175, b: 55 },
-            { n: 'Pastel', r: Math.round((r+255)/2), g: Math.round((g+255)/2), b: Math.round((b+255)/2) },
-            { n: 'Deep', r: Math.round(r*0.4), g: Math.round(g*0.4), b: Math.round(b*0.4) },
-            { n: 'Warm', r: Math.min(255, r+80), g: Math.round(g*0.5), b: Math.round(b*0.3) },
-            { n: 'Cool', r: Math.round(r*0.2), g: Math.round(g*0.6), b: Math.min(255, b+100) }
-        ];
-
-        variations.forEach(v => {
-            const rgb = `${v.r},${v.g},${v.b}`;
-            resDiv.innerHTML += `<div class="color-card" onclick="updateUI(${v.r},${v.g},${v.b})">
-                <div class="color-swatch" style="background:rgb(${rgb}); height:60px;"></div>
-                <div class="color-info" style="font-size:10px;"><b>${v.n}</b><br>${rgb}</div>
-            </div>`;
-        });
         updateUI(r, g, b);
     }
 
@@ -275,9 +384,7 @@
         generatePalette(r, g, b);
     }
 
-    function generateFromInputs() {
-        updateUI(rIn.value, gIn.value, bIn.value);
-    }
+    function generateFromInputs() { updateUI(rIn.value, gIn.value, bIn.value); }
 
     function generatePalette(r, g, b) {
         const pal = document.getElementById('palette');
@@ -289,7 +396,7 @@
             if(i < 20) { nr = r*factor; ng = g*factor; nb = b*factor; }
             else { nr = r+(255-r)*factor; ng = g+(255-g)*factor; nb = b+(255-b)*factor; }
             const rgb = `${Math.round(nr)},${Math.round(ng)},${Math.round(nb)}`;
-            pal.innerHTML += `<div class="color-card" onclick="copyCode('${rgb}')" ondblclick="copyHex('${rgb}')">
+            pal.innerHTML += `<div class="color-card" onclick="copyCode('${rgb}')">
                 <div class="color-swatch" style="background:rgb(${rgb})"></div>
                 <div class="color-info">${rgb}</div>
             </div>`;
@@ -299,27 +406,10 @@
     function openMockup() { document.getElementById('mockupModal').style.display = 'block'; }
     function closeMockup() { document.getElementById('mockupModal').style.display = 'none'; }
 
-    function filterHunt(cat) {
-        const grid = document.getElementById('huntGrid');
-        document.getElementById('huntTitle').innerHTML = `<b>🌈 EXPLORE ${cat.toUpperCase()} HUNTS</b>`;
-        grid.innerHTML = '';
-        const items = huntData[cat] || huntData['Pastel'];
-        items.forEach(p => {
-            grid.innerHTML += `
-                <div class="hunt-card">
-                    <div class="c-layer" style="background:${p[0]}; flex:4" onclick="copyHex('${p[0]}')"></div>
-                    <div class="c-layer" style="background:${p[1]}; flex:2" onclick="copyHex('${p[1]}')"></div>
-                    <div class="c-layer" style="background:${p[2]}; flex:1.5" onclick="copyHex('${p[2]}')"></div>
-                    <div class="c-layer" style="background:${p[3]}; flex:1" onclick="copyHex('${p[3]}')"></div>
-                </div>`;
-        });
-        document.getElementById('huntSection').scrollIntoView({behavior: 'smooth'});
-    }
-
     function saveToHistory(r, g, b) {
         let s = `${r},${g},${b}`;
         if (!history.includes(s)) {
-            history.unshift(s); if(history.length > 12) history.pop();
+            history.unshift(s); if(history.length > 10) history.pop();
             localStorage.setItem('rahaColorHistory', JSON.stringify(history));
             updateHistoryUI();
         }
@@ -327,31 +417,21 @@
 
     function updateHistoryUI() {
         const l = document.getElementById('historyList');
-        l.innerHTML = history.map(c => `<div class="history-item" onclick="updateUI(${c})" style="display:flex; align-items:center; gap:10px; padding:8px; border-bottom:1px solid #eee; cursor:pointer; background:#fff;">
-            <div style="width:25px; height:25px; background:rgb(${c}); border-radius:4px; border:1px solid #ddd;"></div>
-            <span style="font-size:11px; font-weight:bold;">RGB(${c})</span>
+        l.innerHTML = history.map(c => `<div class="history-item" onclick="updateUI(${c})" style="display:flex; align-items:center; gap:8px; padding:5px; cursor:pointer;">
+            <div style="width:20px; height:20px; background:rgb(${c}); border-radius:3px;"></div>
+            <span style="font-size:11px; font-weight:bold;">${c}</span>
         </div>`).join('');
     }
 
-    function copyCode(t) { navigator.clipboard.writeText(t); showToast("RGB Copied: " + t); }
-    function copyHex(t) { 
-        const hex = t.startsWith('#') ? t : rgbToHex(t);
-        navigator.clipboard.writeText(hex); 
-        showToast("HEX Copied: " + hex); 
-    }
+    function copyCode(t) { navigator.clipboard.writeText(t); showToast("RGB Copied"); }
+    function copyHex(t) { navigator.clipboard.writeText(t); showToast("HEX Copied"); }
     function showToast(m) { const t = document.getElementById('copyToast'); t.innerText = m; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1500); }
     function clearHistory() { history = []; localStorage.removeItem('rahaColorHistory'); updateHistoryUI(); }
-    
-    function downloadImage() {
-        html2canvas(document.querySelector("#downloadArea"), {scale: 3}).then(c => {
-            const a = document.createElement('a'); a.download = 'Raha-Palette.png'; a.href = c.toDataURL(); a.click();
-        });
-    }
+    function downloadImage() { html2canvas(document.querySelector("#downloadArea"), {scale: 3}).then(c => { const a = document.createElement('a'); a.download = 'Raha-Palette.png'; a.href = c.toDataURL(); a.click(); }); }
 
     updateHistoryUI();
     filterHunt('Pastel');
     generatePalette(26, 35, 126);
 </script>
-
 </body>
 </html>
