@@ -7,6 +7,14 @@
     <title>Raha Digital Print - Pro Design Sector</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
+        #drop-zone.dragover {
+    background: #e0e0ff !important;
+    border-color: var(--secondary) !important;
+    transform: scale(1.02);
+}
+#imageCanvas {
+    cursor: crosshair;
+}
         :root { --primary: #1a237e; --secondary: #2e7d32; --ai-color: #00695c; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 0; display: flex; }
         
@@ -79,13 +87,17 @@
 
         <div class="main-layout">
             <div class="content-area">
-                <div class="box">
-                    <label><b>1. PHOTO PICKER (MANUAL)</b></label>
-                    <input type="file" id="upload" accept="image/*" style="margin-top:10px;">
-                    <div id="picker-container">
-                        <canvas id="imageCanvas"></canvas>
-                    </div>
-                </div>
+               <div class="box">
+    <label><b>1. PHOTO PICKER (DRAG & DROP)</b></label>
+    <div id="drop-zone" style="border: 2px dashed #1a237e; padding: 40px; border-radius: 12px; background: #f9f9ff; cursor: pointer; margin-top: 15px; transition: 0.3s; text-align: center;">
+        <p style="margin: 0; color: #666; font-weight: bold;">ছবিটি এখানে টেনে আনুন অথবা ক্লিক করুন</p>
+        <input type="file" id="upload" accept="image/*" style="display: none;">
+    </div>
+    
+    <div id="picker-container" style="margin-top: 15px; position: relative; border: 3px solid #333; display: none;">
+        <canvas id="imageCanvas"></canvas>
+    </div>
+</div>
 
                 <div class="box box-ai">
                     <label style="color: var(--ai-color);"><b>✨ AI UNIQUE COLOR MATCHER</b></label>
@@ -310,7 +322,54 @@
         let s = `${r},${g},${b}`;
         if (!history.includes(s)) {
             history.unshift(s); if(history.length > 12) history.pop();
-            localStorage.setItem('rahaColorHistory', JSON.stringify(history));
+            localStorage.setItem('rahaColorHistory', JSON.stringify(history));const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('upload');
+    const pickerContainer = document.getElementById('picker-container');
+
+    // ড্রপ জোনে ক্লিক করলে ফাইল ইনপুট ওপেন হবে
+    dropZone.onclick = () => fileInput.click();
+
+    // ফাইল ড্র্যাগ করে আনলে স্টাইল পরিবর্তন হবে
+    dropZone.ondragover = (e) => {
+        e.preventDefault();
+        dropZone.style.background = "#e0e0ff";
+        dropZone.style.borderColor = "#2e7d32";
+    };
+
+    dropZone.ondragleave = () => {
+        dropZone.style.background = "#f9f9ff";
+        dropZone.style.borderColor = "#1a237e";
+    };
+
+    // ফাইল ড্রপ করলে ছবি প্রসেস হবে
+    dropZone.ondrop = (e) => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+            handleImage(file);
+        }
+    };
+
+    fileInput.onchange = (e) => {
+        const file = e.target.files[0];
+        if (file) handleImage(file);
+    };
+
+    function handleImage(file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const img = new Image();
+            img.onload = () => {
+                dropZone.style.display = 'none';
+                pickerContainer.style.display = 'inline-block';
+                canvas.width = img.width; 
+                canvas.height = img.height; 
+                ctx.drawImage(img, 0, 0); 
+            }
+            img.src = event.target.result;
+        }
+        reader.readAsDataURL(file);
+    }
             updateHistoryUI();
         }
     }
@@ -344,3 +403,4 @@
 
 </body>
 </html>
+
