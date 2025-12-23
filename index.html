@@ -214,12 +214,26 @@
         .history-item:hover { background: #f8f9fa; }
 
         /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+
         .modal-content { 
             background: white; 
             border-radius: 24px; 
             padding: 40px;
+            max-width: 400px;
+            margin: 10% auto;
+            position: relative;
             box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            text-align: center;
         }
+
+        .close-btn { position: absolute; right: 20px; top: 15px; font-size: 24px; cursor: pointer; }
 
         .copy-toast { 
             position: fixed; 
@@ -232,12 +246,14 @@
             border-radius: 12px; 
             font-size: 14px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 3000;
         }
 
         footer { 
             text-align: center; 
             padding: 40px; 
-            opacity: 0.6;
+            opacity: 0.6; 
             font-size: 13px;
         }
 
@@ -322,7 +338,7 @@
 
         <button class="btn btn-save" onclick="downloadImage()">DOWNLOAD HIGH-RES PALETTE (PNG)</button>
     </div>
-    <footer>Designed & Maintained by GM Sojib &bull; 2024</footer>
+    <footer>Designed & Maintained by GM Sojib &bull; 2025</footer>
 </div>
 
 <div id="mockupModal" class="modal">
@@ -330,7 +346,7 @@
         <span class="close-btn" onclick="closeMockup()">&times;</span>
         <h2 style="font-weight: 800;">T-Shirt Preview</h2>
         <div class="tshirt-mockup" id="tshirtBox" style="width: 100%; max-width: 300px; margin: 30px auto;">
-            <svg id="tshirtSVG" viewBox="0 0 100 100" style="width: 100%;"><path d="M90,20 L75,10 C70,8 65,15 65,15 C65,15 60,12 50,12 C40,12 35,15 35,15 C35,15 30,8 25,10 L10,20 L15,40 L25,35 L25,90 L75,90 L75,35 L85,40 L90,20 Z"/></svg>
+            <svg id="tshirtSVG" viewBox="0 0 100 100" style="width: 100%; fill: #1a237e;"><path d="M90,20 L75,10 C70,8 65,15 65,15 C65,15 60,12 50,12 C40,12 35,15 35,15 C35,15 30,8 25,10 L10,20 L15,40 L25,35 L25,90 L75,90 L75,35 L85,40 L90,20 Z"/></svg>
         </div>
         <div id="currentMockupColor" style="font-weight: bold; font-size: 20px; margin-bottom: 20px;">RGB(26, 35, 126)</div>
         <button class="btn btn-update" onclick="closeMockup()">CLOSE PREVIEW</button>
@@ -340,7 +356,6 @@
 <div id="copyToast" class="copy-toast">RGB Code Copied!</div>
 
 <script>
-    // আপনার আগের সব স্ক্রিপ্ট কোড এখানে হুবহু বসবে
     const canvas = document.getElementById('imageCanvas');
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     const rIn = document.getElementById('r');
@@ -387,19 +402,22 @@
         return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
     }
 
+    // AI Function - Limited to its own box until clicked
     function generate8AIColors() {
         let r, g, b;
-        const hVal = document.getElementById('ai_hex').value;
-        if (hVal.trim() !== "") {
+        const hVal = document.getElementById('ai_hex').value.trim();
+        const rInp = document.getElementById('ai_r');
+        const gInp = document.getElementById('ai_g');
+        const bInp = document.getElementById('ai_b');
+
+        if (hVal !== "") {
             const res = hexToRgb(hVal);
             r = res.r; g = res.g; b = res.b;
-            document.getElementById('ai_r').value = r;
-            document.getElementById('ai_g').value = g;
-            document.getElementById('ai_b').value = b;
+            rInp.value = r; gInp.value = g; bInp.value = b;
         } else {
-            r = parseInt(document.getElementById('ai_r').value) || 0;
-            g = parseInt(document.getElementById('ai_g').value) || 0;
-            b = parseInt(document.getElementById('ai_b').value) || 0;
+            r = parseInt(rInp.value) || 0;
+            g = parseInt(gInp.value) || 0;
+            b = parseInt(bInp.value) || 0;
             document.getElementById('ai_hex').value = rgbToHex(`${r},${g},${b}`);
         }
 
@@ -418,12 +436,16 @@
 
         variations.forEach(v => {
             const rgb = `${v.r},${v.g},${v.b}`;
-            resDiv.innerHTML += `<div class="color-card" onclick="updateUI(${v.r},${v.g},${v.b})">
+            const card = document.createElement('div');
+            card.className = 'color-card';
+            card.onclick = () => updateUI(v.r, v.g, v.b);
+            card.innerHTML = `
                 <div class="color-swatch" style="background:rgb(${rgb}); height:60px;"></div>
                 <div class="color-info" style="font-size:10px;"><b>${v.n}</b><br>${rgb}</div>
-            </div>`;
+            `;
+            resDiv.appendChild(card);
         });
-        updateUI(r, g, b);
+        showToast("8 Smart variations generated!");
     }
 
     document.getElementById('upload').addEventListener('change', function(e) {
@@ -468,10 +490,15 @@
             if(i < 20) { nr = r*factor; ng = g*factor; nb = b*factor; }
             else { nr = r+(255-r)*factor; ng = g+(255-g)*factor; nb = b+(255-b)*factor; }
             const rgb = `${Math.round(nr)},${Math.round(ng)},${Math.round(nb)}`;
-            pal.innerHTML += `<div class="color-card" onclick="copyCode('${rgb}')" ondblclick="copyHex('${rgb}')">
+            const card = document.createElement('div');
+            card.className = 'color-card';
+            card.onclick = () => copyCode(rgb);
+            card.ondblclick = () => copyHex(rgb);
+            card.innerHTML = `
                 <div class="color-swatch" style="background:rgb(${rgb})"></div>
                 <div class="color-info">${rgb}</div>
-            </div>`;
+            `;
+            pal.appendChild(card);
         }
     }
 
@@ -484,13 +511,15 @@
         grid.innerHTML = '';
         const items = huntData[cat] || huntData['Pastel'];
         items.forEach(p => {
-            grid.innerHTML += `
-                <div class="hunt-card">
-                    <div class="c-layer" style="background:${p[0]}; flex:4" onclick="copyHex('${p[0]}')"></div>
-                    <div class="c-layer" style="background:${p[1]}; flex:2" onclick="copyHex('${p[1]}')"></div>
-                    <div class="c-layer" style="background:${p[2]}; flex:1.5" onclick="copyHex('${p[2]}')"></div>
-                    <div class="c-layer" style="background:${p[3]}; flex:1" onclick="copyHex('${p[3]}')"></div>
-                </div>`;
+            const card = document.createElement('div');
+            card.className = 'hunt-card';
+            card.innerHTML = `
+                <div style="background:${p[0]}; flex:4" onclick="copyHex('${p[0]}')"></div>
+                <div style="background:${p[1]}; flex:2" onclick="copyHex('${p[1]}')"></div>
+                <div style="background:${p[2]}; flex:1.5" onclick="copyHex('${p[2]}')"></div>
+                <div style="background:${p[3]}; flex:1" onclick="copyHex('${p[3]}')"></div>
+            `;
+            grid.appendChild(card);
         });
     }
 
@@ -505,10 +534,11 @@
 
     function updateHistoryUI() {
         const l = document.getElementById('historyList');
-        l.innerHTML = history.map(c => `<div class="history-item" onclick="updateUI(${c})" style="display:flex; align-items:center; gap:10px; padding:10px; cursor:pointer;">
-            <div style="width:35px; height:35px; background:rgb(${c}); border-radius:8px; border:1px solid #ddd;"></div>
-            <span style="font-size:12px; font-weight:700;">RGB(${c})</span>
-        </div>`).join('');
+        l.innerHTML = history.map(c => `
+            <div class="history-item" onclick="updateUI(${c})" style="display:flex; align-items:center; gap:10px; padding:10px; cursor:pointer;">
+                <div style="width:35px; height:35px; background:rgb(${c}); border-radius:8px; border:1px solid #ddd;"></div>
+                <span style="font-size:12px; font-weight:700;">RGB(${c})</span>
+            </div>`).join('');
     }
 
     function copyCode(t) { navigator.clipboard.writeText(t); showToast("RGB Copied: " + t); }
@@ -517,7 +547,11 @@
         navigator.clipboard.writeText(hex); 
         showToast("HEX Copied: " + hex); 
     }
-    function showToast(m) { const t = document.getElementById('copyToast'); t.innerText = m; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1500); }
+    function showToast(m) { 
+        const t = document.getElementById('copyToast'); 
+        t.innerText = m; t.style.display = 'block'; 
+        setTimeout(() => t.style.display = 'none', 1500); 
+    }
     function clearHistory() { history = []; localStorage.removeItem('rahaColorHistory'); updateHistoryUI(); }
     function downloadImage() {
         html2canvas(document.querySelector("#downloadArea"), {scale: 3}).then(c => {
@@ -525,6 +559,7 @@
         });
     }
 
+    // Initialize
     updateHistoryUI();
     filterHunt('Pastel');
     generatePalette(26, 35, 126);
