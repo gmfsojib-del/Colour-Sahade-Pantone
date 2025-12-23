@@ -55,7 +55,6 @@
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
         .modal-content { background: white; margin: 5% auto; padding: 25px; width: 500px; border-radius: 15px; text-align: center; position: relative; }
         .close-btn { position: absolute; right: 20px; top: 10px; font-size: 30px; cursor: pointer; }
-        .drop-zone { border: 3px dashed #bbb; padding: 40px; border-radius: 10px; background: #f9f9f9; cursor: pointer; margin-bottom: 20px; }
         
         /* Mockup */
         .tshirt-mockup { width: 250px; height: 280px; margin: 20px auto; position: relative; background: #eee; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 5px solid #333; }
@@ -70,14 +69,6 @@
 <div class="sidebar-nav">
     <div style="padding: 10px; margin-bottom: 20px;"><strong style="font-size: 20px; color: var(--primary);">RAHA DESIGN</strong></div>
     
-    <div class="nav-section-title">Quick Tools</div>
-    <div class="nav-item" onclick="alert('Find MD stock feature loading...')"><span class="nav-icon">🔍</span> Find MD stock</div>
-    <div class="nav-item" onclick="openTool('bgModal')"><span class="nav-icon">👤</span> Background remove</div>
-    <div class="nav-item" onclick="openTool('upscaleModal')"><span class="nav-icon">🖼️</span> Image upscale</div>
-    <div class="nav-item" onclick="alert('Caption Generator loading...')"><span class="nav-icon">Aa</span> Caption generate</div>
-    <div class="nav-item" onclick="alert('Vector service ready...')"><span class="nav-icon">📐</span> Vector to photo</div>
-    <div class="nav-item" onclick="alert('Sharing feature enabled...')"><span class="nav-icon">✈️</span> Quick image sharing</div>
-
     <div class="nav-section-title">Categories</div>
     <div id="categoryMenu"></div>
 </div>
@@ -148,12 +139,6 @@
     <footer>Designed & Maintained by: GM Sojib</footer>
 </div>
 
-<div id="upscaleModal" class="modal"><div class="modal-content">
-    <span class="close-btn" onclick="closeTool('upscaleModal')">&times;</span>
-   
-    </div>
-</div></div>
-
 <div id="mockupModal" class="modal"><div class="modal-content">
     <span class="close-btn" onclick="closeMockup()">&times;</span>
     <h2>T-Shirt Mockup Preview</h2>
@@ -186,7 +171,6 @@
         'Summer': [['#FF9A8B', '#FF6A88', '#FF99AC', '#FBBC05'], ['#00B4DB', '#0083B0', '#FDC830', '#F37335'], ['#FF5F6D', '#FFC371', '#F12711', '#F5AF19'], ['#4facfe', '#00f2fe', '#f093fb', '#f5576c'], ['#FA709A', '#FEE140', '#00C6FB', '#005BEA'], ['#FF9A9E', '#FAD0C4', '#FAD0C4', '#FFD1FF'], ['#FBDA61', '#FF5ACD', '#21D4FD', '#B721FF'], ['#08AEEA', '#2AF598', '#FEE140', '#FA709A']],
         'Night': [['#0F0C29', '#302B63', '#24243E', '#FFFFFF'], ['#232526', '#414345', '#000000', '#FFFFFF'], ['#000428', '#004e92', '#000000', '#00d2ff'], ['#021B79', '#0575E6', '#2196F3', '#BBDEFB'], ['#2C3E50', '#4CA1AF', '#2C3E50', '#000000'], ['#141E30', '#243B55', '#243B55', '#FFFFFF']],
         'Happy': [['#f9d423', '#ff4e50', '#f12711', '#f5af19'], ['#8E2DE2', '#4A00E0', '#FF0099', '#493240'], ['#ff9a9e', '#fecfef', '#feada6', '#fbb2d0'], ['#fccb90', '#d57eeb', '#00f2fe', '#66a6ff'], ['#84fab0', '#8fd3f4', '#fccb90', '#d57eeb'], ['#a1c4fd', '#c2e9fb', '#fdfcfb', '#e2d1c3']]
-        'Cold': [['#E5E9C5', '9ECFD4','70B2B2','016B61',]
     };
 
     const catMenu = document.getElementById('categoryMenu');
@@ -214,7 +198,6 @@
         return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
     }
 
-    // AI logic for 8 unique matching colors
     function generate8AIColors() {
         let r, g, b;
         const hVal = document.getElementById('ai_hex').value;
@@ -303,8 +286,6 @@
         }
     }
 
-    function openTool(id) { document.getElementById(id).style.display = 'block'; }
-    function closeTool(id) { document.getElementById(id).style.display = 'none'; }
     function openMockup() { document.getElementById('mockupModal').style.display = 'block'; }
     function closeMockup() { document.getElementById('mockupModal').style.display = 'none'; }
 
@@ -363,4 +344,3 @@
 
 </body>
 </html>
-
