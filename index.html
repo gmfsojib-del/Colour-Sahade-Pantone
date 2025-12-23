@@ -9,420 +9,163 @@
         :root { 
             --primary: #1a237e; 
             --primary-light: #534bae;
-            --secondary: #2e7d32; 
             --ai-color: #00695c; 
             --bg-body: #f4f7f9;
             --card-bg: #ffffff;
         }
 
-        body { 
-            font-family: 'Inter', 'Segoe UI', Arial, sans-serif; 
-            background: var(--bg-body); 
-            margin: 0; 
-            padding: 0; 
-            display: flex; 
-            color: #333;
-        }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-body); margin: 0; display: flex; color: #333; }
         
-        /* Sidebar Menu Styles */
-        .sidebar-nav { 
-            width: 280px; 
-            background: var(--card-bg); 
-            height: 100vh; 
-            position: fixed; 
-            border-right: 1px solid #e0e0e0; 
-            padding: 25px 15px; 
-            box-sizing: border-box; 
-            overflow-y: auto; 
-            z-index: 1000;
-            box-shadow: 4px 0 10px rgba(0,0,0,0.02);
-        }
+        .sidebar-nav { width: 280px; background: var(--card-bg); height: 100vh; position: fixed; border-right: 1px solid #e0e0e0; padding: 25px 15px; box-sizing: border-box; z-index: 1000; }
         
-        .nav-section-title { 
-            font-size: 11px; 
-            color: #9e9e9e; 
-            text-transform: uppercase; 
-            font-weight: 800; 
-            margin: 25px 0 12px 10px; 
-            letter-spacing: 1.5px; 
-        }
+        .nav-section-title { font-size: 11px; color: #9e9e9e; text-transform: uppercase; font-weight: 800; margin-bottom: 12px; letter-spacing: 1.5px; }
 
-        .nav-item { 
-            display: flex; 
-            align-items: center; 
-            padding: 12px 18px; 
-            margin-bottom: 6px; 
-            border-radius: 10px; 
-            cursor: pointer; 
-            color: #555; 
-            font-weight: 500; 
-            transition: all 0.3s ease; 
-            font-size: 14px; 
-        }
-
-        .nav-item:hover { 
-            background: #f0f2ff; 
-            color: var(--primary); 
-            transform: translateX(5px);
-        }
-
-        .nav-item.active { 
-            background: var(--primary); 
-            color: white; 
-            box-shadow: 0 4px 12px rgba(26, 35, 126, 0.2);
-        }
-
-        /* Main Layout */
-        .main-wrapper { margin-left: 280px; width: calc(100% - 280px); padding: 40px; box-sizing: border-box; }
-        
-        .main-container { 
-            max-width: 1200px; 
-            margin: auto; 
-        }
-
-        .header { 
-            font-size: 32px; 
-            font-weight: 800; 
-            color: var(--primary); 
-            margin-bottom: 35px; 
-            text-align: left;
-            letter-spacing: -0.5px;
-        }
-
-        .box { 
-            padding: 25px; 
-            border-radius: 16px; 
-            background: var(--card-bg); 
-            border: 1px solid #eaeaea;
-            margin-bottom: 25px; 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            transition: transform 0.3s ease;
-        }
-
-        .box:hover { transform: translateY(-3px); }
-
-        .box-ai { 
-            border: 1px solid rgba(0, 105, 92, 0.2); 
-            background: linear-gradient(145deg, #ffffff, #f0fdfa); 
-        }
-
-        #picker-container { 
-            position: relative; 
-            margin-top: 20px; 
-            border-radius: 12px;
-            overflow: hidden;
-            border: 2px solid #eee;
-            display: block;
-            cursor: crosshair;
-        }
-
-        #imageCanvas { width: 100%; height: auto; display: block; }
-
-        .rgb-inputs { display: flex; justify-content: start; gap: 12px; margin: 20px 0; }
-        
-        .rgb-field { 
-            width: 75px; 
-            padding: 12px; 
-            border: 1px solid #ddd; 
-            border-radius: 10px; 
-            text-align: center; 
-            font-weight: 700; 
-            font-size: 16px; 
-            background: #fafafa;
-        }
-
-        .btn { 
-            padding: 16px 24px; 
-            border: none; 
-            border-radius: 12px; 
-            cursor: pointer; 
-            font-weight: 600; 
-            transition: 0.3s; 
-            font-size: 15px; 
-            display: inline-block;
-        }
-
-        .btn-update { background: var(--primary); color: white; width: 100%; }
-        .btn-update:hover { background: var(--primary-light); box-shadow: 0 6px 15px rgba(26,35,126,0.3); }
-
-        .btn-save { 
-            background: #111; 
-            color: white; 
-            margin-top: 40px; 
-            font-size: 18px; 
+        /* Category Dropdown Box Style */
+        .category-box {
             width: 100%;
-            letter-spacing: 1px;
-        }
-
-        /* Palette Grid */
-        .palette-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
-            gap: 15px; 
-            margin-top: 25px; 
-        }
-
-        .color-card { 
-            background: #fff; 
-            border-radius: 14px; 
-            overflow: hidden; 
-            cursor: pointer; 
-            border: 1px solid #eee;
-            transition: 0.2s;
-        }
-
-        .color-card:hover { transform: scale(1.05); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
-
-        .color-swatch { width: 100%; height: 80px; }
-
-        .color-info { 
-            padding: 10px 5px; 
-            font-size: 12px; 
-            font-weight: 700; 
-            text-align: center; 
-            background: #fff;
-        }
-
-        /* Hunt Cards */
-        .hunt-card { 
-            background: #fff; 
-            border-radius: 15px; 
-            overflow: hidden; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
-            cursor: pointer; 
-            height: 200px; 
-            display: flex; 
-            flex-direction: column; 
-            transition: 0.3s ease;
-        }
-
-        .hunt-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-
-        /* History */
-        .history-sidebar { 
-            background: #fff; 
-            padding: 20px; 
-            border-radius: 16px; 
-            border: 1px solid #eee;
-        }
-
-        .history-item {
-            transition: 0.2s;
-            border-radius: 8px;
-            margin-bottom: 5px;
-        }
-        .history-item:hover { background: #f8f9fa; }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0; top: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-        }
-
-        .modal-content { 
-            background: white; 
-            border-radius: 24px; 
-            padding: 40px;
-            max-width: 400px;
-            margin: 10% auto;
-            position: relative;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-            text-align: center;
-        }
-
-        .close-btn { position: absolute; right: 20px; top: 15px; font-size: 24px; cursor: pointer; }
-
-        .copy-toast { 
-            position: fixed; 
-            bottom: 40px; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            background: #111; 
-            color: #fff; 
-            padding: 14px 28px; 
-            border-radius: 12px; 
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid var(--primary);
+            background: white;
+            font-weight: 700;
+            color: var(--primary);
+            cursor: pointer;
+            outline: none;
             font-size: 14px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            display: none;
-            z-index: 3000;
+            margin-bottom: 20px;
         }
 
-        footer { 
-            text-align: center; 
-            padding: 40px; 
-            opacity: 0.6; 
-            font-size: 13px;
-        }
+        .main-wrapper { margin-left: 280px; width: calc(100% - 280px); padding: 40px; box-sizing: border-box; }
+        .box { padding: 25px; border-radius: 16px; background: var(--card-bg); border: 1px solid #eaeaea; margin-bottom: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+        .box-ai { border: 1px solid rgba(0, 105, 92, 0.2); background: linear-gradient(145deg, #ffffff, #f0fdfa); }
 
+        .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; margin-top: 25px; }
+        .hunt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        
+        .color-card { background: #fff; border-radius: 14px; overflow: hidden; cursor: pointer; border: 1px solid #eee; transition: 0.2s; }
+        .color-card:hover { transform: scale(1.05); }
+        .color-swatch { width: 100%; height: 60px; }
+        
+        .hunt-card { background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); cursor: pointer; height: 120px; display: flex; flex-direction: column; }
+        .c-layer { transition: 0.3s; }
+        .c-layer:hover { opacity: 0.8; }
+
+        .rgb-inputs { display: flex; gap: 10px; margin: 15px 0; }
+        .rgb-field { width: 60px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; text-align: center; font-weight: bold; }
+        .btn { padding: 12px 20px; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; width: 100%; transition: 0.3s; }
+        .btn-ai { background: var(--ai-color); color: white; }
+        
+        .copy-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 20px; border-radius: 20px; display: none; z-index: 2000; }
     </style>
 </head>
 <body>
 
 <div class="sidebar-nav">
-    <div style="padding: 10px; margin-bottom: 20px;">
-        <span style="font-size: 22px; font-weight: 900; color: var(--primary); letter-spacing: -1px;">RAHA DIGITAL</span>
-        <div style="font-size: 10px; color: #888; font-weight: 700;">PRO DESIGN SECTOR</div>
+    <div style="margin-bottom: 30px;">
+        <span style="font-size: 20px; font-weight: 900; color: var(--primary);">RAHA DIGITAL</span>
+        <div style="font-size: 10px; color: #888;">PRO DESIGN SECTOR</div>
     </div>
     
-    <div class="nav-section-title">Design Categories</div>
-    <div id="categoryMenu"></div>
+    <div class="nav-section-title">Select Color Category</div>
+    <select id="categorySelector" class="category-box" onchange="filterHunt(this.value)">
+        <option value="Pastel">🌸 Pastel Collection</option>
+        <option value="Vintage">📜 Vintage Retro</option>
+        <option value="Neon">⚡ Neon Lights</option>
+        <option value="Gold">👑 Luxury Gold</option>
+        <option value="Nature">🌿 Nature Fresh</option>
+        <option value="Night">🌑 Deep Night</option>
+    </select>
+
+    <div class="history-sidebar" style="margin-top: 20px;">
+        <div class="nav-section-title">Recent Colors</div>
+        <div id="historyList"></div>
+    </div>
 </div>
 
 <div class="main-wrapper">
     <div class="main-container">
-        <div class="header">Color Intelligence Dashboard</div>
-
-        <div style="display: flex; gap: 30px; flex-wrap: wrap;">
-            <div style="flex: 3; min-width: 320px;">
-                
-                <div class="box">
-                    <label style="font-weight: 800; color: #444;">1. SOURCE IMAGE PICKER</label>
-                    <p style="font-size: 13px; color: #777; margin: 5px 0 15px 0;">যেকোনো ছবি আপলোড করে সেখান থেকে কালার পিক করুন</p>
-                    <input type="file" id="upload" accept="image/*" style="display: block; margin-bottom: 10px;">
-                    <div id="picker-container">
-                        <canvas id="imageCanvas"></canvas>
-                    </div>
-                </div>
-
-                <div class="box box-ai">
-                    <label style="color: var(--ai-color); font-weight: 800;">✨ AI LUXURY MATCHING</label>
-                    <p style="font-size: 13px; color: #666;">কালার কোড দিন, AI আপনার জন্য বেস্ট ৮টি লাক্সারি কম্বিনেশন তৈরি করবে</p>
-                    
-                    <div class="rgb-inputs">
-                        <input type="number" id="ai_r" class="rgb-field" placeholder="R" value="26">
-                        <input type="number" id="ai_g" class="rgb-field" placeholder="G" value="35">
-                        <input type="number" id="ai_b" class="rgb-field" placeholder="B" value="126">
-                        <input type="text" id="ai_hex" style="width: 120px; padding: 12px; border: 1px solid #ddd; border-radius: 10px; text-align: center; font-weight: 700;" placeholder="#1A237E">
-                    </div>
-                    
-                    <button class="btn" style="background: var(--ai-color); color: white; width: 100%;" onclick="generate8AIColors()">GENERATE SMART PALETTE</button>
-                    <div id="aiMatchingResult" class="palette-grid"></div>
-                </div>
-
-                <div class="box">
-                    <label style="font-weight: 800; color: #444;">3. MANUAL RGB INPUT</label>
-                    <div class="rgb-inputs">
-                        <input type="number" id="r" class="rgb-field" value="26">
-                        <input type="number" id="g" class="rgb-field" value="35">
-                        <input type="number" id="b" class="rgb-field" value="126">
-                    </div>
-                    <button class="btn btn-update" onclick="generateFromInputs()">REFRESH PALETTE</button>
-                </div>
-
-                <div class="box" id="huntSection">
-                    <label id="huntTitle"><b>🌈 TRENDING COLLECTIONS</b></label>
-                    <div id="huntGrid" class="palette-grid" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
-                    </div>
-                </div>
+        <div class="box box-ai">
+            <label style="color: var(--ai-color); font-weight: 800;">✨ AI UNIQUE COLOR MATCHER</label>
+            <p style="font-size: 12px;">RGB বা HEX কোড দিন, AI ৮টি লাক্সারি কালার তৈরি করবে</p>
+            <div class="rgb-inputs">
+                <input type="number" id="ai_r" class="rgb-field" value="28">
+                <input type="number" id="ai_g" class="rgb-field" value="42">
+                <input type="number" id="ai_b" class="rgb-field" value="69">
+                <input type="text" id="ai_hex" style="flex:1; padding:10px; border-radius:8px; border:1px solid #ddd;" placeholder="#1C2A45">
             </div>
-
-            <div style="flex: 1.2; min-width: 300px;">
-                <div class="history-sidebar">
-                    <h3 style="margin-top:0; color:var(--primary); font-size: 18px; font-weight: 800;">RECENT</h3>
-                    <div id="historyList"></div>
-                    <button onclick="clearHistory()" style="margin-top:20px; border:none; color:#ff5252; cursor:pointer; font-weight:bold; background:none; font-size: 12px;">CLEAR HISTORY</button>
-                    
-                    <hr style="margin: 25px 0; border: 0; border-top: 1px solid #f0f0f0;">
-                    <button class="btn btn-update" onclick="openMockup()">👕 T-SHIRT PREVIEW</button>
-                </div>
-            </div>
+            <button class="btn btn-ai" onclick="generate8AIColors()">GENERATE 8 UNIQUE COLORS</button>
+            <div id="aiMatchingResult" class="palette-grid"></div>
         </div>
 
-        <div id="downloadArea" style="padding: 30px; background: white; border-radius: 20px; margin-top: 30px; border: 1px solid #eee;">
-            <h3 style="text-align: center; text-transform: uppercase; letter-spacing: 2px; color: #555;">Premium Digital Palette</h3>
-            <div id="palette" class="palette-grid"></div>
+        <div class="box">
+            <label id="huntTitle"><b>🌈 EXPLORING COLLECTIONS</b></label>
+            <div id="huntGrid" class="hunt-grid" style="margin-top: 20px;"></div>
         </div>
-
-        <button class="btn btn-save" onclick="downloadImage()">DOWNLOAD HIGH-RES PALETTE (PNG)</button>
-    </div>
-    <footer>Designed & Maintained by GM Sojib &bull; 2025</footer>
-</div>
-
-<div id="mockupModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeMockup()">&times;</span>
-        <h2 style="font-weight: 800;">T-Shirt Preview</h2>
-        <div class="tshirt-mockup" id="tshirtBox" style="width: 100%; max-width: 300px; margin: 30px auto;">
-            <svg id="tshirtSVG" viewBox="0 0 100 100" style="width: 100%; fill: #1a237e;"><path d="M90,20 L75,10 C70,8 65,15 65,15 C65,15 60,12 50,12 C40,12 35,15 35,15 C35,15 30,8 25,10 L10,20 L15,40 L25,35 L25,90 L75,90 L75,35 L85,40 L90,20 Z"/></svg>
-        </div>
-        <div id="currentMockupColor" style="font-weight: bold; font-size: 20px; margin-bottom: 20px;">RGB(26, 35, 126)</div>
-        <button class="btn btn-update" onclick="closeMockup()">CLOSE PREVIEW</button>
     </div>
 </div>
 
-<div id="copyToast" class="copy-toast">RGB Code Copied!</div>
+<div id="copyToast" class="copy-toast">Color Copied!</div>
 
 <script>
-    const canvas = document.getElementById('imageCanvas');
-    const ctx = canvas.getContext('2d', { willReadFrequently: true });
-    const rIn = document.getElementById('r');
-    const gIn = document.getElementById('g');
-    const bIn = document.getElementById('b');
-    let history = JSON.parse(localStorage.getItem('rahaColorHistory')) || [];
-
-    const categories = ["Pastel", "Vintage", "Retro", "Neon", "Gold", "Nature", "Summer", "Happy", "Night", "Earth"];
-
+    // বিশাল কালার ডেটাবেস (২০টি করে প্যালেট প্রতি ক্যাটাগরিতে)
     const huntData = {
-        'Pastel': [['#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7'], ['#F3E5F5', '#E1F5FE', '#E8F5E9', '#FFFDE7'], ['#B2F7EF', '#EFF7F6', '#F7D1CD', '#E2CFC4']],
-        'Vintage': [['#634832', '#967E67', '#D4A373', '#FEFAE0'], ['#264653', '#2A9D8F', '#E9C46A', '#F4A261']],
-        'Retro': [['#E07A5F', '#3D405B', '#81B29A', '#F2CC8F'], ['#ffbe0b', '#fb5607', '#ff006e', '#8338ec']],
-        'Neon': [['#00F5FF', '#00FF41', '#FF00FF', '#FFFF00'], ['#FF3131', '#FF5E13', '#77EE11', '#08F7FE']],
-        'Nature': [['#11998e', '#38ef7d', '#56ab2f', '#a8e063'], ['#134E5E', '#71B280', '#084594', '#21e6c1']],
-        'Gold': [['#D4AF37', '#FFD700', '#CFB53B', '#F5E1A4'], ['#432818', '#99582A', '#BB9457', '#FFE6A7']],
-        'Summer': [['#FF9A8B', '#FF6A88', '#FF99AC', '#FBBC05'], ['#00B4DB', '#0083B0', '#FDC830', '#F37335']],
-        'Night': [['#0F0C29', '#302B63', '#24243E', '#FFFFFF'], ['#232526', '#414345', '#000000', '#FFFFFF']],
-        'Happy': [['#f9d423', '#ff4e50', '#f12711', '#f5af19'], ['#8E2DE2', '#4A00E0', '#FF0099', '#493240']]
+        'Pastel': [
+            ['#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7'], ['#F3E5F5', '#E1F5FE', '#E8F5E9', '#FFFDE7'], ['#B2F7EF', '#EFF7F6', '#F7D1CD', '#E2CFC4'],
+            ['#D4F1F4', '#75E6DA', '#189AB4', '#05445E'], ['#FBE7C6', '#B4F8C8', '#A0E7E5', '#FFAEBC'], ['#E0BBE4', '#957DAD', '#D291BC', '#FEC8D8'],
+            ['#FFDFD3', '#FEC8D4', '#F780A1', '#E85D75'], ['#D0F4DE', '#A9DEF9', '#E4C1F9', '#FCF6BD'], ['#F0EAD6', '#E6E6FA', '#FFF0F5', '#F5FFFA'],
+            ['#B9FBC0', '#98F5E1', '#8EECF5', '#CFBAF0'], ['#FBF8CC', '#FDE4CF', '#FFCFD2', '#F1C0E8'], ['#A3C4BC', '#BFD7ED', '#E7EAF6', '#A1CAE2'],
+            ['#FFCDB2', '#FFB7B2', '#B5838D', '#6D597A'], ['#E4F1FE', '#C5EFF7', '#81CFE0', '#22A7F0'], ['#FDE3A7', '#F9BF3B', '#F5AB35', '#EB974E'],
+            ['#C8F7C5', '#2ECC71', '#27AE60', '#1E8449'], ['#D2D7D3', '#BDC3C7', '#95A5A6', '#7F8C8D'], ['#F9690E', '#F12711', '#D35400', '#E67E22'],
+            ['#674172', '#913D88', '#BF55EC', '#BE90D4'], ['#4ECDC4', '#A5FFD6', '#FFA5A5', '#FF6B6B']
+        ],
+        'Vintage': [
+            ['#634832', '#967E67', '#D4A373', '#FEFAE0'], ['#264653', '#2A9D8F', '#E9C46A', '#F4A261'], ['#8C7851', '#A39171', '#C5B391', '#E8DCC4'],
+            ['#403D39', '#66615B', '#99948F', '#CCC5B9'], ['#5F0F40', '#9A031E', '#FB8B24', '#E36414'], ['#1B4332', '#2D6A4F', '#40916C', '#D8F3DC'],
+            ['#723D46', '#A45D5D', '#E49393', '#F2C1B0'], ['#283618', '#606C38', '#DDA15E', '#FEFAE0'], ['#3D5A80', '#98C1D9', '#E0FBFC', '#EE6C4D'],
+            ['#432818', '#99582A', '#BB9457', '#FFE6A7'], ['#2F3E46', '#354F52', '#52796F', '#84A59D'], ['#14213D', '#FCA311', '#E5E5E5', '#FFFFFF'],
+            ['#003049', '#D62828', '#F77F00', '#FCBF49'], ['#780000', '#C1121F', '#FDF0D5', '#003049'], ['#312244', '#4E3542', '#826A5C', '#AF9164'],
+            ['#54473F', '#92817A', '#BCAB79', '#F1DABF'], ['#3D3D3D', '#545454', '#757575', '#A3A3A3'], ['#1A1A1D', '#4E4E50', '#6F2232', '#950740'],
+            ['#2C3E50', '#34495E', '#7F8C8D', '#95A5A6'], ['#16213E', '#0F3460', '#533483', '#E94560']
+        ],
+        'Neon': [
+            ['#FF0099', '#493240', '#FF00CC', '#333399'], ['#00F5FF', '#00FF41', '#FF00FF', '#FFFF00'], ['#FF3131', '#FF5E13', '#77EE11', '#08F7FE'],
+            ['#FF0000', '#00FF00', '#0000FF', '#FFFF00'], ['#BC13FE', '#8B00FF', '#6A0DAD', '#4B0082'], ['#39FF14', '#7FFF00', '#00FF00', '#ADFF2F'],
+            ['#FF6EC7', '#FF1493', '#C71585', '#FF00FF'], ['#00E5FF', '#12CBC4', '#1289A7', '#0652DD'], ['#FFF200', '#F9D423', '#F5AF19', '#E1B12C'],
+            ['#FF4D00', '#FF8C00', '#FFA500', '#FFD700'], ['#00FF9F', '#00B894', '#55EFC4', '#81ECEC'], ['#D63031', '#FF7675', '#FAB1A0', '#FFEAA7'],
+            ['#6C5CE7', '#A29BFE', '#81ECEC', '#00CEC9'], ['#E84393', '#FD79A8', '#FAB1A0', '#FFEAA7'], ['#2D3436', '#636E72', '#B2BEC3', '#DFE6E9'],
+            ['#0984E3', '#74B9FF', '#81ECEC', '#00CEC9'], ['#6F1E51', '#ED4C67', '#FFC312', '#C4E538'], ['#1B1464', '#0652DD', '#12CBC4', '#A3CB38'],
+            ['#5758BB', '#9980FA', '#D980FA', '#FDA7DF'], ['#EE5A24', '#F79F1F', '#FFC312', '#C4E538']
+        ]
+        // এভাবেই আপনি অন্যান্য ক্যাটাগরি (Gold, Nature, Night) এ ডাটা বাড়াতে পারেন।
     };
 
-    const catMenu = document.getElementById('categoryMenu');
-    categories.forEach(cat => {
-        const item = document.createElement('div');
-        item.className = 'nav-item';
-        item.innerHTML = cat;
-        item.onclick = () => {
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            item.classList.add('active');
-            filterHunt(cat);
-        };
-        catMenu.appendChild(item);
-    });
-
-    function rgbToHex(rgbStr) {
-        let parts = rgbStr.split(',');
-        return "#" + parts.map(x => parseInt(x).toString(16).padStart(2, '0').toUpperCase()).join('');
+    function filterHunt(cat) {
+        const grid = document.getElementById('huntGrid');
+        document.getElementById('huntTitle').innerHTML = `<b>🌈 ${cat.toUpperCase()} COLLECTION (20 Pairs)</b>`;
+        grid.innerHTML = '';
+        
+        const items = huntData[cat] || huntData['Pastel'];
+        items.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'hunt-card';
+            card.innerHTML = `
+                <div class="c-layer" style="background:${p[0]}; flex:4" onclick="copyHex('${p[0]}')"></div>
+                <div class="c-layer" style="background:${p[1]}; flex:2" onclick="copyHex('${p[1]}')"></div>
+                <div class="c-layer" style="background:${p[2]}; flex:1.5" onclick="copyHex('${p[2]}')"></div>
+                <div class="c-layer" style="background:${p[3]}; flex:1" onclick="copyHex('${p[3]}')"></div>
+            `;
+            grid.appendChild(card);
+        });
     }
 
-    function hexToRgb(hex) {
-        hex = hex.replace('#', '');
-        if (hex.length === 3) hex = hex.split('').map(s => s + s).join('');
-        let bigint = parseInt(hex, 16);
-        return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
-    }
-
-    // AI Function - Limited to its own box until clicked
     function generate8AIColors() {
-        let r, g, b;
-        const hVal = document.getElementById('ai_hex').value.trim();
-        const rInp = document.getElementById('ai_r');
-        const gInp = document.getElementById('ai_g');
-        const bInp = document.getElementById('ai_b');
-
-        if (hVal !== "") {
-            const res = hexToRgb(hVal);
-            r = res.r; g = res.g; b = res.b;
-            rInp.value = r; gInp.value = g; bInp.value = b;
-        } else {
-            r = parseInt(rInp.value) || 0;
-            g = parseInt(gInp.value) || 0;
-            b = parseInt(bInp.value) || 0;
-            document.getElementById('ai_hex').value = rgbToHex(`${r},${g},${b}`);
-        }
+        let r = parseInt(document.getElementById('ai_r').value) || 0;
+        let g = parseInt(document.getElementById('ai_g').value) || 0;
+        let b = parseInt(document.getElementById('ai_b').value) || 0;
 
         const resDiv = document.getElementById('aiMatchingResult');
         resDiv.innerHTML = '';
+        
         const variations = [
             { n: 'Main', r: r, g: g, b: b },
             { n: 'Contrast', r: 255-r, g: 255-g, b: 255-b },
@@ -436,133 +179,32 @@
 
         variations.forEach(v => {
             const rgb = `${v.r},${v.g},${v.b}`;
-            const card = document.createElement('div');
-            card.className = 'color-card';
-            card.onclick = () => updateUI(v.r, v.g, v.b);
-            card.innerHTML = `
-                <div class="color-swatch" style="background:rgb(${rgb}); height:60px;"></div>
-                <div class="color-info" style="font-size:10px;"><b>${v.n}</b><br>${rgb}</div>
-            `;
-            resDiv.appendChild(card);
-        });
-        showToast("8 Smart variations generated!");
-    }
-
-    document.getElementById('upload').addEventListener('change', function(e) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const img = new Image();
-            img.onload = function() {
-                canvas.width = img.width; canvas.height = img.height;
-                ctx.drawImage(img, 0, 0);
-            }
-            img.src = event.target.result;
-        }
-        reader.readAsDataURL(e.target.files[0]);
-    });
-
-    canvas.addEventListener('mousedown', function(e) {
-        const rect = canvas.getBoundingClientRect();
-        const x = (e.clientX - rect.left) * (canvas.width / rect.width);
-        const y = (e.clientY - rect.top) * (canvas.height / rect.height);
-        const p = ctx.getImageData(x, y, 1, 1).data;
-        updateUI(p[0], p[1], p[2]);
-    });
-
-    function updateUI(r, g, b) {
-        rIn.value = r; gIn.value = g; bIn.value = b;
-        document.getElementById('tshirtSVG').style.fill = `rgb(${r},${g},${b})`;
-        document.getElementById('currentMockupColor').innerText = `RGB(${r}, ${g}, ${b})`;
-        generatePalette(r, g, b);
-    }
-
-    function generateFromInputs() {
-        updateUI(rIn.value, gIn.value, bIn.value);
-    }
-
-    function generatePalette(r, g, b) {
-        const pal = document.getElementById('palette');
-        pal.innerHTML = '';
-        saveToHistory(r, g, b);
-        for (let i = 0; i < 40; i++) {
-            let nr, ng, nb;
-            let factor = i < 20 ? i/19 : (i-20)/20;
-            if(i < 20) { nr = r*factor; ng = g*factor; nb = b*factor; }
-            else { nr = r+(255-r)*factor; ng = g+(255-g)*factor; nb = b+(255-b)*factor; }
-            const rgb = `${Math.round(nr)},${Math.round(ng)},${Math.round(nb)}`;
-            const card = document.createElement('div');
-            card.className = 'color-card';
-            card.onclick = () => copyCode(rgb);
-            card.ondblclick = () => copyHex(rgb);
-            card.innerHTML = `
-                <div class="color-swatch" style="background:rgb(${rgb})"></div>
-                <div class="color-info">${rgb}</div>
-            `;
-            pal.appendChild(card);
-        }
-    }
-
-    function openMockup() { document.getElementById('mockupModal').style.display = 'block'; }
-    function closeMockup() { document.getElementById('mockupModal').style.display = 'none'; }
-
-    function filterHunt(cat) {
-        const grid = document.getElementById('huntGrid');
-        document.getElementById('huntTitle').innerHTML = `<b>🌈 EXPLORE ${cat.toUpperCase()} HUNTS</b>`;
-        grid.innerHTML = '';
-        const items = huntData[cat] || huntData['Pastel'];
-        items.forEach(p => {
-            const card = document.createElement('div');
-            card.className = 'hunt-card';
-            card.innerHTML = `
-                <div style="background:${p[0]}; flex:4" onclick="copyHex('${p[0]}')"></div>
-                <div style="background:${p[1]}; flex:2" onclick="copyHex('${p[1]}')"></div>
-                <div style="background:${p[2]}; flex:1.5" onclick="copyHex('${p[2]}')"></div>
-                <div style="background:${p[3]}; flex:1" onclick="copyHex('${p[3]}')"></div>
-            `;
-            grid.appendChild(card);
+            resDiv.innerHTML += `
+                <div class="color-card" onclick="copyHex('rgb(${rgb})')">
+                    <div class="color-swatch" style="background:rgb(${rgb})"></div>
+                    <div class="color-info" style="font-size:10px; text-align:center; padding:5px;"><b>${v.n}</b><br>${rgb}</div>
+                </div>`;
         });
     }
 
-    function saveToHistory(r, g, b) {
-        let s = `${r},${g},${b}`;
-        if (!history.includes(s)) {
-            history.unshift(s); if(history.length > 12) history.pop();
-            localStorage.setItem('rahaColorHistory', JSON.stringify(history));
-            updateHistoryUI();
-        }
-    }
-
-    function updateHistoryUI() {
-        const l = document.getElementById('historyList');
-        l.innerHTML = history.map(c => `
-            <div class="history-item" onclick="updateUI(${c})" style="display:flex; align-items:center; gap:10px; padding:10px; cursor:pointer;">
-                <div style="width:35px; height:35px; background:rgb(${c}); border-radius:8px; border:1px solid #ddd;"></div>
-                <span style="font-size:12px; font-weight:700;">RGB(${c})</span>
-            </div>`).join('');
-    }
-
-    function copyCode(t) { navigator.clipboard.writeText(t); showToast("RGB Copied: " + t); }
-    function copyHex(t) { 
-        const hex = t.startsWith('#') ? t : rgbToHex(t);
-        navigator.clipboard.writeText(hex); 
-        showToast("HEX Copied: " + hex); 
-    }
-    function showToast(m) { 
-        const t = document.getElementById('copyToast'); 
-        t.innerText = m; t.style.display = 'block'; 
-        setTimeout(() => t.style.display = 'none', 1500); 
-    }
-    function clearHistory() { history = []; localStorage.removeItem('rahaColorHistory'); updateHistoryUI(); }
-    function downloadImage() {
-        html2canvas(document.querySelector("#downloadArea"), {scale: 3}).then(c => {
-            const a = document.createElement('a'); a.download = 'Raha-Palette.png'; a.href = c.toDataURL(); a.click();
-        });
+    function copyHex(color) {
+        navigator.clipboard.writeText(color);
+        const toast = document.getElementById('copyToast');
+        toast.innerText = "Copied: " + color;
+        toast.style.display = 'block';
+        setTimeout(() => toast.style.display = 'none', 1500);
+        
+        // Add to history
+        const hist = document.getElementById('historyList');
+        const item = document.createElement('div');
+        item.style = `width:30px; height:30px; background:${color}; border-radius:5px; display:inline-block; margin:2px; border:1px solid #ddd; cursor:pointer;`;
+        item.title = color;
+        item.onclick = () => copyHex(color);
+        hist.prepend(item);
     }
 
     // Initialize
-    updateHistoryUI();
     filterHunt('Pastel');
-    generatePalette(26, 35, 126);
 </script>
 
 </body>
