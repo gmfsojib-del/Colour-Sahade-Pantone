@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,189 +10,713 @@
         :root { --primary: #1a237e; --secondary: #2e7d32; --ai-color: #00695c; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 0; display: flex; }
         
-        /* Login Overlay Style */
-        #loginContainer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 10000; display: flex; justify-content: center; align-items: center; flex-direction: column; }
-        .login-box { background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 320px; text-align: center; border: 1px solid #ddd; }
-        .login-box input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
-        
-        /* Main Sidebar Styles */
-        .sidebar-nav { width: 260px; background: #fff; height: 100vh; position: fixed; border-right: 2px solid #ddd; padding: 15px; box-sizing: border-box; overflow-y: auto; z-index: 1000; display: none; }
+        /* Sidebar Menu Styles */
+        .sidebar-nav { width: 260px; background: #fff; height: 100vh; position: fixed; border-right: 2px solid #ddd; padding: 15px; box-sizing: border-box; overflow-y: auto; z-index: 1000; }
         .nav-section-title { font-size: 12px; color: #888; text-transform: uppercase; font-weight: 800; margin: 20px 0 10px 10px; letter-spacing: 1px; }
         .nav-item { display: flex; align-items: center; padding: 10px 15px; margin-bottom: 5px; border-radius: 8px; cursor: pointer; color: #333; font-weight: 600; transition: 0.2s; font-size: 14px; }
         .nav-item:hover { background: #f5f5f5; color: var(--primary); }
         .nav-item.active { background: #f0f2ff; color: var(--primary); border-left: 4px solid var(--primary); }
+        .nav-icon { margin-right: 12px; font-size: 18px; width: 20px; text-align: center; }
 
-        /* Main Wrapper Adjustment */
-        .main-wrapper { margin-left: 260px; width: calc(100% - 260px); padding: 25px; box-sizing: border-box; display: none; }
+        /* Main Container Adjustment */
+        .main-wrapper { margin-left: 260px; width: calc(100% - 260px); padding: 25px; box-sizing: border-box; }
         .main-container { max-width: 1100px; margin: auto; background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
         .header { text-align: center; font-size: 28px; font-weight: 800; color: var(--primary); margin-bottom: 25px; border-bottom: 4px solid var(--primary); padding-bottom: 10px; text-transform: uppercase; }
         
-        /* Layout & Box Styles */
+        /* Layout Styles */
         .main-layout { display: flex; gap: 20px; flex-wrap: wrap; }
         .content-area { flex: 3; min-width: 320px; }
+        .history-sidebar { flex: 1; min-width: 250px; background: #fcfcfc; padding: 15px; border-radius: 12px; border: 2px solid #ddd; height: fit-content; }
         .box { padding: 20px; border: 2px solid #ddd; border-radius: 12px; background: #fff; text-align: center; margin-bottom: 20px; }
         .box-ai { border: 2px solid var(--ai-color); background: #f0fdfa; }
-        #picker-container { position: relative; margin-top: 15px; border: 3px solid #333; display: inline-block; cursor: crosshair; max-width: 100%; }
+        #picker-container { position: relative; margin-top: 15px; border: 3px solid #333; display: inline-block; cursor: crosshair; line-height: 0; max-width: 100%; }
         #imageCanvas { max-width: 100%; height: auto; display: block; }
-        .rgb-inputs { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
-        .rgb-field { width: 65px; padding: 12px; border: 2px solid #ccc; border-radius: 8px; text-align: center; font-weight: 900; }
+        .rgb-inputs { display: flex; justify-content: center; gap: 10px; margin-top: 20px; margin-bottom: 20px; }
+        .rgb-field { width: 65px; padding: 12px; border: 2px solid #ccc; border-radius: 8px; text-align: center; font-weight: 900; font-size: 16px; }
         .btn { padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.2s; font-size: 16px; }
         .btn-update { background: var(--primary); color: white; }
         .btn-save { background: var(--secondary); color: white; margin-top: 30px; font-size: 20px; }
-
-        /* Palette Grid */
+        
+        /* Palette Styles */
         .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-top: 20px; }
-        .color-card { border: 1px solid #000; background: #fff; border-radius: 12px; overflow: hidden; cursor: pointer; }
+        .color-card { border: 1px solid #000; background: #fff; border-radius: 12px; overflow: hidden; cursor: pointer; transition: 0.1s; }
         .color-swatch { width: 100%; height: 90px; border-bottom: 1px solid #000; }
-        .color-info { padding: 4px 2px; font-size: 13px; font-weight: 900; text-align: center; }
+        .color-info { padding: 4px 2px; font-size: 13px; font-weight: 900; text-align: center; color: #000; }
+        
+        /* Hunt Styles */
+        .hunt-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; height: 180px; display: flex; flex-direction: column; margin-bottom: 10px; }
+        .c-layer { width: 100%; transition: 0.2s; position: relative; }
+        .c-layer:hover::after { content: 'Copy'; position: absolute; right: 5px; top: 5px; background: rgba(0,0,0,0.5); color: #fff; padding: 2px 5px; border-radius: 4px; font-size: 10px; }
 
-        /* Modal & Toast */
+        /* Scroll Area for Hunts */
+        #huntGrid { max-height: 500px; overflow-y: auto; padding: 10px; border: 1px solid #eee; border-radius: 10px; }
+
+        /* Modal Styles */
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
-        .modal-content { background: white; margin: 5% auto; padding: 25px; width: 450px; border-radius: 15px; text-align: center; position: relative; }
-        .copy-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 12px 25px; border-radius: 30px; display: none; z-index: 3000; }
+        .modal-content { background: white; margin: 5% auto; padding: 25px; width: 500px; border-radius: 15px; text-align: center; position: relative; }
+        .close-btn { position: absolute; right: 20px; top: 10px; font-size: 30px; cursor: pointer; }
+        .drop-zone { border: 3px dashed #bbb; padding: 40px; border-radius: 10px; background: #f9f9f9; cursor: pointer; margin-bottom: 20px; }
+        
+        /* Mockup */
+        .tshirt-mockup { width: 250px; height: 280px; margin: 20px auto; position: relative; background: #eee; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 5px solid #333; }
+        .tshirt-mockup svg { width: 200px; fill: #1a237e; transition: 0.5s; }
+        
+        .copy-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 12px 25px; border-radius: 30px; display: none; z-index: 3000; font-weight: bold; }
+        footer { text-align: center; padding: 20px; font-weight: bold; color: #1a237e; margin-top: 30px; }
     </style>
 </head>
 <body>
 
-<div id="loginContainer">
-    <div class="login-box">
-        <h2 style="color: var(--primary); margin-bottom: 20px;">RAHA LOGIN</h2>
-        <input type="email" id="userEmail" placeholder="Email">
-        <input type="password" id="userPass" placeholder="Password">
-        <button class="btn btn-update" id="loginSubmit">Login to Design Tool</button>
-        <p id="authError" style="color: red; font-size: 12px; margin-top: 10px;"></p>
-    </div>
-</div>
-
-<div class="sidebar-nav" id="sidebar">
+<div class="sidebar-nav">
     <div style="padding: 10px; margin-bottom: 20px;"><strong style="font-size: 20px; color: var(--primary);">RAHA DESIGN</strong></div>
+    
+    <div class="nav-section-title">Quick Tools</div>
+    <div class="nav-item" onclick="alert('Find MD stock feature loading...')"><span class="nav-icon">🔍</span> Find MD stock</div>
+    <div class="nav-item" onclick="openTool('bgModal')"><span class="nav-icon">👤</span> Background remove</div>
+    <div class="nav-item" onclick="openTool('upscaleModal')"><span class="nav-icon">🖼️</span> Image upscale</div>
+    <div class="nav-item" onclick="alert('Caption Generator loading...')"><span class="nav-icon">Aa</span> Caption generate</div>
+    <div class="nav-item" onclick="alert('Vector service ready...')"><span class="nav-icon">📐</span> Vector to photo</div>
+    <div class="nav-item" onclick="alert('Sharing feature enabled...')"><span class="nav-icon">✈️</span> Quick image sharing</div>
+
     <div class="nav-section-title">Categories</div>
     <div id="categoryMenu"></div>
-    <button onclick="logout()" style="margin-top: 30px; background: none; border: 1px solid #ccc; padding: 10px; width: 100%; cursor: pointer;">Logout</button>
 </div>
 
-<div class="main-wrapper" id="appContent">
+<div class="main-wrapper">
     <div class="main-container">
-        <div class="header">Design Printing Sector</div>
+        <div class="header">Raha Digital Print - Design Sector</div>
+
         <div class="main-layout">
             <div class="content-area">
                 <div class="box">
-                    <label><b>1. PHOTO PICKER</b></label>
+                    <label><b>1. PHOTO PICKER (MANUAL)</b></label>
                     <input type="file" id="upload" accept="image/*" style="margin-top:10px;">
-                    <div id="picker-container"><canvas id="imageCanvas"></canvas></div>
+                    <div id="picker-container">
+                        <canvas id="imageCanvas"></canvas>
+                    </div>
                 </div>
 
                 <div class="box box-ai">
-                    <label style="color: var(--ai-color);"><b>✨ AI COLOR MATCHER</b></label>
-                    <div class="rgb-inputs">
-                        <input type="number" id="ai_r" class="rgb-field" value="26">
-                        <input type="number" id="ai_g" class="rgb-field" value="35">
-                        <input type="number" id="ai_b" class="rgb-field" value="126">
+                    <label style="color: var(--ai-color);"><b>✨ AI UNIQUE COLOR MATCHER</b></label>
+                    <p style="font-size: 12px; color: #666;">RGB বা HEX কোড দিন, AI ৮টি লাক্সারি ম্যাচিং কালার তৈরি করবে</p>
+                    
+                    <div class="rgb-inputs" style="margin-bottom: 15px;">
+                        <input type="number" id="ai_r" class="rgb-field" placeholder="R" value="26">
+                        <input type="number" id="ai_g" class="rgb-field" placeholder="G" value="35">
+                        <input type="number" id="ai_b" class="rgb-field" placeholder="B" value="126">
+                        <input type="text" id="ai_hex" style="width: 100px; padding: 12px; border: 2px solid #ccc; border-radius: 8px; text-align: center; font-weight: 900; text-transform: uppercase;" placeholder="#1A237E">
                     </div>
-                    <button class="btn" style="background: var(--ai-color); color: white;" id="aiBtn">GENERATE MATCHING</button>
+                    
+                    <button class="btn" style="background: var(--ai-color); color: white;" onclick="generate8AIColors()">GENERATE 8 UNIQUE COLORS</button>
                     <div id="aiMatchingResult" class="palette-grid"></div>
                 </div>
 
-                <div id="downloadArea" style="padding: 20px; background: white;">
-                    <h3 style="text-align: center;">Premium Color Palette</h3>
-                    <div id="palette" class="palette-grid"></div>
+                <div class="box">
+                    <label><b>3. INPUT RGB CODE</b></label>
+                    <div class="rgb-inputs">
+                        <input type="number" id="r" class="rgb-field" value="26">
+                        <input type="number" id="g" class="rgb-field" value="35">
+                        <input type="number" id="b" class="rgb-field" value="126">
+                    </div>
+                    <button class="btn btn-update" onclick="generateFromInputs()">GENERATE PALETTE</button>
                 </div>
-                <button class="btn btn-save" id="saveImg">SAVE AS IMAGE</button>
+
+                <div class="box" id="huntSection">
+                    <label id="huntTitle"><b>🌈 EXPLORE TRENDING HUNTS</b></label>
+                    <div id="huntGrid" class="palette-grid" style="margin-top:15px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-sidebar">
+                <h3 style="margin-top:0; color:var(--primary); font-size: 18px;">SEARCH HISTORY</h3>
+                <div id="historyList"></div>
+                <button onclick="clearHistory()" style="margin-top:15px; border:none; color:red; cursor:pointer; font-weight:bold; background:none;">CLEAR HISTORY</button>
+                
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ddd;">
+                <button class="btn btn-update" onclick="openMockup()">👕 PREVIEW ON T-SHIRT</button>
             </div>
         </div>
+
+        <div id="downloadArea" style="padding: 20px; background: white;">
+            <h3 style="text-align: center; text-transform: uppercase;">Premium Color Palette</h3>
+            <div id="palette" class="palette-grid"></div>
+        </div>
+
+        <button class="btn btn-save" onclick="downloadImage()">SAVE AS IMAGE (300 DPI)</button>
     </div>
+    <footer>Designed & Maintained by: GM Sojib</footer>
 </div>
 
-<div id="copyToast" class="copy-toast">Copied!</div>
+<div id="upscaleModal" class="modal"><div class="modal-content">
+    <span class="close-btn" onclick="closeTool('upscaleModal')">&times;</span>
+    <h2>🖼️ Image Upscale (2X)</h2>
+    <div class="drop-zone" onclick="document.getElementById('uIn').click()">
+        <p>ছবি সিলেক্ট করুন (অটোমেটিক ২গুণ বড় হবে)</p>
+        <input type="file" id="uIn" hidden accept="image/*">
+    </div>
+</div></div>
 
-<script type="module">
-    // Firebase Setup
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+<div id="bgModal" class="modal"><div class="modal-content">
+    <span class="close-btn" onclick="closeTool('bgModal')">&times;</span>
+    <h2>👤 Background Remover</h2>
+    <div class="drop-zone" onclick="document.getElementById('bgIn').click()">
+        <p>ব্যাকগ্রাউন্ড সরাতে এখানে ছবি আপলোড করুন</p>
+        <input type="file" id="bgIn" hidden accept="image/*">
+    </div>
+</div></div>
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyBlyBvKVPyYysek7n4lV8vLoKg0JoJKm84",
-        authDomain: "raha-design-login.firebaseapp.com",
-        projectId: "raha-design-login",
-        storageBucket: "raha-design-login.firebasestorage.app",
-        messagingSenderId: "280499808062",
-        appId: "1:280499808062:web:761276b59313b213bcae6f"
-    };
+<div id="mockupModal" class="modal"><div class="modal-content">
+    <span class="close-btn" onclick="closeMockup()">&times;</span>
+    <h2>T-Shirt Mockup Preview</h2>
+    <div class="tshirt-mockup" id="tshirtBox">
+        <svg id="tshirtSVG" viewBox="0 0 100 100"><path d="M90,20 L75,10 C70,8 65,15 65,15 C65,15 60,12 50,12 C40,12 35,15 35,15 C35,15 30,8 25,10 L10,20 L15,40 L25,35 L25,90 L75,90 L75,35 L85,40 L90,20 Z"/></svg>
+    </div>
+    <div id="currentMockupColor" style="font-weight: bold; font-size: 18px;">RGB(26, 35, 126)</div>
+    <button class="btn btn-update" style="margin-top: 20px;" onclick="closeMockup()">DONE</button>
+</div></div>
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+<div id="copyToast" class="copy-toast">RGB Code Copied!</div>
 
-    // Login Logic
-    document.getElementById('loginSubmit').addEventListener('click', () => {
-        const email = document.getElementById('userEmail').value;
-        const pass = document.getElementById('userPass').value;
-        signInWithEmailAndPassword(auth, email, pass).catch(e => {
-            document.getElementById('authError').innerText = "ভুল ইমেইল বা পাসওয়ার্ড!";
-        });
-    });
-
-    window.logout = () => signOut(auth);
-
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('sidebar').style.display = 'block';
-            document.getElementById('appContent').style.display = 'block';
-        } else {
-            document.getElementById('loginContainer').style.display = 'flex';
-            document.getElementById('sidebar').style.display = 'none';
-            document.getElementById('appContent').style.display = 'none';
-        }
-    });
-
-    // --- Core Design Functions ---
+<script>
     const canvas = document.getElementById('imageCanvas');
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    const rIn = document.getElementById('r');
+    const gIn = document.getElementById('g');
+    const bIn = document.getElementById('b');
+    let history = JSON.parse(localStorage.getItem('rahaColorHistory')) || [];
 
-    document.getElementById('upload').onchange = (e) => {
+    const categories = ["Pastel", "Vintage", "Retro", "Neon", "Gold", "Nature", "Summer", "Happy", "Night", "Earth"];
+
+    const huntData = {
+        'Pastel': [['#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7'], ['#F3E5F5', '#E1F5FE', '#E8F5E9', '#FFFDE7'], ['#B2F7EF', '#EFF7F6', '#F7D1CD', '#E2CFC4'], ['#FCE1E4', '#FCF4DD', '#DDEDEA', '#DAEAF6'], ['#E8D7F1', '#D3BCC0', '#A5668B', '#69306D'], ['#F08080', '#F4978E', '#F8AD9D', '#FBC4AB'], ['#FF99C8', '#FCF6BD', '#D0F4DE', '#A9DEF9'], ['#E4C1F9', '#D0F4DE', '#FCF6BD', '#FF99C8'], ['#F6EAC2', '#FFD4B2', '#FFBFA3', '#FFADAD'], ['#A0C4FF', '#BDB2FF', '#FFC6FF', '#FFFFFC'], ['#DEE2FF', '#E8E8E8', '#FEEAFA', '#F1F1F1'], ['#B9FBC0', '#98F5E1', '#8EECF5', '#A3C4F3']],
+        'Vintage': [['#634832', '#967E67', '#D4A373', '#FEFAE0'], ['#264653', '#2A9D8F', '#E9C46A', '#F4A261'], ['#582F0E', '#7F4F24', '#936639', '#A68A64'], ['#B6AD90', '#C2C5AA', '#A4AC86', '#656D4A'], ['#333D29', '#414833', '#656D4A', '#A4AC86'], ['#7D4F50', '#D1BE9C', '#AA998F', '#E0D8DE'], ['#2C3E50', '#E67E22', '#ECF0F1', '#95A5A6'], ['#1A1A1A', '#4A4A4A', '#9B9B9B', '#D8D8D8'], ['#3E2723', '#5D4037', '#8D6E63', '#D7CCC8'], ['#1B5E20', '#388E3C', '#66BB6A', '#C8E6C9'], ['#827397', '#4D4C7D', '#363062', '#E9D5CA'], ['#433520', '#025955', '#00917C', '#FDE8CD']],
+        'Retro': [['#E07A5F', '#3D405B', '#81B29A', '#F2CC8F'], ['#ffbe0b', '#fb5607', '#ff006e', '#8338ec'], ['#264653', '#2a9d8f', '#e9c46a', '#f4a261'], ['#d00000', '#ffba08', '#3f88c5', '#032b43'], ['#606c38', '#283618', '#fefae0', '#dda15e'], ['#ef476f', '#ffd166', '#06d6a0', '#118ab2'], ['#2b2d42', '#8d99ae', '#edf2f4', '#ef233c'], ['#003049', '#d62828', '#f77f00', '#fcbf49'], ['#7209b7', '#3f37c9', '#4361ee', '#4cc9f0'], ['#ff9f1c', '#ffbf69', '#ffffff', '#cbf3f0']],
+        'Neon': [['#00F5FF', '#00FF41', '#FF00FF', '#FFFF00'], ['#FF3131', '#FF5E13', '#77EE11', '#08F7FE'], ['#FF0055', '#00FF99', '#00CCFF', '#FFFF00'], ['#BF00FF', '#FF00BF', '#00FFBF', '#FFBF00'], ['#39FF14', '#FF1493', '#00BFFF', '#FFD700'], ['#7FFF00', '#FF00FF', '#00FFFF', '#FF4500'], ['#000000', '#FF0000', '#FFFB00', '#00FF00'], ['#05FFA1', '#B967FF', '#05B2FF', '#FF4848']],
+        'Nature': [['#11998e', '#38ef7d', '#56ab2f', '#a8e063'], ['#134E5E', '#71B280', '#084594', '#21e6c1'], ['#00b09b', '#96c93d', '#20bf55', '#01baef'], ['#2d5a27', '#4b7d3f', '#7ba160', '#c2d5a8'], ['#1b4332', '#2d6a4f', '#409167', '#95d5b2'], ['#31572c', '#4f772d', '#90be6d', '#ecf39e'], ['#40513B', '#609966', '#9DC08B', '#EDF1D6'], ['#004445', '#2C7873', '#6FB98F', '#FAF1E6']],
+        'Gold': [['#D4AF37', '#FFD700', '#CFB53B', '#F5E1A4'], ['#432818', '#99582A', '#BB9457', '#FFE6A7'], ['#BF953F', '#FCF6BA', '#B38728', '#FBF5B7'], ['#8A6623', '#C7A317', '#D1B000', '#F7EF8A'], ['#E6BE8A', '#D4AF37', '#996515', '#71491E'], ['#DAA520', '#FFD700', '#F0E68C', '#B8860B']],
+        'Summer': [['#FF9A8B', '#FF6A88', '#FF99AC', '#FBBC05'], ['#00B4DB', '#0083B0', '#FDC830', '#F37335'], ['#FF5F6D', '#FFC371', '#F12711', '#F5AF19'], ['#4facfe', '#00f2fe', '#f093fb', '#f5576c'], ['#FA709A', '#FEE140', '#00C6FB', '#005BEA'], ['#FF9A9E', '#FAD0C4', '#FAD0C4', '#FFD1FF'], ['#FBDA61', '#FF5ACD', '#21D4FD', '#B721FF'], ['#08AEEA', '#2AF598', '#FEE140', '#FA709A']],
+        'Night': [['#0F0C29', '#302B63', '#24243E', '#FFFFFF'], ['#232526', '#414345', '#000000', '#FFFFFF'], ['#000428', '#004e92', '#000000', '#00d2ff'], ['#021B79', '#0575E6', '#2196F3', '#BBDEFB'], ['#2C3E50', '#4CA1AF', '#2C3E50', '#000000'], ['#141E30', '#243B55', '#243B55', '#FFFFFF']],
+        'Happy': [['#f9d423', '#ff4e50', '#f12711', '#f5af19'], ['#8E2DE2', '#4A00E0', '#FF0099', '#493240'], ['#ff9a9e', '#fecfef', '#feada6', '#fbb2d0'], ['#fccb90', '#d57eeb', '#00f2fe', '#66a6ff'], ['#84fab0', '#8fd3f4', '#fccb90', '#d57eeb'], ['#a1c4fd', '#c2e9fb', '#fdfcfb', '#e2d1c3']]
+    };
+
+    const catMenu = document.getElementById('categoryMenu');
+    categories.forEach(cat => {
+        const item = document.createElement('div');
+        item.className = 'nav-item';
+        item.innerHTML = cat;
+        item.onclick = () => {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            item.classList.add('active');
+            filterHunt(cat);
+        };
+        catMenu.appendChild(item);
+    });
+
+    function rgbToHex(rgbStr) {
+        let parts = rgbStr.split(',');
+        return "#" + parts.map(x => parseInt(x).toString(16).padStart(2, '0').toUpperCase()).join('');
+    }
+
+    function hexToRgb(hex) {
+        hex = hex.replace('#', '');
+        if (hex.length === 3) hex = hex.split('').map(s => s + s).join('');
+        let bigint = parseInt(hex, 16);
+        return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
+    }
+
+    // AI logic for 8 unique matching colors
+    function generate8AIColors() {
+        let r, g, b;
+        const hVal = document.getElementById('ai_hex').value;
+        if (hVal.trim() !== "") {
+            const res = hexToRgb(hVal);
+            r = res.r; g = res.g; b = res.b;
+            document.getElementById('ai_r').value = r;
+            document.getElementById('ai_g').value = g;
+            document.getElementById('ai_b').value = b;
+        } else {
+            r = parseInt(document.getElementById('ai_r').value) || 0;
+            g = parseInt(document.getElementById('ai_g').value) || 0;
+            b = parseInt(document.getElementById('ai_b').value) || 0;
+            document.getElementById('ai_hex').value = rgbToHex(`${r},${g},${b}`);
+        }
+
+        const resDiv = document.getElementById('aiMatchingResult');
+        resDiv.innerHTML = '';
+        const variations = [
+            { n: 'Main', r: r, g: g, b: b },
+            { n: 'Contrast', r: 255-r, g: 255-g, b: 255-b },
+            { n: 'Neon', r: Math.min(255, r+100), g: Math.min(255, g+150), b: 50 },
+            { n: 'Luxury', r: 212, g: 175, b: 55 },
+            { n: 'Pastel', r: Math.round((r+255)/2), g: Math.round((g+255)/2), b: Math.round((b+255)/2) },
+            { n: 'Deep', r: Math.round(r*0.4), g: Math.round(g*0.4), b: Math.round(b*0.4) },
+            { n: 'Warm', r: Math.min(255, r+80), g: Math.round(g*0.5), b: Math.round(b*0.3) },
+            { n: 'Cool', r: Math.round(r*0.2), g: Math.round(g*0.6), b: Math.min(255, b+100) }
+        ];
+
+        variations.forEach(v => {
+            const rgb = `${v.r},${v.g},${v.b}`;
+            resDiv.innerHTML += `<div class="color-card" onclick="updateUI(${v.r},${v.g},${v.b})">
+                <div class="color-swatch" style="background:rgb(${rgb}); height:60px;"></div>
+                <div class="color-info" style="font-size:10px;"><b>${v.n}</b><br>${rgb}</div>
+            </div>`;
+        });
+        updateUI(r, g, b);
+    }
+
+    document.getElementById('upload').addEventListener('change', function(e) {
         const reader = new FileReader();
-        reader.onload = (event) => {
+        reader.onload = function(event) {
             const img = new Image();
-            img.onload = () => { canvas.width = img.width; canvas.height = img.height; ctx.drawImage(img, 0, 0); }
+            img.onload = function() {
+                canvas.width = img.width; canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+            }
             img.src = event.target.result;
         }
         reader.readAsDataURL(e.target.files[0]);
-    };
+    });
 
-    canvas.onmousedown = (e) => {
+    canvas.addEventListener('mousedown', function(e) {
         const rect = canvas.getBoundingClientRect();
         const x = (e.clientX - rect.left) * (canvas.width / rect.width);
         const y = (e.clientY - rect.top) * (canvas.height / rect.height);
         const p = ctx.getImageData(x, y, 1, 1).data;
-        generatePalette(p[0], p[1], p[2]);
-    };
+        updateUI(p[0], p[1], p[2]);
+    });
+
+    function updateUI(r, g, b) {
+        rIn.value = r; gIn.value = g; bIn.value = b;
+        document.getElementById('tshirtSVG').style.fill = `rgb(${r},${g},${b})`;
+        document.getElementById('currentMockupColor').innerText = `RGB(${r}, ${g}, ${b})`;
+        generatePalette(r, g, b);
+    }
+
+    function generateFromInputs() {
+        updateUI(rIn.value, gIn.value, bIn.value);
+    }
 
     function generatePalette(r, g, b) {
         const pal = document.getElementById('palette');
         pal.innerHTML = '';
-        for (let i = 0; i < 20; i++) {
-            let factor = i / 19;
-            let nr = Math.round(r * factor), ng = Math.round(g * factor), nb = Math.round(b * factor);
-            const rgb = `${nr},${ng},${nb}`;
-            pal.innerHTML += `<div class="color-card" onclick="copyText('${rgb}')">
+        saveToHistory(r, g, b);
+        for (let i = 0; i < 40; i++) {
+            let nr, ng, nb;
+            let factor = i < 20 ? i/19 : (i-20)/20;
+            if(i < 20) { nr = r*factor; ng = g*factor; nb = b*factor; }
+            else { nr = r+(255-r)*factor; ng = g+(255-g)*factor; nb = b+(255-b)*factor; }
+            const rgb = `${Math.round(nr)},${Math.round(ng)},${Math.round(nb)}`;
+            pal.innerHTML += `<div class="color-card" onclick="copyCode('${rgb}')" ondblclick="copyHex('${rgb}')">
                 <div class="color-swatch" style="background:rgb(${rgb})"></div>
                 <div class="color-info">${rgb}</div>
             </div>`;
         }
     }
 
-    window.copyText = (txt) => {
-        navigator.clipboard.writeText(txt);
-        const t = document.getElementById('copyToast');
-        t.style.display = 'block';
-        setTimeout(() => t.style.display = 'none', 1500);
-    };
+    function openTool(id) { document.getElementById(id).style.display = 'block'; }
+    function closeTool(id) { document.getElementById(id).style.display = 'none'; }
+    function openMockup() { document.getElementById('mockupModal').style.display = 'block'; }
+    function closeMockup() { document.getElementById('mockupModal').style.display = 'none'; }
 
-    document.getElementById('saveImg').onclick = () => {
-        html2canvas(document.querySelector("#downloadArea")).then(c => {
+    function filterHunt(cat) {
+        const grid = document.getElementById('huntGrid');
+        document.getElementById('huntTitle').innerHTML = `<b>🌈 EXPLORE ${cat.toUpperCase()} HUNTS</b>`;
+        grid.innerHTML = '';
+        const items = huntData[cat] || huntData['Pastel'];
+        items.forEach(p => {
+            grid.innerHTML += `
+                <div class="hunt-card">
+                    <div class="c-layer" style="background:${p[0]}; flex:4" onclick="copyHex('${p[0]}')"></div>
+                    <div class="c-layer" style="background:${p[1]}; flex:2" onclick="copyHex('${p[1]}')"></div>
+                    <div class="c-layer" style="background:${p[2]}; flex:1.5" onclick="copyHex('${p[2]}')"></div>
+                    <div class="c-layer" style="background:${p[3]}; flex:1" onclick="copyHex('${p[3]}')"></div>
+                </div>`;
+        });
+        document.getElementById('huntSection').scrollIntoView({behavior: 'smooth'});
+    }
+
+    function saveToHistory(r, g, b) {
+        let s = `${r},${g},${b}`;
+        if (!history.includes(s)) {
+            history.unshift(s); if(history.length > 12) history.pop();
+            localStorage.setItem('rahaColorHistory', JSON.stringify(history));
+            updateHistoryUI();
+        }
+    }
+
+    function updateHistoryUI() {
+        const l = document.getElementById('historyList');
+        l.innerHTML = history.map(c => `<div class="history-item" onclick="updateUI(${c})" style="display:flex; align-items:center; gap:10px; padding:8px; border-bottom:1px solid #eee; cursor:pointer;">
+            <div style="width:30px; height:30px; background:rgb(${c}); border-radius:4px; border:1px solid #ddd;"></div>
+            <span style="font-size:12px; font-weight:bold;">RGB(${c})</span>
+        </div>`).join('');
+    }
+
+    function copyCode(t) { navigator.clipboard.writeText(t); showToast("RGB Copied: " + t); }
+    function copyHex(t) { 
+        const hex = t.startsWith('#') ? t : rgbToHex(t);
+        navigator.clipboard.writeText(hex); 
+        showToast("HEX Copied: " + hex); 
+    }
+    function showToast(m) { const t = document.getElementById('copyToast'); t.innerText = m; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1500); }
+    function clearHistory() { history = []; localStorage.removeItem('rahaColorHistory'); updateHistoryUI(); }
+    function downloadImage() {
+        html2canvas(document.querySelector("#downloadArea"), {scale: 3}).then(c => {
             const a = document.createElement('a'); a.download = 'Raha-Palette.png'; a.href = c.toDataURL(); a.click();
         });
-    };
+    }
+
+    updateHistoryUI();
+    filterHunt('Pastel');
+    generatePalette(26, 35, 126);
 </script>
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raha Digital Print - Pro Design Sector</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root { --primary: #1a237e; --secondary: #2e7d32; --ai-color: #00695c; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 0; display: flex; }
+        
+        /* Sidebar Menu Styles */
+        .sidebar-nav { width: 260px; background: #fff; height: 100vh; position: fixed; border-right: 2px solid #ddd; padding: 15px; box-sizing: border-box; overflow-y: auto; z-index: 1000; }
+        .nav-section-title { font-size: 12px; color: #888; text-transform: uppercase; font-weight: 800; margin: 20px 0 10px 10px; letter-spacing: 1px; }
+        .nav-item { display: flex; align-items: center; padding: 10px 15px; margin-bottom: 5px; border-radius: 8px; cursor: pointer; color: #333; font-weight: 600; transition: 0.2s; font-size: 14px; }
+        .nav-item:hover { background: #f5f5f5; color: var(--primary); }
+        .nav-item.active { background: #f0f2ff; color: var(--primary); border-left: 4px solid var(--primary); }
+        .nav-icon { margin-right: 12px; font-size: 18px; width: 20px; text-align: center; }
+
+        /* Main Container Adjustment */
+        .main-wrapper { margin-left: 260px; width: calc(100% - 260px); padding: 25px; box-sizing: border-box; }
+        .main-container { max-width: 1100px; margin: auto; background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; font-size: 28px; font-weight: 800; color: var(--primary); margin-bottom: 25px; border-bottom: 4px solid var(--primary); padding-bottom: 10px; text-transform: uppercase; }
+        
+        /* Layout Styles */
+        .main-layout { display: flex; gap: 20px; flex-wrap: wrap; }
+        .content-area { flex: 3; min-width: 320px; }
+        .history-sidebar { flex: 1; min-width: 250px; background: #fcfcfc; padding: 15px; border-radius: 12px; border: 2px solid #ddd; height: fit-content; }
+        .box { padding: 20px; border: 2px solid #ddd; border-radius: 12px; background: #fff; text-align: center; margin-bottom: 20px; }
+        .box-ai { border: 2px solid var(--ai-color); background: #f0fdfa; }
+        #picker-container { position: relative; margin-top: 15px; border: 3px solid #333; display: inline-block; cursor: crosshair; line-height: 0; max-width: 100%; }
+        #imageCanvas { max-width: 100%; height: auto; display: block; }
+        .rgb-inputs { display: flex; justify-content: center; gap: 10px; margin-top: 20px; margin-bottom: 20px; }
+        .rgb-field { width: 65px; padding: 12px; border: 2px solid #ccc; border-radius: 8px; text-align: center; font-weight: 900; font-size: 16px; }
+        .btn { padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.2s; font-size: 16px; }
+        .btn-update { background: var(--primary); color: white; }
+        .btn-save { background: var(--secondary); color: white; margin-top: 30px; font-size: 20px; }
+        
+        /* Palette Styles */
+        .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-top: 20px; }
+        .color-card { border: 1px solid #000; background: #fff; border-radius: 12px; overflow: hidden; cursor: pointer; transition: 0.1s; }
+        .color-swatch { width: 100%; height: 90px; border-bottom: 1px solid #000; }
+        .color-info { padding: 4px 2px; font-size: 13px; font-weight: 900; text-align: center; color: #000; }
+        
+        /* Hunt Styles */
+        .hunt-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; height: 180px; display: flex; flex-direction: column; margin-bottom: 10px; }
+        .c-layer { width: 100%; transition: 0.2s; position: relative; }
+        .c-layer:hover::after { content: 'Copy'; position: absolute; right: 5px; top: 5px; background: rgba(0,0,0,0.5); color: #fff; padding: 2px 5px; border-radius: 4px; font-size: 10px; }
+
+        /* Scroll Area for Hunts */
+        #huntGrid { max-height: 500px; overflow-y: auto; padding: 10px; border: 1px solid #eee; border-radius: 10px; }
+
+        /* Modal Styles */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
+        .modal-content { background: white; margin: 5% auto; padding: 25px; width: 500px; border-radius: 15px; text-align: center; position: relative; }
+        .close-btn { position: absolute; right: 20px; top: 10px; font-size: 30px; cursor: pointer; }
+        
+        /* Mockup */
+        .tshirt-mockup { width: 250px; height: 280px; margin: 20px auto; position: relative; background: #eee; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 5px solid #333; }
+        .tshirt-mockup svg { width: 200px; fill: #1a237e; transition: 0.5s; }
+        
+        .copy-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 12px 25px; border-radius: 30px; display: none; z-index: 3000; font-weight: bold; }
+        footer { text-align: center; padding: 20px; font-weight: bold; color: #1a237e; margin-top: 30px; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar-nav">
+    <div style="padding: 10px; margin-bottom: 20px;"><strong style="font-size: 20px; color: var(--primary);">RAHA DESIGN</strong></div>
+    
+    <div class="nav-section-title">Categories</div>
+    <div id="categoryMenu"></div>
+</div>
+
+<div class="main-wrapper">
+    <div class="main-container">
+        <div class="header">Raha Digital Print - Design Sector</div>
+
+        <div class="main-layout">
+            <div class="content-area">
+                <div class="box">
+                    <label><b>1. PHOTO PICKER (MANUAL)</b></label>
+                    <input type="file" id="upload" accept="image/*" style="margin-top:10px;">
+                    <div id="picker-container">
+                        <canvas id="imageCanvas"></canvas>
+                    </div>
+                </div>
+
+                <div class="box box-ai">
+                    <label style="color: var(--ai-color);"><b>✨ AI UNIQUE COLOR MATCHER</b></label>
+                    <p style="font-size: 12px; color: #666;">RGB বা HEX কোড দিন, AI ৮টি লাক্সারি ম্যাচিং কালার তৈরি করবে</p>
+                    
+                    <div class="rgb-inputs" style="margin-bottom: 15px;">
+                        <input type="number" id="ai_r" class="rgb-field" placeholder="R" value="26">
+                        <input type="number" id="ai_g" class="rgb-field" placeholder="G" value="35">
+                        <input type="number" id="ai_b" class="rgb-field" placeholder="B" value="126">
+                        <input type="text" id="ai_hex" style="width: 100px; padding: 12px; border: 2px solid #ccc; border-radius: 8px; text-align: center; font-weight: 900; text-transform: uppercase;" placeholder="#1A237E">
+                    </div>
+                    
+                    <button class="btn" style="background: var(--ai-color); color: white;" onclick="generate8AIColors()">GENERATE 8 UNIQUE COLORS</button>
+                    <div id="aiMatchingResult" class="palette-grid"></div>
+                </div>
+
+                <div class="box">
+                    <label><b>3. INPUT RGB CODE</b></label>
+                    <div class="rgb-inputs">
+                        <input type="number" id="r" class="rgb-field" value="26">
+                        <input type="number" id="g" class="rgb-field" value="35">
+                        <input type="number" id="b" class="rgb-field" value="126">
+                    </div>
+                    <button class="btn btn-update" onclick="generateFromInputs()">GENERATE PALETTE</button>
+                </div>
+
+                <div class="box" id="huntSection">
+                    <label id="huntTitle"><b>🌈 EXPLORE TRENDING HUNTS</b></label>
+                    <div id="huntGrid" class="palette-grid" style="margin-top:15px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-sidebar">
+                <h3 style="margin-top:0; color:var(--primary); font-size: 18px;">SEARCH HISTORY</h3>
+                <div id="historyList"></div>
+                <button onclick="clearHistory()" style="margin-top:15px; border:none; color:red; cursor:pointer; font-weight:bold; background:none;">CLEAR HISTORY</button>
+                
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ddd;">
+                <button class="btn btn-update" onclick="openMockup()">👕 PREVIEW ON T-SHIRT</button>
+            </div>
+        </div>
+
+        <div id="downloadArea" style="padding: 20px; background: white;">
+            <h3 style="text-align: center; text-transform: uppercase;">Premium Color Palette</h3>
+            <div id="palette" class="palette-grid"></div>
+        </div>
+
+        <button class="btn btn-save" onclick="downloadImage()">SAVE AS IMAGE (300 DPI)</button>
+    </div>
+    <footer>Designed & Maintained by: GM Sojib</footer>
+</div>
+
+<div id="mockupModal" class="modal"><div class="modal-content">
+    <span class="close-btn" onclick="closeMockup()">&times;</span>
+    <h2>T-Shirt Mockup Preview</h2>
+    <div class="tshirt-mockup" id="tshirtBox">
+        <svg id="tshirtSVG" viewBox="0 0 100 100"><path d="M90,20 L75,10 C70,8 65,15 65,15 C65,15 60,12 50,12 C40,12 35,15 35,15 C35,15 30,8 25,10 L10,20 L15,40 L25,35 L25,90 L75,90 L75,35 L85,40 L90,20 Z"/></svg>
+    </div>
+    <div id="currentMockupColor" style="font-weight: bold; font-size: 18px;">RGB(26, 35, 126)</div>
+    <button class="btn btn-update" style="margin-top: 20px;" onclick="closeMockup()">DONE</button>
+</div></div>
+
+<div id="copyToast" class="copy-toast">RGB Code Copied!</div>
+
+<script>
+    const canvas = document.getElementById('imageCanvas');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    const rIn = document.getElementById('r');
+    const gIn = document.getElementById('g');
+    const bIn = document.getElementById('b');
+    let history = JSON.parse(localStorage.getItem('rahaColorHistory')) || [];
+
+    const categories = ["Pastel", "Vintage", "Retro", "Neon", "Gold", "Nature", "Summer", "Happy", "Night", "Earth"];
+
+    const huntData = {
+        'Pastel': [['#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7'], ['#F3E5F5', '#E1F5FE', '#E8F5E9', '#FFFDE7'], ['#B2F7EF', '#EFF7F6', '#F7D1CD', '#E2CFC4'], ['#FCE1E4', '#FCF4DD', '#DDEDEA', '#DAEAF6'], ['#E8D7F1', '#D3BCC0', '#A5668B', '#69306D'], ['#F08080', '#F4978E', '#F8AD9D', '#FBC4AB'], ['#FF99C8', '#FCF6BD', '#D0F4DE', '#A9DEF9'], ['#E4C1F9', '#D0F4DE', '#FCF6BD', '#FF99C8'], ['#F6EAC2', '#FFD4B2', '#FFBFA3', '#FFADAD'], ['#A0C4FF', '#BDB2FF', '#FFC6FF', '#FFFFFC'], ['#DEE2FF', '#E8E8E8', '#FEEAFA', '#F1F1F1'], ['#B9FBC0', '#98F5E1', '#8EECF5', '#A3C4F3']],
+        'Vintage': [['#634832', '#967E67', '#D4A373', '#FEFAE0'], ['#264653', '#2A9D8F', '#E9C46A', '#F4A261'], ['#582F0E', '#7F4F24', '#936639', '#A68A64'], ['#B6AD90', '#C2C5AA', '#A4AC86', '#656D4A'], ['#333D29', '#414833', '#656D4A', '#A4AC86'], ['#7D4F50', '#D1BE9C', '#AA998F', '#E0D8DE'], ['#2C3E50', '#E67E22', '#ECF0F1', '#95A5A6'], ['#1A1A1A', '#4A4A4A', '#9B9B9B', '#D8D8D8'], ['#3E2723', '#5D4037', '#8D6E63', '#D7CCC8'], ['#1B5E20', '#388E3C', '#66BB6A', '#C8E6C9'], ['#827397', '#4D4C7D', '#363062', '#E9D5CA'], ['#433520', '#025955', '#00917C', '#FDE8CD']],
+        'Retro': [['#E07A5F', '#3D405B', '#81B29A', '#F2CC8F'], ['#ffbe0b', '#fb5607', '#ff006e', '#8338ec'], ['#264653', '#2a9d8f', '#e9c46a', '#f4a261'], ['#d00000', '#ffba08', '#3f88c5', '#032b43'], ['#606c38', '#283618', '#fefae0', '#dda15e'], ['#ef476f', '#ffd166', '#06d6a0', '#118ab2'], ['#2b2d42', '#8d99ae', '#edf2f4', '#ef233c'], ['#003049', '#d62828', '#f77f00', '#fcbf49'], ['#7209b7', '#3f37c9', '#4361ee', '#4cc9f0'], ['#ff9f1c', '#ffbf69', '#ffffff', '#cbf3f0']],
+        'Neon': [['#00F5FF', '#00FF41', '#FF00FF', '#FFFF00'], ['#FF3131', '#FF5E13', '#77EE11', '#08F7FE'], ['#FF0055', '#00FF99', '#00CCFF', '#FFFF00'], ['#BF00FF', '#FF00BF', '#00FFBF', '#FFBF00'], ['#39FF14', '#FF1493', '#00BFFF', '#FFD700'], ['#7FFF00', '#FF00FF', '#00FFFF', '#FF4500'], ['#000000', '#FF0000', '#FFFB00', '#00FF00'], ['#05FFA1', '#B967FF', '#05B2FF', '#FF4848']],
+        'Nature': [['#11998e', '#38ef7d', '#56ab2f', '#a8e063'], ['#134E5E', '#71B280', '#084594', '#21e6c1'], ['#00b09b', '#96c93d', '#20bf55', '#01baef'], ['#2d5a27', '#4b7d3f', '#7ba160', '#c2d5a8'], ['#1b4332', '#2d6a4f', '#409167', '#95d5b2'], ['#31572c', '#4f772d', '#90be6d', '#ecf39e'], ['#40513B', '#609966', '#9DC08B', '#EDF1D6'], ['#004445', '#2C7873', '#6FB98F', '#FAF1E6']],
+        'Gold': [['#D4AF37', '#FFD700', '#CFB53B', '#F5E1A4'], ['#432818', '#99582A', '#BB9457', '#FFE6A7'], ['#BF953F', '#FCF6BA', '#B38728', '#FBF5B7'], ['#8A6623', '#C7A317', '#D1B000', '#F7EF8A'], ['#E6BE8A', '#D4AF37', '#996515', '#71491E'], ['#DAA520', '#FFD700', '#F0E68C', '#B8860B']],
+        'Summer': [['#FF9A8B', '#FF6A88', '#FF99AC', '#FBBC05'], ['#00B4DB', '#0083B0', '#FDC830', '#F37335'], ['#FF5F6D', '#FFC371', '#F12711', '#F5AF19'], ['#4facfe', '#00f2fe', '#f093fb', '#f5576c'], ['#FA709A', '#FEE140', '#00C6FB', '#005BEA'], ['#FF9A9E', '#FAD0C4', '#FAD0C4', '#FFD1FF'], ['#FBDA61', '#FF5ACD', '#21D4FD', '#B721FF'], ['#08AEEA', '#2AF598', '#FEE140', '#FA709A']],
+        'Night': [['#0F0C29', '#302B63', '#24243E', '#FFFFFF'], ['#232526', '#414345', '#000000', '#FFFFFF'], ['#000428', '#004e92', '#000000', '#00d2ff'], ['#021B79', '#0575E6', '#2196F3', '#BBDEFB'], ['#2C3E50', '#4CA1AF', '#2C3E50', '#000000'], ['#141E30', '#243B55', '#243B55', '#FFFFFF']],
+        'Happy': [['#f9d423', '#ff4e50', '#f12711', '#f5af19'], ['#8E2DE2', '#4A00E0', '#FF0099', '#493240'], ['#ff9a9e', '#fecfef', '#feada6', '#fbb2d0'], ['#fccb90', '#d57eeb', '#00f2fe', '#66a6ff'], ['#84fab0', '#8fd3f4', '#fccb90', '#d57eeb'], ['#a1c4fd', '#c2e9fb', '#fdfcfb', '#e2d1c3']]
+    };
+
+    const catMenu = document.getElementById('categoryMenu');
+    categories.forEach(cat => {
+        const item = document.createElement('div');
+        item.className = 'nav-item';
+        item.innerHTML = cat;
+        item.onclick = () => {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            item.classList.add('active');
+            filterHunt(cat);
+        };
+        catMenu.appendChild(item);
+    });
+
+    function rgbToHex(rgbStr) {
+        let parts = rgbStr.split(',');
+        return "#" + parts.map(x => parseInt(x).toString(16).padStart(2, '0').toUpperCase()).join('');
+    }
+
+    function hexToRgb(hex) {
+        hex = hex.replace('#', '');
+        if (hex.length === 3) hex = hex.split('').map(s => s + s).join('');
+        let bigint = parseInt(hex, 16);
+        return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
+    }
+
+    function generate8AIColors() {
+        let r, g, b;
+        const hVal = document.getElementById('ai_hex').value;
+        if (hVal.trim() !== "") {
+            const res = hexToRgb(hVal);
+            r = res.r; g = res.g; b = res.b;
+            document.getElementById('ai_r').value = r;
+            document.getElementById('ai_g').value = g;
+            document.getElementById('ai_b').value = b;
+        } else {
+            r = parseInt(document.getElementById('ai_r').value) || 0;
+            g = parseInt(document.getElementById('ai_g').value) || 0;
+            b = parseInt(document.getElementById('ai_b').value) || 0;
+            document.getElementById('ai_hex').value = rgbToHex(`${r},${g},${b}`);
+        }
+
+        const resDiv = document.getElementById('aiMatchingResult');
+        resDiv.innerHTML = '';
+        const variations = [
+            { n: 'Main', r: r, g: g, b: b },
+            { n: 'Contrast', r: 255-r, g: 255-g, b: 255-b },
+            { n: 'Neon', r: Math.min(255, r+100), g: Math.min(255, g+150), b: 50 },
+            { n: 'Luxury', r: 212, g: 175, b: 55 },
+            { n: 'Pastel', r: Math.round((r+255)/2), g: Math.round((g+255)/2), b: Math.round((b+255)/2) },
+            { n: 'Deep', r: Math.round(r*0.4), g: Math.round(g*0.4), b: Math.round(b*0.4) },
+            { n: 'Warm', r: Math.min(255, r+80), g: Math.round(g*0.5), b: Math.round(b*0.3) },
+            { n: 'Cool', r: Math.round(r*0.2), g: Math.round(g*0.6), b: Math.min(255, b+100) }
+        ];
+
+        variations.forEach(v => {
+            const rgb = `${v.r},${v.g},${v.b}`;
+            resDiv.innerHTML += `<div class="color-card" onclick="updateUI(${v.r},${v.g},${v.b})">
+                <div class="color-swatch" style="background:rgb(${rgb}); height:60px;"></div>
+                <div class="color-info" style="font-size:10px;"><b>${v.n}</b><br>${rgb}</div>
+            </div>`;
+        });
+        updateUI(r, g, b);
+    }
+
+    document.getElementById('upload').addEventListener('change', function(e) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const img = new Image();
+            img.onload = function() {
+                canvas.width = img.width; canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+            }
+            img.src = event.target.result;
+        }
+        reader.readAsDataURL(e.target.files[0]);
+    });
+
+    canvas.addEventListener('mousedown', function(e) {
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+        const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+        const p = ctx.getImageData(x, y, 1, 1).data;
+        updateUI(p[0], p[1], p[2]);
+    });
+
+    function updateUI(r, g, b) {
+        rIn.value = r; gIn.value = g; bIn.value = b;
+        document.getElementById('tshirtSVG').style.fill = `rgb(${r},${g},${b})`;
+        document.getElementById('currentMockupColor').innerText = `RGB(${r}, ${g}, ${b})`;
+        generatePalette(r, g, b);
+    }
+
+    function generateFromInputs() {
+        updateUI(rIn.value, gIn.value, bIn.value);
+    }
+
+    function generatePalette(r, g, b) {
+        const pal = document.getElementById('palette');
+        pal.innerHTML = '';
+        saveToHistory(r, g, b);
+        for (let i = 0; i < 40; i++) {
+            let nr, ng, nb;
+            let factor = i < 20 ? i/19 : (i-20)/20;
+            if(i < 20) { nr = r*factor; ng = g*factor; nb = b*factor; }
+            else { nr = r+(255-r)*factor; ng = g+(255-g)*factor; nb = b+(255-b)*factor; }
+            const rgb = `${Math.round(nr)},${Math.round(ng)},${Math.round(nb)}`;
+            pal.innerHTML += `<div class="color-card" onclick="copyCode('${rgb}')" ondblclick="copyHex('${rgb}')">
+                <div class="color-swatch" style="background:rgb(${rgb})"></div>
+                <div class="color-info">${rgb}</div>
+            </div>`;
+        }
+    }
+
+    function openMockup() { document.getElementById('mockupModal').style.display = 'block'; }
+    function closeMockup() { document.getElementById('mockupModal').style.display = 'none'; }
+
+    function filterHunt(cat) {
+        const grid = document.getElementById('huntGrid');
+        document.getElementById('huntTitle').innerHTML = `<b>🌈 EXPLORE ${cat.toUpperCase()} HUNTS</b>`;
+        grid.innerHTML = '';
+        const items = huntData[cat] || huntData['Pastel'];
+        items.forEach(p => {
+            grid.innerHTML += `
+                <div class="hunt-card">
+                    <div class="c-layer" style="background:${p[0]}; flex:4" onclick="copyHex('${p[0]}')"></div>
+                    <div class="c-layer" style="background:${p[1]}; flex:2" onclick="copyHex('${p[1]}')"></div>
+                    <div class="c-layer" style="background:${p[2]}; flex:1.5" onclick="copyHex('${p[2]}')"></div>
+                    <div class="c-layer" style="background:${p[3]}; flex:1" onclick="copyHex('${p[3]}')"></div>
+                </div>`;
+        });
+        document.getElementById('huntSection').scrollIntoView({behavior: 'smooth'});
+    }
+
+    function saveToHistory(r, g, b) {
+        let s = `${r},${g},${b}`;
+        if (!history.includes(s)) {
+            history.unshift(s); if(history.length > 12) history.pop();
+            localStorage.setItem('rahaColorHistory', JSON.stringify(history));
+            updateHistoryUI();
+        }
+    }
+
+    function updateHistoryUI() {
+        const l = document.getElementById('historyList');
+        l.innerHTML = history.map(c => `<div class="history-item" onclick="updateUI(${c})" style="display:flex; align-items:center; gap:10px; padding:8px; border-bottom:1px solid #eee; cursor:pointer;">
+            <div style="width:30px; height:30px; background:rgb(${c}); border-radius:4px; border:1px solid #ddd;"></div>
+            <span style="font-size:12px; font-weight:bold;">RGB(${c})</span>
+        </div>`).join('');
+    }
+
+    function copyCode(t) { navigator.clipboard.writeText(t); showToast("RGB Copied: " + t); }
+    function copyHex(t) { 
+        const hex = t.startsWith('#') ? t : rgbToHex(t);
+        navigator.clipboard.writeText(hex); 
+        showToast("HEX Copied: " + hex); 
+    }
+    function showToast(m) { const t = document.getElementById('copyToast'); t.innerText = m; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1500); }
+    function clearHistory() { history = []; localStorage.removeItem('rahaColorHistory'); updateHistoryUI(); }
+    function downloadImage() {
+        html2canvas(document.querySelector("#downloadArea"), {scale: 3}).then(c => {
+            const a = document.createElement('a'); a.download = 'Raha-Palette.png'; a.href = c.toDataURL(); a.click();
+        });
+    }
+
+    updateHistoryUI();
+    filterHunt('Pastel');
+    generatePalette(26, 35, 126);
+</script>
+
 </body>
 </html>
