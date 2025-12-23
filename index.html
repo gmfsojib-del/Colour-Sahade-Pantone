@@ -345,7 +345,202 @@
     updateHistoryUI();
     filterHunt('Pastel');
     generatePalette(26, 35, 126);
+    <script>
+    const canvas = document.getElementById('imageCanvas');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    const rIn = document.getElementById('r');
+    const gIn = document.getElementById('g');
+    const bIn = document.getElementById('b');
+    let history = JSON.parse(localStorage.getItem('rahaColorHistory')) || [];
+
+    const categories = ["Pastel", "Vintage", "Retro", "Neon", "Gold", "Light", "Dark", "Warm", "Cold", "Summer", "Fall", "Winter", "Spring", "Happy", "Nature", "Earth", "Night"];
+
+    // আপডেট করা ডাটা - এখানে প্রতিটি ক্যাটেগরিতে ২০টি করে ইউনিক প্যালেট আছে
+    const huntData = {
+        'Pastel': [
+            ['#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7'], ['#F3E5F5', '#E1F5FE', '#E8F5E9', '#FFFDE7'], ['#B2F7EF', '#EFF7F6', '#F7D1CD', '#E2CFC4'], ['#FCE1E4', '#FCF4DD', '#DDEDEA', '#DAEAF6'], ['#E8D7F1', '#D3BCC0', '#A5668B', '#69306D'], ['#F08080', '#F4978E', '#F8AD9D', '#FBC4AB'], ['#FF99C8', '#FCF6BD', '#D0F4DE', '#A9DEF9'], ['#E4C1F9', '#D0F4DE', '#FCF6BD', '#FF99C8'], ['#F6EAC2', '#FFD4B2', '#FFBFA3', '#FFADAD'], ['#A0C4FF', '#BDB2FF', '#FFC6FF', '#FFFFFC'], ['#BEE1E6', '#FDE2E4', '#FAD2E1', '#E2ECE9'], ['#DFE7FD', '#F0EFEB', '#F5EBE0', '#E3D5CA'], ['#D8E2DC', '#FFE5D9', '#FFCAD2', '#F4ACB7'], ['#EAE4E9', '#FFF1E6', '#FAD2E1', '#E2ECE9'], ['#C1D3FE', '#ABC4FF', '#D7E3FC', '#EDF2FB'], ['#FAD2E1', '#E2ECE9', '#BEE1E6', '#FDE2E4'], ['#CCDBFD', '#D7E3FC', '#E2EAFB', '#EDF2FB'], ['#F0EFEB', '#F5EBE0', '#E3D5CA', '#D5BDAF'], ['#F7D9C4', '#FAD2E1', '#F2E9E4', '#C9ADA7'], ['#B8F2E6', '#AED9E0', '#FAF3DD', '#FFA69E']
+        ],
+        'Vintage': [
+            ['#634832', '#967E67', '#D4A373', '#FEFAE0'], ['#264653', '#2A9D8F', '#E9C46A', '#F4A261'], ['#582F0E', '#7F4F24', '#936639', '#A68A64'], ['#B6AD90', '#C2C5AA', '#A4AC86', '#656D4A'], ['#333D29', '#414833', '#656D4A', '#A4AC86'], ['#7D4F50', '#D1BE9C', '#AA998F', '#E0D8DE'], ['#2C3E50', '#E67E22', '#ECF0F1', '#95A5A6'], ['#1A1A1A', '#4A4A4A', '#9B9B9B', '#D8D8D8'], ['#3E2723', '#5D4037', '#8D6E63', '#D7CCC8'], ['#1B5E20', '#388E3C', '#66BB6A', '#C8E6C9'], ['#432818', '#99582A', '#BB9457', '#606C38'], ['#283618', '#FEFAE0', '#DDA15E', '#BC6C25'], ['#5F0F40', '#9A031E', '#FB8B24', '#E36414'], ['#3D5A80', '#98C1D9', '#E0FBFC', '#EE6C4D'], ['#293241', '#3D5A80', '#98C1D9', '#E0FBFC'], ['#003049', '#D62828', '#F77F00', '#FCBF49'], ['#6B705C', '#A5A58D', '#B7B7A4', '#FFE8D6'], ['#4A4E69', '#9A8C98', '#C9ADA7', '#F2E9E4'], ['#22223B', '#4A4E69', '#9A8C98', '#C9ADA7'], ['#220901', '#621708', '#941B0C', '#BC3908']
+        ],
+        'Warm': [
+            ['#FF9A8B', '#FF6A88', '#FF99AC', '#FBBC05'], ['#FAD961', '#F76B1C', '#FF9A8B', '#FF6A88'], ['#FF5F6D', '#FFC371', '#F12711', '#F5AF19'], ['#ED213A', '#93291E', '#F06292', '#FF1744'], ['#FF4E50', '#F9D423', '#FC466B', '#3F5EFB'], ['#833AB4', '#FD1D1D', '#FCB045', '#FF9A8B'], ['#E94057', '#F27121', '#8A2387', '#FF0080'], ['#FF0000', '#FF4500', '#FF8C00', '#FFA500'], ['#D4145A', '#FBB03B', '#662D8C', '#ED1E79'], ['#F12711', '#F5AF19', '#780206', '#061161'], ['#FF4B1F', '#1FDDFF', '#FF9068', '#FD746C'], ['#4568DC', '#B06AB3', '#D31027', '#EA384D'], ['#F093FB', '#F5576C', '#FF0844', '#FFB199'], ['#FF00CC', '#333399', '#FF3366', '#FF6633'], ['#FFED00', '#FF0000', '#FF00FF', '#0000FF'], ['#FAD0C4', '#FFD1FF', '#FECFEF', '#FF9A9E'], ['#FE8C00', '#F83600', '#D4145A', '#FBB03B'], ['#B91D73', '#F9D423', '#FF4E50', '#F9D423'], ['#FFD200', '#F7971E', '#F12711', '#F5AF19'], ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00']
+        ],
+        'Cold': [
+            ['#2193b0', '#6dd5ed', '#06beb6', '#48b1bf'], ['#00c6ff', '#0072ff', '#3a1c71', '#d76d77'], ['#4facfe', '#00f2fe', '#434343', '#000000'], ['#1e3c72', '#2a5298', '#13547a', '#80d0c7'], ['#B2FEFA', '#0ED2F7', '#333333', '#dd1818'], ['#1c92d2', '#f2fcfe', '#614385', '#516395'], ['#000046', '#1CB5E0', '#000000', '#533483'], ['#00d2ff', '#3a7bd5', '#12c2e9', '#c471ed'], ['#36D1DC', '#5B86E5', '#2980B9', '#6DD5FA'], ['#021B79', '#0575E6', '#00F2FE', '#4FACFE'], ['#1A2980', '#26D0CE', '#2193B0', '#6DD5ED'], ['#2BC0E4', '#EAECC6', '#13547A', '#80D0C7'], ['#1D2B64', '#F8CDDA', '#11998E', '#38EF7D'], ['#085078', '#85D8CE', '#0052D4', '#4364F7'], ['#4CA1AF', '#C4E0E5', '#1D4350', '#215F00'], ['#24C6DC', '#514A9D', '#16A085', '#F4D03F'], ['#4B79A1', '#283E51', '#000000', '#434343'], ['#004FF9', '#FFF94C', '#000000', '#434343'], ['#1E3C72', '#2A5298', '#2C3E50', '#000000'], ['#43C6AC', '#191654', '#12C2E9', '#F64F59']
+        ]
+    };
+
+    const catMenu = document.getElementById('categoryMenu');
+    categories.forEach(cat => {
+        const item = document.createElement('div');
+        item.className = 'nav-item';
+        item.innerHTML = cat;
+        item.onclick = () => {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            item.classList.add('active');
+            filterHunt(cat);
+        };
+        catMenu.appendChild(item);
+    });
+
+    function rgbToHex(rgbStr) {
+        let parts = rgbStr.split(',');
+        return "#" + parts.map(x => parseInt(x).toString(16).padStart(2, '0').toUpperCase()).join('');
+    }
+
+    document.getElementById('upload').addEventListener('change', function(e) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const img = new Image();
+            img.onload = function() {
+                canvas.width = img.width; canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+            }
+            img.src = event.target.result;
+        }
+        reader.readAsDataURL(e.target.files[0]);
+    });
+
+    canvas.addEventListener('mousedown', function(e) {
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+        const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+        const p = ctx.getImageData(x, y, 1, 1).data;
+        updateUI(p[0], p[1], p[2]);
+    });
+
+    document.getElementById('aiUpload').addEventListener('change', function(e) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const img = new Image();
+            img.onload = function() {
+                const tc = document.createElement('canvas');
+                const tx = tc.getContext('2d');
+                tc.width = img.width; tc.height = img.height;
+                tx.drawImage(img, 0, 0);
+                const res = document.getElementById('aiMatchingResult');
+                res.innerHTML = '';
+                const pts = [[0.5,0.5],[0.2,0.2],[0.8,0.2],[0.2,0.8],[0.8,0.8]];
+                pts.forEach(pt => {
+                    const d = tx.getImageData(img.width*pt[0], img.height*pt[1], 1, 1).data;
+                    const rgb = `${d[0]},${d[1]},${d[2]}`;
+                    res.innerHTML += `<div class="color-card" onclick="updateUI(${d[0]},${d[1]},${d[2]})">
+                        <div class="color-swatch" style="background:rgb(${rgb}); height:60px;"></div>
+                        <div class="color-info" style="font-size:11px;">${rgb}</div>
+                    </div>`;
+                });
+            }
+            img.src = event.target.result;
+        }
+        reader.readAsDataURL(e.target.files[0]);
+    });
+
+    function updateUI(r, g, b) {
+        rIn.value = r; gIn.value = g; bIn.value = b;
+        document.getElementById('tshirtSVG').style.fill = `rgb(${r},${g},${b})`;
+        document.getElementById('currentMockupColor').innerText = `RGB(${r}, ${g}, ${b})`;
+        generatePalette(r, g, b);
+    }
+
+    // HEX থেকে UI আপডেট করার হেল্পার
+    function updateFromHex(hex) {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        updateUI(r, g, b);
+    }
+
+    function generateFromInputs() {
+        updateUI(rIn.value, gIn.value, bIn.value);
+    }
+
+    function generatePalette(r, g, b) {
+        const pal = document.getElementById('palette');
+        pal.innerHTML = '';
+        saveToHistory(r, g, b);
+        for (let i = 0; i < 40; i++) {
+            let nr, ng, nb;
+            let factor = i < 20 ? i/19 : (i-20)/20;
+            if(i < 20) { nr = r*factor; ng = g*factor; nb = b*factor; }
+            else { nr = r+(255-r)*factor; ng = g+(255-g)*factor; nb = b+(255-b)*factor; }
+            const rgb = `${Math.round(nr)},${Math.round(ng)},${Math.round(nb)}`;
+            pal.innerHTML += `<div class="color-card" onclick="copyCode('${rgb}')" ondblclick="copyHex('${rgb}')">
+                <div class="color-swatch" style="background:rgb(${rgb})"></div>
+                <div class="color-info">${rgb}</div>
+            </div>`;
+        }
+    }
+
+    function openTool(id) { document.getElementById(id).style.display = 'block'; }
+    function closeTool(id) { document.getElementById(id).style.display = 'none'; }
+    function openMockup() { document.getElementById('mockupModal').style.display = 'block'; }
+    function closeMockup() { document.getElementById('mockupModal').style.display = 'none'; }
+
+    // ক্যাটেগরি ফিল্টার ফাংশন আপডেট করা হয়েছে
+    function filterHunt(cat) {
+        const grid = document.getElementById('huntGrid');
+        const section = document.getElementById('huntSection');
+        document.getElementById('huntTitle').innerHTML = `<b>🌈 EXPLORE ${cat.toUpperCase()} HUNTS</b>`;
+        grid.innerHTML = '';
+        
+        // যদি ডাটা না থাকে তবে Pastel ডিফল্ট থাকবে
+        const items = huntData[cat] || huntData['Pastel'];
+        
+        items.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'hunt-card';
+            // কার্ডে ক্লিক করলে মেইন প্যালেট আপডেট হবে
+            card.onclick = () => updateFromHex(p[0]); 
+            
+            card.innerHTML = `
+                <div class="c-layer" style="background:${p[0]}; flex:4" onclick="copyHex('${p[0]}'); event.stopPropagation();"></div>
+                <div class="c-layer" style="background:${p[1]}; flex:2" onclick="copyHex('${p[1]}'); event.stopPropagation();"></div>
+                <div class="c-layer" style="background:${p[2]}; flex:1.5" onclick="copyHex('${p[2]}'); event.stopPropagation();"></div>
+                <div class="c-layer" style="background:${p[3]}; flex:1" onclick="copyHex('${p[3]}'); event.stopPropagation();"></div>
+            `;
+            grid.appendChild(card);
+        });
+        section.scrollIntoView({behavior: 'smooth'});
+    }
+
+    function saveToHistory(r, g, b) {
+        let s = `${r},${g},${b}`;
+        if (!history.includes(s)) {
+            history.unshift(s); if(history.length > 12) history.pop();
+            localStorage.setItem('rahaColorHistory', JSON.stringify(history));
+            updateHistoryUI();
+        }
+    }
+
+    function updateHistoryUI() {
+        const l = document.getElementById('historyList');
+        l.innerHTML = history.map(c => `<div class="history-item" onclick="updateUI(${c})" style="display:flex; align-items:center; gap:10px; padding:8px; border-bottom:1px solid #eee; cursor:pointer;">
+            <div style="width:30px; height:30px; background:rgb(${c}); border-radius:4px; border:1px solid #ddd;"></div>
+            <span style="font-size:12px; font-weight:bold;">RGB(${c})</span>
+        </div>`).join('');
+    }
+
+    function copyCode(t) { navigator.clipboard.writeText(t); showToast("RGB Copied: " + t); }
+    function copyHex(t) { 
+        const hex = t.startsWith('#') ? t : rgbToHex(t);
+        navigator.clipboard.writeText(hex); 
+        showToast("HEX Copied: " + hex); 
+    }
+    function showToast(m) { const t = document.getElementById('copyToast'); t.innerText = m; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1500); }
+    function clearHistory() { history = []; localStorage.removeItem('rahaColorHistory'); updateHistoryUI(); }
+    function downloadImage() {
+        html2canvas(document.querySelector("#downloadArea"), {scale: 3}).then(c => {
+            const a = document.createElement('a'); a.download = 'Raha-Palette.png'; a.href = c.toDataURL(); a.click();
+        });
+    }
+
+    updateHistoryUI();
+    filterHunt('Pastel');
+    generatePalette(26, 35, 126);
+
 </script>
 
 </body>
 </html>
+
