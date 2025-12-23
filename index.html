@@ -60,7 +60,6 @@
         .hunt-card { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 3px 8px rgba(0,0,0,0.1); cursor: pointer; height: 160px; display: flex; flex-direction: column; }
         .c-layer { width: 100%; transition: 0.2s; position: relative; height: 25%; }
 
-        /* Modal Styles */
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
         .modal-content { background: white; margin: 2% auto; padding: 25px; width: 90%; max-width: 800px; border-radius: 15px; text-align: center; position: relative; max-height: 90vh; overflow-y: auto; }
         .close-btn { position: absolute; right: 20px; top: 10px; font-size: 30px; cursor: pointer; color: #333; }
@@ -154,8 +153,7 @@
     <div class="modal-content">
         <span class="close-btn" onclick="closeModal('huntModal')">&times;</span>
         <h2 id="huntModalTitle">🌈 Explore Hunts</h2>
-        <div id="huntGrid" class="palette-grid" style="grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); padding: 10px;">
-            </div>
+        <div id="huntGrid" class="palette-grid" style="grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); padding: 10px;"></div>
         <button class="btn btn-update" style="margin-top: 20px;" onclick="closeModal('huntModal')">DONE</button>
     </div>
 </div>
@@ -173,6 +171,7 @@
     const categories = ["Pastel", "Vintage", "Retro", "Neon", "Gold", "Nature", "Summer", "Happy", "Night", "Earth"];
 
     const huntData = {
+        // ... (তোমার huntData অবজেক্টটি এখানে থাকবে, আমি ছোট করার জন্য কাটলাম না)
         'Pastel': [['#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7'], ['#F3E5F5', '#E1F5FE', '#E8F5E9', '#FFFDE7'], ['#B2F7EF', '#EFF7F6', '#F7D1CD', '#E2CFC4'], ['#FCE1E4', '#FCF4DD', '#DDEDEA', '#DAEAF6'], ['#E8D7F1', '#D3BCC0', '#A5668B', '#69306D'], ['#F08080', '#F4978E', '#F8AD9D', '#FBC4AB'], ['#FF99C8', '#FCF6BD', '#D0F4DE', '#A9DEF9'], ['#E4C1F9', '#D0F4DE', '#FCF6BD', '#FF99C8'], ['#F6EAC2', '#FFD4B2', '#FFBFA3', '#FFADAD'], ['#A0C4FF', '#BDB2FF', '#FFC6FF', '#FFFFFC'], ['#DEE2FF', '#E8E8E8', '#FEEAFA', '#F1F1F1'], ['#B9FBC0', '#98F5E1', '#8EECF5', '#A3C4F3'], ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9'], ['#BAE1FF', '#D1D1D1', '#E2F0CB', '#FFDAC1'], ['#FF9AA2', '#FFB7B2', '#FFDAC1', '#E2F0CB'], ['#C7CEEA', '#B5EAD7', '#E2F0CB', '#FFDAC1'], ['#FAD0C4', '#FFD1FF', '#E0C3FC', '#8EC5FC'], ['#FFDEE9', '#B5FFFC', '#FFFFFF', '#D9AFD9'], ['#A18CD1', '#FBC2EB', '#8FD3F4', '#84FAB0'], ['#FBED64', '#7AFFAF', '#7158E2', '#CD84F1']],
         'Vintage': [['#634832', '#967E67', '#D4A373', '#FEFAE0'], ['#264653', '#2A9D8F', '#E9C46A', '#F4A261'], ['#582F0E', '#7F4F24', '#936639', '#A68A64'], ['#B6AD90', '#C2C5AA', '#A4AC86', '#656D4A'], ['#333D29', '#414833', '#656D4A', '#A4AC86'], ['#7D4F50', '#D1BE9C', '#AA998F', '#E0D8DE'], ['#2C3E50', '#E67E22', '#ECF0F1', '#95A5A6'], ['#1A1A1A', '#4A4A4A', '#9B9B9B', '#D8D8D8'], ['#3E2723', '#5D4037', '#8D6E63', '#D7CCC8'], ['#1B5E20', '#388E3C', '#66BB6A', '#C8E6C9'], ['#827397', '#4D4C7D', '#363062', '#E9D5CA'], ['#433520', '#025955', '#00917C', '#FDE8CD'], ['#5F4B32', '#967E67', '#D4A373', '#FEFAE0'], ['#403D39', '#CCC5B9', '#FFFCF2', '#EB5E28'], ['#252422', '#403D39', '#CCC5B9', '#FFFCF2'], ['#1D3557', '#457B9D', '#A8DADC', '#F1FAEE'], ['#6D597A', '#B56576', '#E56B6F', '#EAAC8B'], ['#283618', '#606C38', '#FEFAE0', '#DDA15E'], ['#540B0E', '#9E2A2B', '#E09F3E', '#FFF3B0'], ['#3D5A80', '#98C1D9', '#E0FBFC', '#EE6C4D']],
         'Retro': [['#E07A5F', '#3D405B', '#81B29A', '#F2CC8F'], ['#FFBE0B', '#FB5607', '#FF006E', '#8338EC'], ['#264653', '#2A9D8F', '#E9C46A', '#F4A261'], ['#D00000', '#FFBA08', '#3F88C5', '#032B43'], ['#606C38', '#283618', '#FEFAE0', '#DDA15E'], ['#EF476F', '#FFD166', '#06D6A0', '#118AB2'], ['#2B2D42', '#8D99AE', '#EDF2F4', '#EF233C'], ['#003049', '#D62828', '#F77F00', '#FCBF49'], ['#7209B7', '#3F37C9', '#4361EE', '#4CC9F0'], ['#FF9F1C', '#FFBF69', '#FFFFFF', '#CBF3F0'], ['#1A535C', '#4ECDC4', '#F7FFF7', '#FF6B6B'], ['#FFBC42', '#D81159', '#8F2D56', '#218380'], ['#50514F', '#F25F5C', '#FFE066', '#247BA0'], ['#70D6FF', '#FF70A6', '#FF9770', '#FFD670'], ['#05668D', '#028090', '#00A896', '#02C39A'], ['#F45B69', '#456990', '#E4FDE1', '#114B5F'], ['#D7263D', '#F46036', '#2E294E', '#1B998B'], ['#3D348B', '#7678ED', '#F7B801', '#F18701'], ['#8E9AAF', '#CBC0D3', '#EFD3D7', '#FEEAFA'], ['#22223B', '#4A4E69', '#9A8C98', '#C9ADA7']],
@@ -191,25 +190,19 @@
         item.className = 'nav-item';
         item.innerHTML = cat;
         item.onclick = () => {
-            // Remove active class from all
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             item.classList.add('active');
-            
-            // Open the Hunt Modal instead of scrolling
             openHuntModal(cat);
         };
         catMenu.appendChild(item);
     });
 
-    // Function to Open Hunt Modal
     function openHuntModal(cat) {
         const modal = document.getElementById('huntModal');
         const grid = document.getElementById('huntGrid');
         document.getElementById('huntModalTitle').innerHTML = `🌈 Explore ${cat.toUpperCase()} Hunts`;
-        
-        grid.innerHTML = ''; // Clear previous
+        grid.innerHTML = '';
         const items = huntData[cat];
-        
         if(items) {
             items.forEach(p => {
                 grid.innerHTML += `<div class="hunt-card" onclick="copyHex('${p[0]}')">
@@ -223,7 +216,6 @@
         modal.style.display = 'block';
     }
 
-    // Dynamic Color Utilities
     function rgbToHex(r, g, b) {
         return "#" + [r, g, b].map(x => {
             const hex = parseInt(x).toString(16).toUpperCase();
@@ -238,36 +230,63 @@
         return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
     }
 
+    // --- UPDATED AI COLOR GENERATOR LOGIC ---
     function generate8AIColors() {
-        let r, g, b;
-        const hVal = document.getElementById('ai_hex').value;
-        if (hVal.trim() !== "") {
-            const res = hexToRgb(hVal);
-            r = res.r; g = res.g; b = res.b;
-        } else {
-            r = 0; g = 0; b = 0; // Default
-        }
+        let hVal = document.getElementById('ai_hex').value;
+        if (!hVal.startsWith('#')) hVal = '#' + hVal;
+        
+        const res = hexToRgb(hVal);
+        if(isNaN(res.r)) return showToast("Invalid Hex Code!");
 
         const aiGrid = document.getElementById('aiMatchingResult');
         aiGrid.innerHTML = '';
         
+        // Convert to HSL to rotate hue
+        let r = res.r / 255, g = res.g / 255, b = res.b / 255;
+        let max = Math.max(r, g, b), min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+        if (max == min) { h = s = 0; } 
+        else {
+            let d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+                case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                case g: h = (b - r) / d + 2; break;
+                case b: h = (r - g) / d + 4; break;
+            }
+            h /= 6;
+        }
+
         for(let i=0; i<8; i++) {
-            let offset = (i - 4) * 15;
-            let nr = Math.max(0, Math.min(255, r + offset));
-            let ng = Math.max(0, Math.min(255, g + offset));
-            let nb = Math.max(0, Math.min(255, b + offset));
-            const rgb = `${nr},${ng},${nb}`;
-            const hex = rgbToHex(nr, ng, nb);
+            // Use Golden Ratio to shift hue for unique colors
+            let newH = (h + (i * 0.1375)) % 1; 
+            let newR, newG, newB;
+            
+            function hue2rgb(p, q, t){
+                if(t < 0) t += 1; if(t > 1) t -= 1;
+                if(t < 1/6) return p + (q - p) * 6 * t;
+                if(t < 1/2) return q;
+                if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                return p;
+            }
+            let q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            let p = 2 * l - q;
+            newR = Math.round(hue2rgb(p, q, newH + 1/3) * 255);
+            newG = Math.round(hue2rgb(p, q, newH) * 255);
+            newB = Math.round(hue2rgb(p, q, newH - 1/3) * 255);
+
+            const rgb = `${newR},${newG},${newB}`;
+            const hex = rgbToHex(newR, newG, newB);
             
             aiGrid.innerHTML += `<div class="color-card" onclick="copyCode('${rgb}')" ondblclick="copyHex('${hex}')">
                 <div class="color-swatch" style="background:rgb(${rgb})"></div>
                 <div class="color-info">${rgb}</div>
             </div>`;
         }
-        updateUI(r, g, b);
+        updateUI(res.r, res.g, res.b);
     }
 
-    // Image Upload
+    // Image Upload Logic
     document.getElementById('upload').addEventListener('change', function(e) {
         const reader = new FileReader();
         reader.onload = function(event) {
@@ -307,13 +326,8 @@
             let factor = i < 20 ? i/19 : (i-20)/20;
             if(i < 20) { nr = r*factor; ng = g*factor; nb = b*factor; }
             else { nr = r+(255-r)*factor; ng = g+(255-g)*factor; nb = b+(255-b)*factor; }
-            
-            const r_val = Math.round(nr);
-            const g_val = Math.round(ng);
-            const b_val = Math.round(nb);
-            const rgb = `${r_val},${g_val},${b_val}`;
-            const hex = rgbToHex(r_val, g_val, b_val);
-
+            const r_val = Math.round(nr); const g_val = Math.round(ng); const b_val = Math.round(nb);
+            const rgb = `${r_val},${g_val},${b_val}`; const hex = rgbToHex(r_val, g_val, b_val);
             pal.innerHTML += `<div class="color-card" onclick="copyCode('${rgb}')" ondblclick="copyHex('${hex}')">
                 <div class="color-swatch" style="background:rgb(${rgb})"></div>
                 <div class="color-info">${rgb}</div>
@@ -321,11 +335,9 @@
         }
     }
 
-    // Modal Controls
     function openMockup() { document.getElementById('mockupModal').style.display = 'block'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    // History Logic
     function saveToHistory(r, g, b) {
         let s = `${r},${g},${b}`;
         if (!history.includes(s)) {
@@ -344,7 +356,6 @@
         </div>`).join('');
     }
 
-    // Toast & Download
     function copyCode(t) { navigator.clipboard.writeText(t); showToast("RGB Copied: " + t); }
     function copyHex(t) { navigator.clipboard.writeText(t); showToast("HEX Copied: " + t); }
     function showToast(m) { const t = document.getElementById('copyToast'); t.innerText = m; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1500); }
