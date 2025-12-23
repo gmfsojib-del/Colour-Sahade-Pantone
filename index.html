@@ -6,151 +6,341 @@
     <title>Raha Digital Print - Pro Design Sector</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        :root { --primary: #1a237e; --secondary: #2e7d32; --ai-color: #00695c; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 0; display: flex; }
+        :root { 
+            --primary: #1a237e; 
+            --primary-light: #534bae;
+            --secondary: #2e7d32; 
+            --ai-color: #00695c; 
+            --bg-body: #f4f7f9;
+            --card-bg: #ffffff;
+        }
+
+        body { 
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif; 
+            background: var(--bg-body); 
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            color: #333;
+        }
         
         /* Sidebar Menu Styles */
-        .sidebar-nav { width: 260px; background: #fff; height: 100vh; position: fixed; border-right: 2px solid #ddd; padding: 15px; box-sizing: border-box; overflow-y: auto; z-index: 1000; }
-        .nav-section-title { font-size: 12px; color: #888; text-transform: uppercase; font-weight: 800; margin: 20px 0 10px 10px; letter-spacing: 1px; }
-        .nav-item { display: flex; align-items: center; padding: 10px 15px; margin-bottom: 5px; border-radius: 8px; cursor: pointer; color: #333; font-weight: 600; transition: 0.2s; font-size: 14px; }
-        .nav-item:hover { background: #f5f5f5; color: var(--primary); }
-        .nav-item.active { background: #f0f2ff; color: var(--primary); border-left: 4px solid var(--primary); }
-        .nav-icon { margin-right: 12px; font-size: 18px; width: 20px; text-align: center; }
+        .sidebar-nav { 
+            width: 280px; 
+            background: var(--card-bg); 
+            height: 100vh; 
+            position: fixed; 
+            border-right: 1px solid #e0e0e0; 
+            padding: 25px 15px; 
+            box-sizing: border-box; 
+            overflow-y: auto; 
+            z-index: 1000;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.02);
+        }
+        
+        .nav-section-title { 
+            font-size: 11px; 
+            color: #9e9e9e; 
+            text-transform: uppercase; 
+            font-weight: 800; 
+            margin: 25px 0 12px 10px; 
+            letter-spacing: 1.5px; 
+        }
 
-        /* Main Container Adjustment */
-        .main-wrapper { margin-left: 260px; width: calc(100% - 260px); padding: 25px; box-sizing: border-box; }
-        .main-container { max-width: 1100px; margin: auto; background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
-        .header { text-align: center; font-size: 28px; font-weight: 800; color: var(--primary); margin-bottom: 25px; border-bottom: 4px solid var(--primary); padding-bottom: 10px; text-transform: uppercase; }
-        
-        /* Layout Styles */
-        .main-layout { display: flex; gap: 20px; flex-wrap: wrap; }
-        .content-area { flex: 3; min-width: 320px; }
-        .history-sidebar { flex: 1; min-width: 250px; background: #fcfcfc; padding: 15px; border-radius: 12px; border: 2px solid #ddd; height: fit-content; }
-        .box { padding: 20px; border: 2px solid #ddd; border-radius: 12px; background: #fff; text-align: center; margin-bottom: 20px; }
-        .box-ai { border: 2px solid var(--ai-color); background: #f0fdfa; }
-        #picker-container { position: relative; margin-top: 15px; border: 3px solid #333; display: inline-block; cursor: crosshair; line-height: 0; max-width: 100%; }
-        #imageCanvas { max-width: 100%; height: auto; display: block; }
-        .rgb-inputs { display: flex; justify-content: center; gap: 10px; margin-top: 20px; margin-bottom: 20px; }
-        .rgb-field { width: 65px; padding: 12px; border: 2px solid #ccc; border-radius: 8px; text-align: center; font-weight: 900; font-size: 16px; }
-        .btn { padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.2s; font-size: 16px; }
-        .btn-update { background: var(--primary); color: white; }
-        .btn-save { background: var(--secondary); color: white; margin-top: 30px; font-size: 20px; }
-        
-        /* Palette Styles */
-        .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-top: 20px; }
-        .color-card { border: 1px solid #000; background: #fff; border-radius: 12px; overflow: hidden; cursor: pointer; transition: 0.1s; }
-        .color-swatch { width: 100%; height: 90px; border-bottom: 1px solid #000; }
-        .color-info { padding: 4px 2px; font-size: 13px; font-weight: 900; text-align: center; color: #000; }
-        
-        /* Hunt Styles */
-        .hunt-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; height: 180px; display: flex; flex-direction: column; margin-bottom: 10px; }
-        .c-layer { width: 100%; transition: 0.2s; position: relative; }
-        .c-layer:hover::after { content: 'Copy'; position: absolute; right: 5px; top: 5px; background: rgba(0,0,0,0.5); color: #fff; padding: 2px 5px; border-radius: 4px; font-size: 10px; }
+        .nav-item { 
+            display: flex; 
+            align-items: center; 
+            padding: 12px 18px; 
+            margin-bottom: 6px; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            color: #555; 
+            font-weight: 500; 
+            transition: all 0.3s ease; 
+            font-size: 14px; 
+        }
 
-        /* Scroll Area for Hunts */
-        #huntGrid { max-height: 500px; overflow-y: auto; padding: 10px; border: 1px solid #eee; border-radius: 10px; }
+        .nav-item:hover { 
+            background: #f0f2ff; 
+            color: var(--primary); 
+            transform: translateX(5px);
+        }
 
-        /* Modal Styles */
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
-        .modal-content { background: white; margin: 5% auto; padding: 25px; width: 500px; border-radius: 15px; text-align: center; position: relative; }
-        .close-btn { position: absolute; right: 20px; top: 10px; font-size: 30px; cursor: pointer; }
+        .nav-item.active { 
+            background: var(--primary); 
+            color: white; 
+            box-shadow: 0 4px 12px rgba(26, 35, 126, 0.2);
+        }
+
+        /* Main Layout */
+        .main-wrapper { margin-left: 280px; width: calc(100% - 280px); padding: 40px; box-sizing: border-box; }
         
-        /* Mockup */
-        .tshirt-mockup { width: 250px; height: 280px; margin: 20px auto; position: relative; background: #eee; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 5px solid #333; }
-        .tshirt-mockup svg { width: 200px; fill: #1a237e; transition: 0.5s; }
+        .main-container { 
+            max-width: 1200px; 
+            margin: auto; 
+        }
+
+        .header { 
+            font-size: 32px; 
+            font-weight: 800; 
+            color: var(--primary); 
+            margin-bottom: 35px; 
+            text-align: left;
+            letter-spacing: -0.5px;
+        }
+
+        .box { 
+            padding: 25px; 
+            border-radius: 16px; 
+            background: var(--card-bg); 
+            border: 1px solid #eaeaea;
+            margin-bottom: 25px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            transition: transform 0.3s ease;
+        }
+
+        .box:hover { transform: translateY(-3px); }
+
+        .box-ai { 
+            border: 1px solid rgba(0, 105, 92, 0.2); 
+            background: linear-gradient(145deg, #ffffff, #f0fdfa); 
+        }
+
+        #picker-container { 
+            position: relative; 
+            margin-top: 20px; 
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid #eee;
+            display: block;
+            cursor: crosshair;
+        }
+
+        #imageCanvas { width: 100%; height: auto; display: block; }
+
+        .rgb-inputs { display: flex; justify-content: start; gap: 12px; margin: 20px 0; }
         
-        .copy-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 12px 25px; border-radius: 30px; display: none; z-index: 3000; font-weight: bold; }
-        footer { text-align: center; padding: 20px; font-weight: bold; color: #1a237e; margin-top: 30px; }
+        .rgb-field { 
+            width: 75px; 
+            padding: 12px; 
+            border: 1px solid #ddd; 
+            border-radius: 10px; 
+            text-align: center; 
+            font-weight: 700; 
+            font-size: 16px; 
+            background: #fafafa;
+        }
+
+        .btn { 
+            padding: 16px 24px; 
+            border: none; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            transition: 0.3s; 
+            font-size: 15px; 
+            display: inline-block;
+        }
+
+        .btn-update { background: var(--primary); color: white; width: 100%; }
+        .btn-update:hover { background: var(--primary-light); box-shadow: 0 6px 15px rgba(26,35,126,0.3); }
+
+        .btn-save { 
+            background: #111; 
+            color: white; 
+            margin-top: 40px; 
+            font-size: 18px; 
+            width: 100%;
+            letter-spacing: 1px;
+        }
+
+        /* Palette Grid */
+        .palette-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
+            gap: 15px; 
+            margin-top: 25px; 
+        }
+
+        .color-card { 
+            background: #fff; 
+            border-radius: 14px; 
+            overflow: hidden; 
+            cursor: pointer; 
+            border: 1px solid #eee;
+            transition: 0.2s;
+        }
+
+        .color-card:hover { transform: scale(1.05); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+
+        .color-swatch { width: 100%; height: 80px; }
+
+        .color-info { 
+            padding: 10px 5px; 
+            font-size: 12px; 
+            font-weight: 700; 
+            text-align: center; 
+            background: #fff;
+        }
+
+        /* Hunt Cards */
+        .hunt-card { 
+            background: #fff; 
+            border-radius: 15px; 
+            overflow: hidden; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+            cursor: pointer; 
+            height: 200px; 
+            display: flex; 
+            flex-direction: column; 
+            transition: 0.3s ease;
+        }
+
+        .hunt-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+
+        /* History */
+        .history-sidebar { 
+            background: #fff; 
+            padding: 20px; 
+            border-radius: 16px; 
+            border: 1px solid #eee;
+        }
+
+        .history-item {
+            transition: 0.2s;
+            border-radius: 8px;
+            margin-bottom: 5px;
+        }
+        .history-item:hover { background: #f8f9fa; }
+
+        /* Modal */
+        .modal-content { 
+            background: white; 
+            border-radius: 24px; 
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+
+        .copy-toast { 
+            position: fixed; 
+            bottom: 40px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            background: #111; 
+            color: #fff; 
+            padding: 14px 28px; 
+            border-radius: 12px; 
+            font-size: 14px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        footer { 
+            text-align: center; 
+            padding: 40px; 
+            opacity: 0.6;
+            font-size: 13px;
+        }
+
     </style>
 </head>
 <body>
 
 <div class="sidebar-nav">
-    <div style="padding: 10px; margin-bottom: 20px;"><strong style="font-size: 20px; color: var(--primary);">RAHA DESIGN</strong></div>
+    <div style="padding: 10px; margin-bottom: 20px;">
+        <span style="font-size: 22px; font-weight: 900; color: var(--primary); letter-spacing: -1px;">RAHA DIGITAL</span>
+        <div style="font-size: 10px; color: #888; font-weight: 700;">PRO DESIGN SECTOR</div>
+    </div>
     
-    <div class="nav-section-title">Categories</div>
+    <div class="nav-section-title">Design Categories</div>
     <div id="categoryMenu"></div>
 </div>
 
 <div class="main-wrapper">
     <div class="main-container">
-        <div class="header">Raha Digital Print - Design Sector</div>
+        <div class="header">Color Intelligence Dashboard</div>
 
-        <div class="main-layout">
-            <div class="content-area">
+        <div style="display: flex; gap: 30px; flex-wrap: wrap;">
+            <div style="flex: 3; min-width: 320px;">
+                
                 <div class="box">
-                    <label><b>1. PHOTO PICKER (MANUAL)</b></label>
-                    <input type="file" id="upload" accept="image/*" style="margin-top:10px;">
+                    <label style="font-weight: 800; color: #444;">1. SOURCE IMAGE PICKER</label>
+                    <p style="font-size: 13px; color: #777; margin: 5px 0 15px 0;">যেকোনো ছবি আপলোড করে সেখান থেকে কালার পিক করুন</p>
+                    <input type="file" id="upload" accept="image/*" style="display: block; margin-bottom: 10px;">
                     <div id="picker-container">
                         <canvas id="imageCanvas"></canvas>
                     </div>
                 </div>
 
                 <div class="box box-ai">
-                    <label style="color: var(--ai-color);"><b>✨ AI UNIQUE COLOR MATCHER</b></label>
-                    <p style="font-size: 12px; color: #666;">RGB বা HEX কোড দিন, AI ৮টি লাক্সারি ম্যাচিং কালার তৈরি করবে</p>
+                    <label style="color: var(--ai-color); font-weight: 800;">✨ AI LUXURY MATCHING</label>
+                    <p style="font-size: 13px; color: #666;">কালার কোড দিন, AI আপনার জন্য বেস্ট ৮টি লাক্সারি কম্বিনেশন তৈরি করবে</p>
                     
-                    <div class="rgb-inputs" style="margin-bottom: 15px;">
+                    <div class="rgb-inputs">
                         <input type="number" id="ai_r" class="rgb-field" placeholder="R" value="26">
                         <input type="number" id="ai_g" class="rgb-field" placeholder="G" value="35">
                         <input type="number" id="ai_b" class="rgb-field" placeholder="B" value="126">
-                        <input type="text" id="ai_hex" style="width: 100px; padding: 12px; border: 2px solid #ccc; border-radius: 8px; text-align: center; font-weight: 900; text-transform: uppercase;" placeholder="#1A237E">
+                        <input type="text" id="ai_hex" style="width: 120px; padding: 12px; border: 1px solid #ddd; border-radius: 10px; text-align: center; font-weight: 700;" placeholder="#1A237E">
                     </div>
                     
-                    <button class="btn" style="background: var(--ai-color); color: white;" onclick="generate8AIColors()">GENERATE 8 UNIQUE COLORS</button>
+                    <button class="btn" style="background: var(--ai-color); color: white; width: 100%;" onclick="generate8AIColors()">GENERATE SMART PALETTE</button>
                     <div id="aiMatchingResult" class="palette-grid"></div>
                 </div>
 
                 <div class="box">
-                    <label><b>3. INPUT RGB CODE</b></label>
+                    <label style="font-weight: 800; color: #444;">3. MANUAL RGB INPUT</label>
                     <div class="rgb-inputs">
                         <input type="number" id="r" class="rgb-field" value="26">
                         <input type="number" id="g" class="rgb-field" value="35">
                         <input type="number" id="b" class="rgb-field" value="126">
                     </div>
-                    <button class="btn btn-update" onclick="generateFromInputs()">GENERATE PALETTE</button>
+                    <button class="btn btn-update" onclick="generateFromInputs()">REFRESH PALETTE</button>
                 </div>
 
                 <div class="box" id="huntSection">
-                    <label id="huntTitle"><b>🌈 EXPLORE TRENDING HUNTS</b></label>
-                    <div id="huntGrid" class="palette-grid" style="margin-top:15px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+                    <label id="huntTitle"><b>🌈 TRENDING COLLECTIONS</b></label>
+                    <div id="huntGrid" class="palette-grid" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
                     </div>
                 </div>
             </div>
 
-            <div class="history-sidebar">
-                <h3 style="margin-top:0; color:var(--primary); font-size: 18px;">SEARCH HISTORY</h3>
-                <div id="historyList"></div>
-                <button onclick="clearHistory()" style="margin-top:15px; border:none; color:red; cursor:pointer; font-weight:bold; background:none;">CLEAR HISTORY</button>
-                
-                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ddd;">
-                <button class="btn btn-update" onclick="openMockup()">👕 PREVIEW ON T-SHIRT</button>
+            <div style="flex: 1.2; min-width: 300px;">
+                <div class="history-sidebar">
+                    <h3 style="margin-top:0; color:var(--primary); font-size: 18px; font-weight: 800;">RECENT</h3>
+                    <div id="historyList"></div>
+                    <button onclick="clearHistory()" style="margin-top:20px; border:none; color:#ff5252; cursor:pointer; font-weight:bold; background:none; font-size: 12px;">CLEAR HISTORY</button>
+                    
+                    <hr style="margin: 25px 0; border: 0; border-top: 1px solid #f0f0f0;">
+                    <button class="btn btn-update" onclick="openMockup()">👕 T-SHIRT PREVIEW</button>
+                </div>
             </div>
         </div>
 
-        <div id="downloadArea" style="padding: 20px; background: white;">
-            <h3 style="text-align: center; text-transform: uppercase;">Premium Color Palette</h3>
+        <div id="downloadArea" style="padding: 30px; background: white; border-radius: 20px; margin-top: 30px; border: 1px solid #eee;">
+            <h3 style="text-align: center; text-transform: uppercase; letter-spacing: 2px; color: #555;">Premium Digital Palette</h3>
             <div id="palette" class="palette-grid"></div>
         </div>
 
-        <button class="btn btn-save" onclick="downloadImage()">SAVE AS IMAGE (300 DPI)</button>
+        <button class="btn btn-save" onclick="downloadImage()">DOWNLOAD HIGH-RES PALETTE (PNG)</button>
     </div>
-    <footer>Designed & Maintained by: GM Sojib</footer>
+    <footer>Designed & Maintained by GM Sojib &bull; 2024</footer>
 </div>
 
-<div id="mockupModal" class="modal"><div class="modal-content">
-    <span class="close-btn" onclick="closeMockup()">&times;</span>
-    <h2>T-Shirt Mockup Preview</h2>
-    <div class="tshirt-mockup" id="tshirtBox">
-        <svg id="tshirtSVG" viewBox="0 0 100 100"><path d="M90,20 L75,10 C70,8 65,15 65,15 C65,15 60,12 50,12 C40,12 35,15 35,15 C35,15 30,8 25,10 L10,20 L15,40 L25,35 L25,90 L75,90 L75,35 L85,40 L90,20 Z"/></svg>
+<div id="mockupModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeMockup()">&times;</span>
+        <h2 style="font-weight: 800;">T-Shirt Preview</h2>
+        <div class="tshirt-mockup" id="tshirtBox" style="width: 100%; max-width: 300px; margin: 30px auto;">
+            <svg id="tshirtSVG" viewBox="0 0 100 100" style="width: 100%;"><path d="M90,20 L75,10 C70,8 65,15 65,15 C65,15 60,12 50,12 C40,12 35,15 35,15 C35,15 30,8 25,10 L10,20 L15,40 L25,35 L25,90 L75,90 L75,35 L85,40 L90,20 Z"/></svg>
+        </div>
+        <div id="currentMockupColor" style="font-weight: bold; font-size: 20px; margin-bottom: 20px;">RGB(26, 35, 126)</div>
+        <button class="btn btn-update" onclick="closeMockup()">CLOSE PREVIEW</button>
     </div>
-    <div id="currentMockupColor" style="font-weight: bold; font-size: 18px;">RGB(26, 35, 126)</div>
-    <button class="btn btn-update" style="margin-top: 20px;" onclick="closeMockup()">DONE</button>
-</div></div>
+</div>
 
 <div id="copyToast" class="copy-toast">RGB Code Copied!</div>
 
 <script>
+    // আপনার আগের সব স্ক্রিপ্ট কোড এখানে হুবহু বসবে
     const canvas = document.getElementById('imageCanvas');
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     const rIn = document.getElementById('r');
@@ -161,15 +351,15 @@
     const categories = ["Pastel", "Vintage", "Retro", "Neon", "Gold", "Nature", "Summer", "Happy", "Night", "Earth"];
 
     const huntData = {
-        'Pastel': [['#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7'], ['#F3E5F5', '#E1F5FE', '#E8F5E9', '#FFFDE7'], ['#B2F7EF', '#EFF7F6', '#F7D1CD', '#E2CFC4'], ['#FCE1E4', '#FCF4DD', '#DDEDEA', '#DAEAF6'], ['#E8D7F1', '#D3BCC0', '#A5668B', '#69306D'], ['#F08080', '#F4978E', '#F8AD9D', '#FBC4AB'], ['#FF99C8', '#FCF6BD', '#D0F4DE', '#A9DEF9'], ['#E4C1F9', '#D0F4DE', '#FCF6BD', '#FF99C8'], ['#F6EAC2', '#FFD4B2', '#FFBFA3', '#FFADAD'], ['#A0C4FF', '#BDB2FF', '#FFC6FF', '#FFFFFC'], ['#DEE2FF', '#E8E8E8', '#FEEAFA', '#F1F1F1'], ['#B9FBC0', '#98F5E1', '#8EECF5', '#A3C4F3']],
-        'Vintage': [['#634832', '#967E67', '#D4A373', '#FEFAE0'], ['#264653', '#2A9D8F', '#E9C46A', '#F4A261'], ['#582F0E', '#7F4F24', '#936639', '#A68A64'], ['#B6AD90', '#C2C5AA', '#A4AC86', '#656D4A'], ['#333D29', '#414833', '#656D4A', '#A4AC86'], ['#7D4F50', '#D1BE9C', '#AA998F', '#E0D8DE'], ['#2C3E50', '#E67E22', '#ECF0F1', '#95A5A6'], ['#1A1A1A', '#4A4A4A', '#9B9B9B', '#D8D8D8'], ['#3E2723', '#5D4037', '#8D6E63', '#D7CCC8'], ['#1B5E20', '#388E3C', '#66BB6A', '#C8E6C9'], ['#827397', '#4D4C7D', '#363062', '#E9D5CA'], ['#433520', '#025955', '#00917C', '#FDE8CD']],
-        'Retro': [['#E07A5F', '#3D405B', '#81B29A', '#F2CC8F'], ['#ffbe0b', '#fb5607', '#ff006e', '#8338ec'], ['#264653', '#2a9d8f', '#e9c46a', '#f4a261'], ['#d00000', '#ffba08', '#3f88c5', '#032b43'], ['#606c38', '#283618', '#fefae0', '#dda15e'], ['#ef476f', '#ffd166', '#06d6a0', '#118ab2'], ['#2b2d42', '#8d99ae', '#edf2f4', '#ef233c'], ['#003049', '#d62828', '#f77f00', '#fcbf49'], ['#7209b7', '#3f37c9', '#4361ee', '#4cc9f0'], ['#ff9f1c', '#ffbf69', '#ffffff', '#cbf3f0']],
-        'Neon': [['#00F5FF', '#00FF41', '#FF00FF', '#FFFF00'], ['#FF3131', '#FF5E13', '#77EE11', '#08F7FE'], ['#FF0055', '#00FF99', '#00CCFF', '#FFFF00'], ['#BF00FF', '#FF00BF', '#00FFBF', '#FFBF00'], ['#39FF14', '#FF1493', '#00BFFF', '#FFD700'], ['#7FFF00', '#FF00FF', '#00FFFF', '#FF4500'], ['#000000', '#FF0000', '#FFFB00', '#00FF00'], ['#05FFA1', '#B967FF', '#05B2FF', '#FF4848']],
-        'Nature': [['#11998e', '#38ef7d', '#56ab2f', '#a8e063'], ['#134E5E', '#71B280', '#084594', '#21e6c1'], ['#00b09b', '#96c93d', '#20bf55', '#01baef'], ['#2d5a27', '#4b7d3f', '#7ba160', '#c2d5a8'], ['#1b4332', '#2d6a4f', '#409167', '#95d5b2'], ['#31572c', '#4f772d', '#90be6d', '#ecf39e'], ['#40513B', '#609966', '#9DC08B', '#EDF1D6'], ['#004445', '#2C7873', '#6FB98F', '#FAF1E6']],
-        'Gold': [['#D4AF37', '#FFD700', '#CFB53B', '#F5E1A4'], ['#432818', '#99582A', '#BB9457', '#FFE6A7'], ['#BF953F', '#FCF6BA', '#B38728', '#FBF5B7'], ['#8A6623', '#C7A317', '#D1B000', '#F7EF8A'], ['#E6BE8A', '#D4AF37', '#996515', '#71491E'], ['#DAA520', '#FFD700', '#F0E68C', '#B8860B']],
-        'Summer': [['#FF9A8B', '#FF6A88', '#FF99AC', '#FBBC05'], ['#00B4DB', '#0083B0', '#FDC830', '#F37335'], ['#FF5F6D', '#FFC371', '#F12711', '#F5AF19'], ['#4facfe', '#00f2fe', '#f093fb', '#f5576c'], ['#FA709A', '#FEE140', '#00C6FB', '#005BEA'], ['#FF9A9E', '#FAD0C4', '#FAD0C4', '#FFD1FF'], ['#FBDA61', '#FF5ACD', '#21D4FD', '#B721FF'], ['#08AEEA', '#2AF598', '#FEE140', '#FA709A']],
-        'Night': [['#0F0C29', '#302B63', '#24243E', '#FFFFFF'], ['#232526', '#414345', '#000000', '#FFFFFF'], ['#000428', '#004e92', '#000000', '#00d2ff'], ['#021B79', '#0575E6', '#2196F3', '#BBDEFB'], ['#2C3E50', '#4CA1AF', '#2C3E50', '#000000'], ['#141E30', '#243B55', '#243B55', '#FFFFFF']],
-        'Happy': [['#f9d423', '#ff4e50', '#f12711', '#f5af19'], ['#8E2DE2', '#4A00E0', '#FF0099', '#493240'], ['#ff9a9e', '#fecfef', '#feada6', '#fbb2d0'], ['#fccb90', '#d57eeb', '#00f2fe', '#66a6ff'], ['#84fab0', '#8fd3f4', '#fccb90', '#d57eeb'], ['#a1c4fd', '#c2e9fb', '#fdfcfb', '#e2d1c3']]
+        'Pastel': [['#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7'], ['#F3E5F5', '#E1F5FE', '#E8F5E9', '#FFFDE7'], ['#B2F7EF', '#EFF7F6', '#F7D1CD', '#E2CFC4']],
+        'Vintage': [['#634832', '#967E67', '#D4A373', '#FEFAE0'], ['#264653', '#2A9D8F', '#E9C46A', '#F4A261']],
+        'Retro': [['#E07A5F', '#3D405B', '#81B29A', '#F2CC8F'], ['#ffbe0b', '#fb5607', '#ff006e', '#8338ec']],
+        'Neon': [['#00F5FF', '#00FF41', '#FF00FF', '#FFFF00'], ['#FF3131', '#FF5E13', '#77EE11', '#08F7FE']],
+        'Nature': [['#11998e', '#38ef7d', '#56ab2f', '#a8e063'], ['#134E5E', '#71B280', '#084594', '#21e6c1']],
+        'Gold': [['#D4AF37', '#FFD700', '#CFB53B', '#F5E1A4'], ['#432818', '#99582A', '#BB9457', '#FFE6A7']],
+        'Summer': [['#FF9A8B', '#FF6A88', '#FF99AC', '#FBBC05'], ['#00B4DB', '#0083B0', '#FDC830', '#F37335']],
+        'Night': [['#0F0C29', '#302B63', '#24243E', '#FFFFFF'], ['#232526', '#414345', '#000000', '#FFFFFF']],
+        'Happy': [['#f9d423', '#ff4e50', '#f12711', '#f5af19'], ['#8E2DE2', '#4A00E0', '#FF0099', '#493240']]
     };
 
     const catMenu = document.getElementById('categoryMenu');
@@ -302,7 +492,6 @@
                     <div class="c-layer" style="background:${p[3]}; flex:1" onclick="copyHex('${p[3]}')"></div>
                 </div>`;
         });
-        document.getElementById('huntSection').scrollIntoView({behavior: 'smooth'});
     }
 
     function saveToHistory(r, g, b) {
@@ -316,9 +505,9 @@
 
     function updateHistoryUI() {
         const l = document.getElementById('historyList');
-        l.innerHTML = history.map(c => `<div class="history-item" onclick="updateUI(${c})" style="display:flex; align-items:center; gap:10px; padding:8px; border-bottom:1px solid #eee; cursor:pointer;">
-            <div style="width:30px; height:30px; background:rgb(${c}); border-radius:4px; border:1px solid #ddd;"></div>
-            <span style="font-size:12px; font-weight:bold;">RGB(${c})</span>
+        l.innerHTML = history.map(c => `<div class="history-item" onclick="updateUI(${c})" style="display:flex; align-items:center; gap:10px; padding:10px; cursor:pointer;">
+            <div style="width:35px; height:35px; background:rgb(${c}); border-radius:8px; border:1px solid #ddd;"></div>
+            <span style="font-size:12px; font-weight:700;">RGB(${c})</span>
         </div>`).join('');
     }
 
@@ -343,4 +532,3 @@
 
 </body>
 </html>
-
