@@ -6,77 +6,95 @@
     <title>Raha Digital Print - Pro Design Sector</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        :root { --primary: #1a237e; --secondary: #2e7d32; --ai-color: #00695c; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 0; display: flex; }
-        
-        /* Sidebar Menu Styles - Updated as per Image */
-        .sidebar-nav { width: 260px; background: #fff; height: 100vh; position: fixed; border-right: 2px solid #ddd; padding: 15px; box-sizing: border-box; overflow-y: auto; z-index: 1000; }
-        .nav-section-title { font-size: 12px; color: #888; text-transform: uppercase; font-weight: 800; margin: 20px 0 10px 10px; letter-spacing: 1px; }
-        .nav-item { display: flex; align-items: center; padding: 10px 15px; margin-bottom: 5px; border-radius: 8px; cursor: pointer; color: #333; font-weight: 600; transition: 0.2s; font-size: 14px; }
-        .nav-item:hover { background: #f5f5f5; color: var(--primary); }
-        .nav-item.active { background: #f0f2ff; color: var(--primary); border-left: 4px solid var(--primary); }
-        .nav-icon { margin-right: 12px; font-size: 18px; width: 20px; text-align: center; }
+        :root { 
+            --primary: #1a237e; 
+            --secondary: #2e7d32; 
+            --ai-color: #00695c;
+            --accent: #ff4081;
+            --sidebar-bg: #ffffff;
+            --main-bg: #f4f7f6;
+            --card-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
 
-        /* Main Container Adjustment */
-        .main-wrapper { margin-left: 260px; width: calc(100% - 260px); padding: 25px; box-sizing: border-box; }
-        .main-container { max-width: 1100px; margin: auto; background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
-        .header { text-align: center; font-size: 28px; font-weight: 800; color: var(--primary); margin-bottom: 25px; border-bottom: 4px solid var(--primary); padding-bottom: 10px; text-transform: uppercase; }
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: var(--main-bg); margin: 0; padding: 0; display: flex; color: #333; }
         
-        /* Layout Styles */
-        .main-layout { display: flex; gap: 20px; flex-wrap: wrap; }
-        .content-area { flex: 3; min-width: 320px; }
-        .history-sidebar { flex: 1; min-width: 250px; background: #fcfcfc; padding: 15px; border-radius: 12px; border: 2px solid #ddd; height: fit-content; }
-        .box { padding: 20px; border: 2px solid #ddd; border-radius: 12px; background: #fff; text-align: center; margin-bottom: 20px; }
-        .box-ai { border: 2px solid var(--ai-color); background: #f0fdfa; }
-        #picker-container { position: relative; margin-top: 15px; border: 3px solid #333; display: inline-block; cursor: crosshair; line-height: 0; max-width: 100%; }
-        #imageCanvas { max-width: 100%; height: auto; display: block; }
-        .rgb-inputs { display: flex; justify-content: center; gap: 10px; margin-top: 20px; margin-bottom: 20px; }
-        .rgb-field { width: 65px; padding: 12px; border: 2px solid #ccc; border-radius: 8px; text-align: center; font-weight: 900; font-size: 16px; }
-        .btn { padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.2s; font-size: 16px; }
-        .btn-update { background: var(--primary); color: white; }
-        .btn-save { background: var(--secondary); color: white; margin-top: 30px; font-size: 20px; }
-        
-        /* Palette Styles */
-        .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-top: 20px; }
-        .color-card { border: 1px solid #000; background: #fff; border-radius: 12px; overflow: hidden; cursor: pointer; transition: 0.1s; }
-        .color-swatch { width: 100%; height: 90px; border-bottom: 1px solid #000; }
-        .color-info { padding: 4px 2px; font-size: 13px; font-weight: 900; text-align: center; color: #000; }
-        
-        /* Hunt Styles */
-        .hunt-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; height: 180px; display: flex; flex-direction: column; }
-        .c-layer { width: 100%; transition: 0.2s; position: relative; }
-        .c-layer:hover::after { content: 'Copy'; position: absolute; right: 5px; top: 5px; background: rgba(0,0,0,0.5); color: #fff; padding: 2px 5px; border-radius: 4px; font-size: 10px; }
+        /* --- Sidebar Enhancements --- */
+        .sidebar-nav { width: 260px; background: var(--sidebar-bg); height: 100vh; position: fixed; border-right: 1px solid #e0e0e0; padding: 25px 15px; box-sizing: border-box; overflow-y: auto; z-index: 1000; box-shadow: 2px 0 10px rgba(0,0,0,0.03); }
+        .sidebar-logo { font-size: 22px; font-weight: 900; color: var(--primary); margin-bottom: 30px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        .nav-section-title { font-size: 11px; color: #9e9e9e; text-transform: uppercase; font-weight: 800; margin: 25px 0 12px 10px; letter-spacing: 1.5px; }
+        .nav-item { display: flex; align-items: center; padding: 12px 15px; margin-bottom: 4px; border-radius: 10px; cursor: pointer; color: #555; font-weight: 600; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-size: 14px; border: 1px solid transparent; }
+        .nav-item:hover { background: #f0f2ff; color: var(--primary); transform: translateX(5px); }
+        .nav-item.active { background: #e8eaf6; color: var(--primary); border-left: 5px solid var(--primary); font-weight: 700; box-shadow: 0 4px 10px rgba(26, 35, 126, 0.1); }
+        .nav-icon { margin-right: 12px; font-size: 18px; width: 24px; display: inline-block; text-align: center; }
 
-        /* Modal Styles */
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
-        .modal-content { background: white; margin: 5% auto; padding: 25px; width: 500px; border-radius: 15px; text-align: center; position: relative; }
-        .close-btn { position: absolute; right: 20px; top: 10px; font-size: 30px; cursor: pointer; }
-        .drop-zone { border: 3px dashed #bbb; padding: 40px; border-radius: 10px; background: #f9f9f9; cursor: pointer; margin-bottom: 20px; }
+        /* --- Main Content Enhancements --- */
+        .main-wrapper { margin-left: 260px; width: calc(100% - 260px); padding: 30px; box-sizing: border-box; }
+        .main-container { max-width: 1200px; margin: auto; background: transparent; }
+        .header { background: #fff; padding: 20px; border-radius: 15px; text-align: center; font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 30px; box-shadow: var(--card-shadow); border-bottom: 5px solid var(--primary); text-transform: uppercase; letter-spacing: 1px; }
         
-        /* Mockup */
-        .tshirt-mockup { width: 250px; height: 280px; margin: 20px auto; position: relative; background: #eee; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 5px solid #333; }
-        .tshirt-mockup svg { width: 200px; fill: #1a237e; transition: 0.5s; }
+        .main-layout { display: flex; gap: 25px; align-items: flex-start; }
+        .content-area { flex: 3; }
+        .history-sidebar { flex: 1; background: #fff; padding: 20px; border-radius: 15px; box-shadow: var(--card-shadow); height: auto; position: sticky; top: 30px; border: 1px solid #eee; }
         
-        .copy-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 12px 25px; border-radius: 30px; display: none; z-index: 3000; font-weight: bold; }
-        footer { text-align: center; padding: 20px; font-weight: bold; color: #1a237e; margin-top: 30px; }
+        /* --- Component Boxes --- */
+        .box { padding: 25px; border: none; border-radius: 15px; background: #fff; box-shadow: var(--card-shadow); margin-bottom: 25px; transition: transform 0.3s ease; }
+        .box:hover { transform: translateY(-3px); }
+        .box label { font-size: 16px; margin-bottom: 15px; display: block; color: #444; }
+        .box-ai { border-top: 5px solid var(--ai-color); background: linear-gradient(to bottom, #f0fdfa, #ffffff); }
+        
+        /* Picker & Canvas */
+        #picker-container { position: relative; margin-top: 15px; border: 5px solid #fff; box-shadow: 0 0 20px rgba(0,0,0,0.1); border-radius: 10px; overflow: hidden; display: inline-block; }
+        #imageCanvas { cursor: crosshair; }
+
+        /* RGB Inputs */
+        .rgb-inputs { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
+        .rgb-field { width: 70px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px; text-align: center; font-weight: 800; font-size: 18px; color: var(--primary); transition: border-color 0.3s; }
+        .rgb-field:focus { border-color: var(--primary); outline: none; }
+
+        /* Buttons */
+        .btn { padding: 14px 20px; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; transition: all 0.3s; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn-update { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(26, 35, 126, 0.2); }
+        .btn-update:hover { background: #0d144d; transform: scale(1.02); }
+        .btn-save { background: var(--secondary); color: white; margin-top: 30px; font-size: 18px; width: 100%; box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3); }
+        .btn-save:hover { background: #1b5e20; }
+
+        /* --- Palette & Grid --- */
+        .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; margin-top: 20px; }
+        .color-card { background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #eee; transition: all 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .color-card:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.15); border-color: #ddd; }
+        .color-swatch { width: 100%; height: 80px; }
+        .color-info { padding: 8px 5px; font-size: 12px; font-weight: 800; text-align: center; }
+        
+        /* Hunt Cards */
+        .hunt-card { border-radius: 15px; overflow: hidden; height: 180px; box-shadow: var(--card-shadow); transition: transform 0.3s; }
+        .hunt-card:hover { transform: scale(1.03); }
+
+        /* Modals */
+        .modal { background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); }
+        .modal-content { border-radius: 20px; padding: 35px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); border: none; }
+        
+        .tshirt-mockup { background: radial-gradient(circle, #ffffff, #e0e0e0); border: none; box-shadow: inset 0 0 50px rgba(0,0,0,0.1); }
+
+        .copy-toast { background: #1a237e; color: #fff; border: 2px solid #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+        footer { font-size: 14px; opacity: 0.8; margin-top: 50px; border-top: 1px solid #ddd; padding-top: 20px; }
     </style>
 </head>
 <body>
 
 <div class="sidebar-nav">
-    <div style="padding: 10px; margin-bottom: 20px;"><strong style="font-size: 20px; color: var(--primary);">RAHA DESIGN</strong></div>
+    <div class="sidebar-logo">🎨 <span>RAHA DESIGN</span></div>
     
     <div class="nav-section-title">Quick Tools</div>
-    <div class="nav-item" onclick="alert('Find MD stock feature loading...')"><span class="nav-icon">🔍</span> Find MD stock</div>
+    <div class="nav-item" onclick="alert('Feature coming soon!')"><span class="nav-icon">🔍</span> Find MD stock</div>
     <div class="nav-item" onclick="openTool('bgModal')"><span class="nav-icon">👤</span> Background remove</div>
     <div class="nav-item" onclick="openTool('upscaleModal')"><span class="nav-icon">🖼️</span> Image upscale</div>
-    <div class="nav-item" onclick="alert('Caption Generator loading...')"><span class="nav-icon">Aa</span> Caption generate</div>
-    <div class="nav-item" onclick="alert('Vector service ready...')"><span class="nav-icon">📐</span> Vector to photo</div>
-    <div class="nav-item" onclick="alert('Sharing feature enabled...')"><span class="nav-icon">✈️</span> Quick image sharing</div>
+    <div class="nav-item" onclick="alert('Feature coming soon!')"><span class="nav-icon">Aa</span> Caption generate</div>
+    <div class="nav-item" onclick="alert('Feature coming soon!')"><span class="nav-icon">📐</span> Vector to photo</div>
+    <div class="nav-item" onclick="alert('Feature coming soon!')"><span class="nav-icon">✈️</span> Quick image sharing</div>
 
     <div class="nav-section-title">Categories</div>
-    <div id="categoryMenu">
-        </div>
+    <div id="categoryMenu"></div>
 </div>
 
 <div class="main-wrapper">
@@ -87,7 +105,7 @@
             <div class="content-area">
                 <div class="box">
                     <label><b>1. PHOTO PICKER (MANUAL)</b></label>
-                    <input type="file" id="upload" accept="image/*" style="margin-top:10px;">
+                    <input type="file" id="upload" accept="image/*" style="background: #f8f9fa; padding: 10px; border-radius: 8px; width: 100%; box-sizing: border-box;">
                     <div id="picker-container">
                         <canvas id="imageCanvas"></canvas>
                     </div>
@@ -95,7 +113,7 @@
 
                 <div class="box box-ai">
                     <label style="color: var(--ai-color);"><b>✨ AI COLOR MATCHER (AUTO SUGGEST)</b></label>
-                    <p style="font-size: 12px; color: #666;">ইমেজ দিলে ৫টি ম্যাচিং কালার আসবে</p>
+                    <p style="font-size: 13px; color: #666; margin-top: -10px;">ইমেজ থেকে সেরা ৫টি কালার অটোমেটিক সিলেক্ট হবে</p>
                     <input type="file" id="aiUpload" accept="image/*" style="margin: 10px 0;">
                     <div id="aiMatchingResult" class="palette-grid"></div>
                 </div>
@@ -103,42 +121,42 @@
                 <div class="box">
                     <label><b>3. INPUT RGB CODE</b></label>
                     <div class="rgb-inputs">
-                        <input type="number" id="r" class="rgb-field" value="26">
-                        <input type="number" id="g" class="rgb-field" value="35">
-                        <input type="number" id="b" class="rgb-field" value="126">
+                        <input type="number" id="r" class="rgb-field" value="26" min="0" max="255">
+                        <input type="number" id="g" class="rgb-field" value="35" min="0" max="255">
+                        <input type="number" id="b" class="rgb-field" value="126" min="0" max="255">
                     </div>
                     <button class="btn btn-update" onclick="generateFromInputs()">GENERATE PALETTE</button>
                 </div>
 
-                <div class="box" id="huntSection">
+                <div class="box" id="huntSection" style="border-top: 5px solid var(--accent);">
                     <label id="huntTitle"><b>🌈 EXPLORE PASTEL HUNTS</b></label>
-                    <div id="huntGrid" class="palette-grid" style="margin-top:15px;"></div>
+                    <div id="huntGrid" class="palette-grid" style="margin-top:15px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));"></div>
                 </div>
             </div>
 
             <div class="history-sidebar">
-                <h3 style="margin-top:0; color:var(--primary); font-size: 18px;">SEARCH HISTORY</h3>
-                <div id="historyList"></div>
-                <button onclick="clearHistory()" style="margin-top:15px; border:none; color:red; cursor:pointer; font-weight:bold; background:none;">CLEAR HISTORY</button>
+                <h3 style="margin-top:0; color:var(--primary); font-size: 16px; border-bottom: 2px solid #eee; padding-bottom: 10px;">🔍 SEARCH HISTORY</h3>
+                <div id="historyList" style="max-height: 400px; overflow-y: auto;"></div>
+                <button onclick="clearHistory()" style="margin-top:15px; border:none; color:#888; cursor:pointer; font-size:12px; background:none; text-decoration: underline;">CLEAR ALL HISTORY</button>
                 
-                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ddd;">
-                <button class="btn btn-update" onclick="openMockup()">👕 PREVIEW ON T-SHIRT</button>
+                <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
+                <button class="btn btn-update" onclick="openMockup()" style="width: 100%; background: #333;">👕 PREVIEW ON T-SHIRT</button>
             </div>
         </div>
 
-        <div id="downloadArea" style="padding: 20px; background: white;">
-            <h3 style="text-align: center; text-transform: uppercase;">Premium Color Palette</h3>
-            <div id="palette" class="palette-grid"></div>
+        <div id="downloadArea" style="padding: 30px; background: #fff; border-radius: 15px; margin-top: 20px; box-shadow: var(--card-shadow);">
+            <h3 style="text-align: center; text-transform: uppercase; margin-bottom: 25px; color: var(--primary); letter-spacing: 2px;">Premium Color Palette</h3>
+            <div id="palette" class="palette-grid" style="grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));"></div>
         </div>
 
-        <button class="btn btn-save" onclick="downloadImage()">SAVE AS IMAGE (300 DPI)</button>
+        <button class="btn btn-save" onclick="downloadImage()">⬇️ SAVE PALETTE AS IMAGE (HD)</button>
     </div>
     <footer>Designed & Maintained by: GM Sojib</footer>
 </div>
 
 <div id="upscaleModal" class="modal"><div class="modal-content">
     <span class="close-btn" onclick="closeTool('upscaleModal')">&times;</span>
-    <h2>🖼️ Image Upscale (2X)</h2>
+    <h2 style="color: var(--primary);">🖼️ Image Upscale (2X)</h2>
     <div class="drop-zone" onclick="document.getElementById('uIn').click()">
         <p>ছবি সিলেক্ট করুন (অটোমেটিক ২গুণ বড় হবে)</p>
         <input type="file" id="uIn" hidden accept="image/*">
@@ -147,7 +165,7 @@
 
 <div id="bgModal" class="modal"><div class="modal-content">
     <span class="close-btn" onclick="closeTool('bgModal')">&times;</span>
-    <h2>👤 Background Remover</h2>
+    <h2 style="color: var(--ai-color);">👤 Background Remover</h2>
     <div class="drop-zone" onclick="document.getElementById('bgIn').click()">
         <p>ব্যাকগ্রাউন্ড সরাতে এখানে ছবি আপলোড করুন</p>
         <input type="file" id="bgIn" hidden accept="image/*">
@@ -158,15 +176,16 @@
     <span class="close-btn" onclick="closeMockup()">&times;</span>
     <h2>T-Shirt Mockup Preview</h2>
     <div class="tshirt-mockup" id="tshirtBox">
-        <svg id="tshirtSVG" viewBox="0 0 100 100"><path d="M90,20 L75,10 C70,8 65,15 65,15 C65,15 60,12 50,12 C40,12 35,15 35,15 C35,15 30,8 25,10 L10,20 L15,40 L25,35 L25,90 L75,90 L75,35 L85,40 L90,20 Z"/></svg>
+        <svg id="tshirtSVG" viewBox="0 0 100 100" style="width: 250px;"><path d="M90,20 L75,10 C70,8 65,15 65,15 C65,15 60,12 50,12 C40,12 35,15 35,15 C35,15 30,8 25,10 L10,20 L15,40 L25,35 L25,90 L75,90 L75,35 L85,40 L90,20 Z"/></svg>
     </div>
-    <div id="currentMockupColor" style="font-weight: bold; font-size: 18px;">RGB(26, 35, 126)</div>
-    <button class="btn btn-update" style="margin-top: 20px;" onclick="closeMockup()">DONE</button>
+    <div id="currentMockupColor" style="font-weight: bold; font-size: 20px; color: #333;">RGB(26, 35, 126)</div>
+    <button class="btn btn-update" style="margin-top: 25px; width: 100%;" onclick="closeMockup()">CLOSE PREVIEW</button>
 </div></div>
 
 <div id="copyToast" class="copy-toast">RGB Code Copied!</div>
 
 <script>
+    // আপনার অরিজিনাল স্ক্রিপ্টটি এখানে হুবহু থাকবে কোনো পরিবর্তন ছাড়াই
     const canvas = document.getElementById('imageCanvas');
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     const rIn = document.getElementById('r');
@@ -174,7 +193,6 @@
     const bIn = document.getElementById('b');
     let history = JSON.parse(localStorage.getItem('rahaColorHistory')) || [];
 
-    // Categories List as per Image
     const categories = ["Pastel", "Vintage", "Retro", "Neon", "Gold", "Light", "Dark", "Warm", "Cold", "Summer", "Fall", "Winter", "Spring", "Happy", "Nature", "Earth", "Night"];
 
     const huntData = {
@@ -186,7 +204,6 @@
         'Warm': [['#FF9A8B', '#FF6A88', '#FF99AC', '#FBBC05'], ['#FAD961', '#F76B1C', '#FF9A8B', '#FF6A88']]
     };
 
-    // --- Dynamic Sidebar Categories ---
     const catMenu = document.getElementById('categoryMenu');
     categories.forEach(cat => {
         const item = document.createElement('div');
@@ -200,7 +217,6 @@
         catMenu.appendChild(item);
     });
 
-    // --- Core Functions (Manual & AI) ---
     function rgbToHex(rgbStr) {
         let parts = rgbStr.split(',');
         return "#" + parts.map(x => parseInt(x).toString(16).padStart(2, '0').toUpperCase()).join('');
@@ -281,7 +297,6 @@
         }
     }
 
-    // --- Tools & Mockup ---
     function openTool(id) { document.getElementById(id).style.display = 'block'; }
     function closeTool(id) { document.getElementById(id).style.display = 'none'; }
     function openMockup() { document.getElementById('mockupModal').style.display = 'block'; }
@@ -304,7 +319,6 @@
         document.getElementById('huntSection').scrollIntoView({behavior: 'smooth'});
     }
 
-    // --- History & Download ---
     function saveToHistory(r, g, b) {
         let s = `${r},${g},${b}`;
         if (!history.includes(s)) {
@@ -316,9 +330,9 @@
 
     function updateHistoryUI() {
         const l = document.getElementById('historyList');
-        l.innerHTML = history.map(c => `<div class="history-item" onclick="updateUI(${c})" style="display:flex; align-items:center; gap:10px; padding:8px; border-bottom:1px solid #eee; cursor:pointer;">
-            <div style="width:30px; height:30px; background:rgb(${c}); border-radius:4px; border:1px solid #ddd;"></div>
-            <span style="font-size:12px; font-weight:bold;">RGB(${c})</span>
+        l.innerHTML = history.map(c => `<div class="history-item" onclick="updateUI(${c})" style="display:flex; align-items:center; gap:10px; padding:10px; border-bottom:1px solid #f0f0f0; cursor:pointer; transition: 0.2s;">
+            <div style="width:35px; height:35px; background:rgb(${c}); border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+            <span style="font-size:12px; font-weight:700; color:#555;">RGB(${c})</span>
         </div>`).join('');
     }
 
@@ -336,7 +350,6 @@
         });
     }
 
-    // Init
     updateHistoryUI();
     filterHunt('Pastel');
     generatePalette(26, 35, 126);
