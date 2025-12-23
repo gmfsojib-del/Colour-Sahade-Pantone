@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,125 +10,146 @@
         :root { --primary: #1a237e; --secondary: #2e7d32; --ai-color: #00695c; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 0; display: flex; }
         
-        /* Sidebar */
-        .sidebar-nav { width: 240px; background: #fff; height: 100vh; position: fixed; border-right: 2px solid #ddd; padding: 20px; box-sizing: border-box; z-index: 100; }
+        /* Sidebar Menu Styles */
+        .sidebar-nav { width: 240px; background: #fff; height: 100vh; position: fixed; border-right: 2px solid #ddd; padding: 20px; box-sizing: border-box; }
         .nav-item { display: flex; align-items: center; padding: 12px; margin-bottom: 10px; border-radius: 8px; cursor: pointer; color: #444; font-weight: bold; transition: 0.3s; border: 1px solid transparent; }
         .nav-item:hover { background: #f0f0f0; border-color: #ccc; }
         .nav-item.active { background: var(--primary); color: white; }
         .nav-icon { margin-right: 10px; font-size: 18px; }
 
-        /* Layout */
+        /* Main Container Adjustment */
         .main-wrapper { margin-left: 240px; width: calc(100% - 240px); padding: 25px; box-sizing: border-box; }
         .main-container { max-width: 1100px; margin: auto; background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
         .header { text-align: center; font-size: 28px; font-weight: 800; color: var(--primary); margin-bottom: 25px; border-bottom: 4px solid var(--primary); padding-bottom: 10px; text-transform: uppercase; }
         
+        /* Existing Layout Styles */
+        .main-layout { display: flex; gap: 20px; flex-wrap: wrap; }
+        .content-area { flex: 3; min-width: 320px; }
+        .history-sidebar { flex: 1; min-width: 250px; background: #fcfcfc; padding: 15px; border-radius: 12px; border: 2px solid #ddd; height: fit-content; }
         .box { padding: 20px; border: 2px solid #ddd; border-radius: 12px; background: #fff; text-align: center; margin-bottom: 20px; }
-        #imageCanvas { max-width: 100%; height: auto; display: block; margin: auto; border: 1px solid #ddd; }
+        .box-ai { border: 2px solid var(--ai-color); background: #f0fdfa; }
+        #picker-container { position: relative; margin-top: 15px; border: 3px solid #333; display: inline-block; cursor: crosshair; line-height: 0; max-width: 100%; }
+        #imageCanvas { max-width: 100%; height: auto; display: block; }
+        .rgb-inputs { display: flex; justify-content: center; gap: 10px; margin-top: 20px; margin-bottom: 20px; }
+        .rgb-field { width: 65px; padding: 12px; border: 2px solid #ccc; border-radius: 8px; text-align: center; font-weight: 900; font-size: 16px; }
+        .btn { padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.2s; font-size: 16px; }
+        .btn-update { background: var(--primary); color: white; }
+        .btn-save { background: var(--secondary); color: white; margin-top: 30px; font-size: 20px; }
+        .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-top: 20px; }
+        .color-card { border: 1px solid #000; background: #fff; border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.1s; }
+        .color-swatch { width: 100%; height: 90px; border-bottom: 1px solid #000; }
+        .color-info { padding: 4px 2px; font-size: 13px; font-weight: 900; text-align: center; color: #000; }
         
-        /* Modals */
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); overflow: auto;}
-        .modal-content { background: white; margin: 5% auto; padding: 30px; width: 600px; border-radius: 15px; text-align: center; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-        .close-btn { position: absolute; right: 20px; top: 10px; font-size: 30px; cursor: pointer; color: #666; }
+        /* Mockup Modal Styles */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
+        .modal-content { background: white; margin: 5% auto; padding: 20px; width: 500px; border-radius: 15px; text-align: center; position: relative; }
+        .close-btn { position: absolute; right: 20px; top: 10px; font-size: 30px; cursor: pointer; }
+        .tshirt-mockup { width: 300px; height: 350px; margin: 20px auto; position: relative; background: #eee; border-radius: 10px; display: flex; align-items: center; justify-content: center; transition: 0.3s; border: 5px solid #333; }
+        .tshirt-mockup svg { width: 250px; fill: #1a237e; transition: 0.5s; }
         
-        /* Drop Zone */
-        .drop-zone { border: 3px dashed #bbb; padding: 40px; border-radius: 10px; background: #f9f9f9; cursor: pointer; transition: 0.3s; margin-bottom: 20px; }
-        .drop-zone:hover { background: #f1f1f1; border-color: var(--primary); }
-        .preview-box canvas { max-width: 100%; border: 1px solid #ccc; margin-top: 15px; }
-
-        /* Others */
-        .btn { padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; font-size: 14px; margin: 5px; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-save { background: var(--secondary); color: white; width: 100%; font-size: 18px; margin-top: 20px; }
-        .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; margin-top: 15px; }
-        .color-card { border: 1px solid #000; border-radius: 8px; overflow: hidden; cursor: pointer; text-align: center; }
-        .color-swatch { height: 60px; }
-        .copy-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 20px; border-radius: 20px; display: none; z-index: 3000; }
+        /* History & Others */
+        .history-item { display: flex; align-items: center; gap: 10px; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer; border-radius: 6px; }
+        .history-color { width: 35px; height: 35px; border-radius: 4px; border: 1px solid #000; }
+        .copy-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 12px 25px; border-radius: 30px; display: none; z-index: 2000; font-weight: bold; }
+        footer { text-align: center; padding: 20px; font-weight: bold; color: #1a237e; margin-top: 30px; }
     </style>
 </head>
 <body>
 
 <div class="sidebar-nav">
     <div style="font-weight: 800; font-size: 18px; margin-bottom: 30px; color: var(--primary);">🛠 DESIGN TOOLS</div>
-    <div class="nav-item active" onclick="location.reload()"><span class="nav-icon">🎨</span> Color Palette</div>
-    <div class="nav-item" onclick="openModal('mockupModal')"><span class="nav-icon">👕</span> Mockup Preview</div>
-    <div class="nav-item" onclick="openModal('upscaleModal')"><span class="nav-icon">📷</span> Image Upscale</div>
-    <div class="nav-item" onclick="openModal('bgRemoveModal')"><span class="nav-icon">✂️</span> Background Remove</div>
+    <div class="nav-item active"><span class="nav-icon">🎨</span> Color Palette</div>
+    <div class="nav-item" onclick="openMockup()"><span class="nav-icon">👕</span> Mockup Preview</div>
+    <div class="nav-item"><span class="nav-icon">📷</span> Image Upscale</div>
+    <div class="nav-item"><span class="nav-icon">✂️</span> Background Remove</div>
 </div>
 
 <div class="main-wrapper">
     <div class="main-container">
         <div class="header">Raha Digital Print - Design Sector</div>
 
-        <div class="box">
-            <label><b>🎨 MAIN COLOR PICKER</b></label><br>
-            <input type="file" id="mainUpload" accept="image/*" style="margin: 15px 0;">
-            <canvas id="imageCanvas"></canvas>
+        <div class="main-layout">
+            <div class="content-area">
+                <div class="box">
+                    <label><b>1. PHOTO PICKER (MANUAL)</b></label><br>
+                    <input type="file" id="upload" accept="image/*" style="margin-top:10px;">
+                    <div id="picker-container">
+                        <canvas id="imageCanvas"></canvas>
+                    </div>
+                </div>
+
+                <div class="box box-ai">
+                    <label style="color: var(--ai-color);"><b>✨ AI COLOR MATCHER (AUTO SUGGEST)</b></label>
+                    <p style="font-size: 12px; color: #666;">ইমেজ দিলে ৫টি ম্যাচিং কালার আসবে</p>
+                    <input type="file" id="aiUpload" accept="image/*" style="margin: 10px 0;">
+                    <div id="aiMatchingResult" class="palette-grid"></div>
+                </div>
+
+                <div class="box">
+                    <label><b>3. INPUT RGB CODE</b></label>
+                    <div class="rgb-inputs">
+                        <input type="number" id="r" class="rgb-field" value="26">
+                        <input type="number" id="g" class="rgb-field" value="35">
+                        <input type="number" id="b" class="rgb-field" value="126">
+                    </div>
+                    <button class="btn btn-update" onclick="generateFromInputs()">GENERATE PALETTE</button>
+                </div>
+            </div>
+
+            <div class="history-sidebar">
+                <h3 style="margin-top:0; color:var(--primary); font-size: 18px;">SEARCH HISTORY</h3>
+                <div id="historyList"></div>
+                <button onclick="clearHistory()" style="margin-top:15px; border:none; color:red; cursor:pointer; font-weight:bold;">CLEAR HISTORY</button>
+            </div>
         </div>
 
         <div id="downloadArea">
+            <h3 style="text-align: center; text-transform: uppercase;">Premium Color Palette</h3>
             <div id="palette" class="palette-grid"></div>
         </div>
-        <button class="btn btn-save" onclick="downloadPalette()">SAVE PALETTE AS IMAGE</button>
-    </div>
-</div>
 
-<div id="upscaleModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeModal('upscaleModal')">&times;</span>
-        <h2>🚀 High-Quality Image Upscale</h2>
-        <div class="drop-zone" onclick="document.getElementById('upscaleInput').click()">
-            <p>ক্লিক করুন বা ছবি এখানে ড্রপ করুন (২ গুণ বড় হবে)</p>
-            <input type="file" id="upscaleInput" hidden accept="image/*">
-        </div>
-        <div id="upscalePreview" class="preview-box"></div>
-        <button class="btn btn-primary" id="downloadUpscale" style="display:none;">DOWNLOAD UPSCALED IMAGE</button>
+        <button class="btn btn-save" onclick="downloadImage()">SAVE AS IMAGE (300 DPI)</button>
     </div>
-</div>
-
-<div id="bgRemoveModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeModal('bgRemoveModal')">&times;</span>
-        <h2>✂️ Background Remover</h2>
-        <div class="drop-zone" onclick="document.getElementById('bgInput').click()">
-            <p>ব্যাকগ্রাউন্ড সরাতে এখানে ছবি আপলোড করুন</p>
-            <input type="file" id="bgInput" hidden accept="image/*">
-        </div>
-        <div id="bgPreview" class="preview-box"></div>
-        <button class="btn btn-primary" id="downloadBG" style="display:none;">DOWNLOAD TRANSPARENT IMAGE</button>
-    </div>
+    <footer>Designed & Maintained by: GM Sojib</footer>
 </div>
 
 <div id="mockupModal" class="modal">
     <div class="modal-content">
-        <span class="close-btn" onclick="closeModal('mockupModal')">&times;</span>
-        <h2>👕 T-Shirt Mockup</h2>
-        <div style="background:#eee; padding:20px; border-radius:10px;">
-            <svg id="tshirtSVG" viewBox="0 0 100 100" width="200">
-                <path d="M90,20 L75,10 C70,8 65,15 65,15 C65,15 60,12 50,12 C40,12 35,15 35,15 C35,15 30,8 25,10 L10,20 L15,40 L25,35 L25,90 L75,90 L75,35 L85,40 L90,20 Z" fill="#1a237e"/>
+        <span class="close-btn" onclick="closeMockup()">&times;</span>
+        <h2>T-Shirt Mockup Preview</h2>
+        <p>নিচের কালারটি আপনার টি-শার্টে এমন লাগবে:</p>
+        <div class="tshirt-mockup" id="tshirtBox">
+            <svg id="tshirtSVG" viewBox="0 0 100 100">
+                <path d="M90,20 L75,10 C70,8 65,15 65,15 C65,15 60,12 50,12 C40,12 35,15 35,15 C35,15 30,8 25,10 L10,20 L15,40 L25,35 L25,90 L75,90 L75,35 L85,40 L90,20 Z"/>
             </svg>
         </div>
-        <p id="mockupColorText">Color: RGB(26, 35, 126)</p>
-        <button class="btn btn-primary" onclick="closeModal('mockupModal')">DONE</button>
+        <div id="currentMockupColor" style="font-weight: bold; font-size: 18px;">RGB(26, 35, 126)</div>
+        <button class="btn btn-update" style="margin-top: 20px;" onclick="closeMockup()">DONE</button>
     </div>
 </div>
 
-<div id="copyToast" class="copy-toast">Copied!</div>
+<div id="copyToast" class="copy-toast">RGB Code Copied!</div>
 
 <script>
     const canvas = document.getElementById('imageCanvas');
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
-    let selectedColor = "rgb(26, 35, 126)";
+    const rIn = document.getElementById('r');
+    const gIn = document.getElementById('g');
+    const bIn = document.getElementById('b');
+    let history = JSON.parse(localStorage.getItem('rahaColorHistory')) || [];
 
-    // Modal Controls
-    function openModal(id) { document.getElementById(id).style.display = 'block'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    // --- Core Functions ---
+    function rgbToHex(rgbStr) {
+        let parts = rgbStr.split(',');
+        return "#" + parts.map(x => parseInt(x).toString(16).padStart(2, '0').toUpperCase()).join('');
+    }
 
-    // Main Picker
-    document.getElementById('mainUpload').addEventListener('change', function(e) {
+    // --- Photo Picker ---
+    document.getElementById('upload').addEventListener('change', function(e) {
         const reader = new FileReader();
-        reader.onload = (event) => {
+        reader.onload = function(event) {
             const img = new Image();
-            img.onload = () => {
+            img.onload = function() {
                 canvas.width = img.width; canvas.height = img.height;
                 ctx.drawImage(img, 0, 0);
             }
@@ -141,101 +163,99 @@
         const x = (e.clientX - rect.left) * (canvas.width / rect.width);
         const y = (e.clientY - rect.top) * (canvas.height / rect.height);
         const p = ctx.getImageData(x, y, 1, 1).data;
-        const rgb = `rgb(${p[0]},${p[1]},${p[2]})`;
-        selectedColor = rgb;
         updateUI(p[0], p[1], p[2]);
     });
 
+    // --- AI Matcher ---
+    document.getElementById('aiUpload').addEventListener('change', function(e) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const img = new Image();
+            img.onload = function() {
+                const tc = document.createElement('canvas');
+                const tx = tc.getContext('2d');
+                tc.width = img.width; tc.height = img.height;
+                tx.drawImage(img, 0, 0);
+                const res = document.getElementById('aiMatchingResult');
+                res.innerHTML = '';
+                const pts = [[0.5,0.5],[0.2,0.2],[0.8,0.2],[0.2,0.8],[0.8,0.8]];
+                pts.forEach(pt => {
+                    const d = tx.getImageData(img.width*pt[0], img.height*pt[1], 1, 1).data;
+                    const rgb = `${d[0]},${d[1]},${d[2]}`;
+                    res.innerHTML += `<div class="color-card" onclick="updateUI(${d[0]},${d[1]},${d[2]})">
+                        <div class="color-swatch" style="background:rgb(${rgb}); height:60px;"></div>
+                        <div class="color-info" style="font-size:11px;">${rgb}</div>
+                    </div>`;
+                });
+            }
+            img.src = event.target.result;
+        }
+        reader.readAsDataURL(e.target.files[0]);
+    });
+
     function updateUI(r, g, b) {
-        document.getElementById('tshirtSVG').querySelector('path').setAttribute('fill', `rgb(${r},${g},${b})`);
-        document.getElementById('mockupColorText').innerText = `Color: RGB(${r}, ${g}, ${b})`;
+        rIn.value = r; gIn.value = g; bIn.value = b;
+        document.getElementById('tshirtSVG').style.fill = `rgb(${r},${g},${b})`;
+        document.getElementById('currentMockupColor').innerText = `RGB(${r}, ${g}, ${b})`;
         generatePalette(r, g, b);
+    }
+
+    function generateFromInputs() {
+        updateUI(rIn.value, gIn.value, bIn.value);
     }
 
     function generatePalette(r, g, b) {
         const pal = document.getElementById('palette');
         pal.innerHTML = '';
-        for (let i = 0; i < 20; i++) {
-            let f = i / 19;
-            let nr = Math.round(r * f), ng = Math.round(g * f), nb = Math.round(b * f);
-            const rgb = `${nr},${ng},${nb}`;
-            pal.innerHTML += `<div class="color-card" onclick="navigator.clipboard.writeText('${rgb}'); showToast('RGB Copied')">
+        saveToHistory(r, g, b);
+        for (let i = 0; i < 40; i++) {
+            let nr, ng, nb;
+            let factor = i < 20 ? i/19 : (i-20)/20;
+            if(i < 20) { nr = r*factor; ng = g*factor; nb = b*factor; }
+            else { nr = r+(255-r)*factor; ng = g+(255-g)*factor; nb = b+(255-b)*factor; }
+            const rgb = `${Math.round(nr)},${Math.round(ng)},${Math.round(nb)}`;
+            pal.innerHTML += `<div class="color-card" onclick="copyCode('${rgb}')" ondblclick="copyHex('${rgb}')">
                 <div class="color-swatch" style="background:rgb(${rgb})"></div>
-                <div style="font-size:11px; padding:5px;">${rgb}</div>
+                <div class="color-info">${rgb}</div>
             </div>`;
         }
     }
 
-    // Upscale Logic
-    document.getElementById('upscaleInput').addEventListener('change', function(e) {
-        processImage(e.target.files[0], 'upscalePreview', (c) => {
-            const factor = 2;
-            const tC = document.createElement('canvas');
-            const tX = tC.getContext('2d');
-            tC.width = c.width * factor; tC.height = c.height * factor;
-            tX.imageSmoothingQuality = 'high';
-            tX.drawImage(c, 0, 0, tC.width, tC.height);
-            
-            const btn = document.getElementById('downloadUpscale');
-            btn.style.display = 'inline-block';
-            btn.onclick = () => {
-                const a = document.createElement('a');
-                a.download = 'Upscaled.png'; a.href = tC.toDataURL(); a.click();
-            };
-        });
-    });
+    // --- Mockup Modal Control ---
+    function openMockup() { document.getElementById('mockupModal').style.display = 'block'; }
+    function closeMockup() { document.getElementById('mockupModal').style.display = 'none'; }
 
-    // Background Remove Logic
-    document.getElementById('bgInput').addEventListener('change', function(e) {
-        processImage(e.target.files[0], 'bgPreview', (c) => {
-            const tX = c.getContext('2d');
-            const imgData = tX.getImageData(0,0,c.width,c.height);
-            const data = imgData.data;
-            const r = data[0], g = data[1], b = data[2];
-            for (let i = 0; i < data.length; i += 4) {
-                if (Math.abs(data[i]-r)<40 && Math.abs(data[i+1]-g)<40 && Math.abs(data[i+2]-b)<40) data[i+3] = 0;
-            }
-            tX.putImageData(imgData, 0,0);
-            
-            const btn = document.getElementById('downloadBG');
-            btn.style.display = 'inline-block';
-            btn.onclick = () => {
-                const a = document.createElement('a');
-                a.download = 'No-BG.png'; a.href = c.toDataURL(); a.click();
-            };
-        });
-    });
-
-    function processImage(file, previewId, callback) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const img = new Image();
-            img.onload = () => {
-                const tempC = document.createElement('canvas');
-                tempC.width = img.width; tempC.height = img.height;
-                const tempX = tempC.getContext('2d');
-                tempX.drawImage(img, 0, 0);
-                document.getElementById(previewId).innerHTML = '';
-                document.getElementById(previewId).appendChild(tempC);
-                callback(tempC);
-            };
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
+    // --- History & Utility ---
+    function saveToHistory(r, g, b) {
+        let s = `${r},${g},${b}`;
+        if (!history.includes(s)) {
+            history.unshift(s); if(history.length > 12) history.pop();
+            localStorage.setItem('rahaColorHistory', JSON.stringify(history));
+            updateHistoryUI();
+        }
     }
 
-    function showToast(m) {
-        const t = document.getElementById('copyToast'); t.innerText = m;
-        t.style.display = 'block'; setTimeout(() => t.style.display='none', 2000);
+    function updateHistoryUI() {
+        const l = document.getElementById('historyList');
+        l.innerHTML = history.map(c => `<div class="history-item" onclick="updateUI(${c})">
+            <div class="history-color" style="background:rgb(${c})"></div>
+            <span style="font-size:12px; font-weight:bold;">RGB(${c})</span>
+        </div>`).join('');
     }
 
-    function downloadPalette() {
-        html2canvas(document.querySelector("#downloadArea")).then(c => {
-            const a = document.createElement('a'); a.download = 'Palette.png'; a.href = c.toDataURL(); a.click();
+    function copyCode(t) { navigator.clipboard.writeText(t); showToast("RGB Copied: " + t); }
+    function copyHex(t) { const h = rgbToHex(t); navigator.clipboard.writeText(h); showToast("HEX Copied: " + h); }
+    function showToast(m) { const t = document.getElementById('copyToast'); t.innerText = m; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1500); }
+    function clearHistory() { history = []; localStorage.removeItem('rahaColorHistory'); updateHistoryUI(); }
+    function downloadImage() {
+        html2canvas(document.querySelector("#downloadArea"), {scale: 3}).then(c => {
+            const a = document.createElement('a'); a.download = 'Raha-Palette.png'; a.href = c.toDataURL(); a.click();
         });
     }
 
+    updateHistoryUI();
     generatePalette(26, 35, 126);
 </script>
+
 </body>
 </html>
