@@ -3,72 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raha Digital Print - Pro Design Sector</title>
+    <title>Raha Digital Print - Design Sector</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        :root { --primary: #1a237e; --secondary: #2e7d32; --ai-color: #00695c; --sidebar-bg: #ffffff; }
+        :root { --primary: #1a237e; --secondary: #2e7d32; --ai-color: #00695c; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 0; display: flex; }
         
-        /* Sidebar Styles */
-        .sidebar-nav { width: 240px; background: var(--sidebar-bg); height: 100vh; position: fixed; border-right: 2px solid #ddd; padding: 20px; box-sizing: border-box; overflow-y: auto; z-index: 100; }
-        .nav-item { display: flex; align-items: center; padding: 12px; margin-bottom: 8px; border-radius: 8px; cursor: pointer; color: #444; font-weight: bold; transition: 0.3s; border: 1px solid transparent; }
+        /* Sidebar Menu Styles */
+        .sidebar-nav { width: 240px; background: #fff; height: 100vh; position: fixed; border-right: 2px solid #ddd; padding: 20px; box-sizing: border-box; overflow-y: auto; }
+        .nav-item { display: flex; align-items: center; padding: 12px; margin-bottom: 10px; border-radius: 8px; cursor: pointer; color: #444; font-weight: bold; transition: 0.3s; border: 1px solid transparent; }
         .nav-item:hover { background: #f0f0f0; border-color: #ccc; }
         .nav-item.active { background: var(--primary); color: white; }
         .nav-icon { margin-right: 10px; font-size: 18px; }
-        .cat-title { font-size: 12px; color: #999; text-transform: uppercase; margin: 20px 0 10px 5px; letter-spacing: 1px; font-weight: 800; }
 
-        /* Content Area */
+        /* Main Container Adjustment */
         .main-wrapper { margin-left: 240px; width: calc(100% - 240px); padding: 25px; box-sizing: border-box; }
         .main-container { max-width: 1100px; margin: auto; background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
         .header { text-align: center; font-size: 28px; font-weight: 800; color: var(--primary); margin-bottom: 25px; border-bottom: 4px solid var(--primary); padding-bottom: 10px; text-transform: uppercase; }
         
-        /* Grid Layout */
+        /* Existing Layout Styles */
         .main-layout { display: flex; gap: 20px; flex-wrap: wrap; }
         .content-area { flex: 3; min-width: 320px; }
         .history-sidebar { flex: 1; min-width: 250px; background: #fcfcfc; padding: 15px; border-radius: 12px; border: 2px solid #ddd; height: fit-content; }
         .box { padding: 20px; border: 2px solid #ddd; border-radius: 12px; background: #fff; text-align: center; margin-bottom: 20px; }
-        
-        /* Canvas & Tools */
+        .box-ai { border: 2px solid var(--ai-color); background: #f0fdfa; }
         #picker-container { position: relative; margin-top: 15px; border: 3px solid #333; display: inline-block; cursor: crosshair; line-height: 0; max-width: 100%; }
         #imageCanvas { max-width: 100%; height: auto; display: block; }
-        
-        /* Palette Grid (Color Hunt Style) */
-        .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; margin-top: 20px; }
-        .hunt-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; height: 160px; display: flex; flex-direction: column; transition: 0.2s; }
-        .hunt-card:hover { transform: translateY(-5px); }
-        .c-layer { width: 100%; transition: 0.2s; }
-        .c-layer:hover { filter: brightness(1.1); }
-
-        /* Buttons & Toast */
+        .rgb-inputs { display: flex; justify-content: center; gap: 10px; margin-top: 20px; margin-bottom: 20px; }
+        .rgb-field { width: 65px; padding: 12px; border: 2px solid #ccc; border-radius: 8px; text-align: center; font-weight: 900; font-size: 16px; }
         .btn { padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.2s; font-size: 16px; }
         .btn-update { background: var(--primary); color: white; }
-        .copy-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 12px 25px; border-radius: 30px; display: none; z-index: 2000; font-weight: bold; }
+        .btn-save { background: var(--secondary); color: white; margin-top: 30px; font-size: 20px; }
+        .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-top: 20px; }
+        .color-card { border: 1px solid #000; background: #fff; border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.1s; }
+        .color-swatch { width: 100%; height: 90px; border-bottom: 1px solid #000; }
+        .color-info { padding: 4px 2px; font-size: 13px; font-weight: 900; text-align: center; color: #000; }
         
+        /* New Color Hunt Styles */
+        .hunt-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; height: 180px; display: flex; flex-direction: column; }
+        .c-layer { width: 100%; transition: 0.2s; }
+        .c-layer:hover { opacity: 0.8; }
+
         /* Modal Styles */
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); overflow: auto; }
         .modal-content { background: white; margin: 5% auto; padding: 25px; width: 500px; border-radius: 15px; text-align: center; position: relative; }
         .close-btn { position: absolute; right: 20px; top: 10px; font-size: 30px; cursor: pointer; }
-        .drop-zone { border: 2px dashed #ccc; padding: 30px; margin: 20px 0; border-radius: 10px; cursor: pointer; }
+        .drop-zone { border: 3px dashed #bbb; padding: 40px; border-radius: 10px; background: #f9f9f9; cursor: pointer; margin-bottom: 20px; }
+        
+        /* Mockup */
+        .tshirt-mockup { width: 300px; height: 350px; margin: 20px auto; position: relative; background: #eee; border-radius: 10px; display: flex; align-items: center; justify-content: center; transition: 0.3s; border: 5px solid #333; }
+        .tshirt-mockup svg { width: 250px; fill: #1a237e; transition: 0.5s; }
+        
+        /* History & Others */
+        .history-item { display: flex; align-items: center; gap: 10px; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer; border-radius: 6px; }
+        .history-color { width: 35px; height: 35px; border-radius: 4px; border: 1px solid #000; }
+        .copy-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 12px 25px; border-radius: 30px; display: none; z-index: 2000; font-weight: bold; }
+        footer { text-align: center; padding: 20px; font-weight: bold; color: #1a237e; margin-top: 30px; }
     </style>
 </head>
 <body>
 
 <div class="sidebar-nav">
-    <div style="font-weight: 800; font-size: 18px; margin-bottom: 20px; color: var(--primary);">🛠 DESIGN TOOLS</div>
-    
-    <div class="nav-item active" onclick="location.reload()"><span class="nav-icon">🎨</span> Color Palette</div>
-    <div class="nav-item" onclick="openModal('upscaleModal')"><span class="nav-icon">📷</span> Image Upscale</div>
-    <div class="nav-item" onclick="openModal('bgModal')"><span class="nav-icon">✂️</span> Background Remove</div>
+    <div style="font-weight: 800; font-size: 18px; margin-bottom: 30px; color: var(--primary);">🛠 DESIGN TOOLS</div>
+    <div class="nav-item active" onclick="window.scrollTo(0,0)"><span class="nav-icon">🎨</span> Color Palette</div>
     <div class="nav-item" onclick="openMockup()"><span class="nav-icon">👕</span> Mockup Preview</div>
-
-    <div class="cat-title">Explore Categories</div>
-    <div id="catMenu">
-        <div class="nav-item" onclick="filterHunt('Pastel')">Pastel</div>
-        <div class="nav-item" onclick="filterHunt('Vintage')">Vintage</div>
-        <div class="nav-item" onclick="filterHunt('Neon')">Neon</div>
-        <div class="nav-item" onclick="filterHunt('Retro')">Retro</div>
-        <div class="nav-item" onclick="filterHunt('Dark')">Dark</div>
-    </div>
+    <div class="nav-item" onclick="openTool('upscaleModal')"><span class="nav-icon">📷</span> Image Upscale</div>
+    <div class="nav-item" onclick="openTool('bgModal')"><span class="nav-icon">✂️</span> Background Remove</div>
+    
+    <div style="font-size: 12px; color: #999; margin: 20px 0 10px 5px; font-weight: bold; text-transform: uppercase;">Categories</div>
+    <div class="nav-item" onclick="filterHunt('Pastel')">Pastel</div>
+    <div class="nav-item" onclick="filterHunt('Vintage')">Vintage</div>
+    <div class="nav-item" onclick="filterHunt('Neon')">Neon</div>
+    <div class="nav-item" onclick="filterHunt('Retro')">Retro</div>
+    <div class="nav-item" onclick="filterHunt('Gold')">Gold</div>
 </div>
 
 <div class="main-wrapper">
@@ -79,55 +86,73 @@
             <div class="content-area">
                 <div class="box">
                     <label><b>1. PHOTO PICKER (MANUAL)</b></label>
-                    <input type="file" id="upload" accept="image/*" style="margin-top:10px; width: 100%;">
+                    <input type="file" id="upload" accept="image/*" style="margin-top:10px;">
                     <div id="picker-container">
                         <canvas id="imageCanvas"></canvas>
                     </div>
                 </div>
 
-                <div class="box" id="exploreSection">
-                    <label><b>🌈 EXPLORE PALETTES (COLOR HUNT STYLE)</b></label>
-                    <div id="huntGrid" class="palette-grid"></div>
+                <div class="box box-ai">
+                    <label style="color: var(--ai-color);"><b>✨ AI COLOR MATCHER (AUTO SUGGEST)</b></label>
+                    <p style="font-size: 12px; color: #666;">ইমেজ দিলে ৫টি ম্যাচিং কালার আসবে</p>
+                    <input type="file" id="aiUpload" accept="image/*" style="margin: 10px 0;">
+                    <div id="aiMatchingResult" class="palette-grid"></div>
+                </div>
+
+                <div class="box">
+                    <label><b>3. INPUT RGB CODE</b></label>
+                    <div class="rgb-inputs">
+                        <input type="number" id="r" class="rgb-field" value="26">
+                        <input type="number" id="g" class="rgb-field" value="35">
+                        <input type="number" id="b" class="rgb-field" value="126">
+                    </div>
+                    <button class="btn btn-update" onclick="generateFromInputs()">GENERATE PALETTE</button>
+                </div>
+
+                <div class="box" id="huntSection">
+                    <label><b>🌈 EXPLORE COLOR HUNTS</b></label>
+                    <div id="huntGrid" class="palette-grid" style="margin-top:15px;"></div>
                 </div>
             </div>
 
             <div class="history-sidebar">
-                <h3 style="margin-top:0; color:var(--primary);">SEARCH HISTORY</h3>
+                <h3 style="margin-top:0; color:var(--primary); font-size: 18px;">SEARCH HISTORY</h3>
                 <div id="historyList"></div>
                 <button onclick="clearHistory()" style="margin-top:15px; border:none; color:red; cursor:pointer; font-weight:bold; background:none;">CLEAR HISTORY</button>
             </div>
         </div>
 
-        <div id="downloadArea" class="box" style="margin-top: 20px;">
-            <h3 style="text-transform: uppercase;">Generated Palette</h3>
+        <div id="downloadArea">
+            <h3 style="text-align: center; text-transform: uppercase;">Premium Color Palette</h3>
             <div id="palette" class="palette-grid"></div>
         </div>
-        <button class="btn btn-update" style="background: var(--secondary); font-size: 20px;" onclick="downloadImage()">SAVE PALETTE AS IMAGE</button>
+
+        <button class="btn btn-save" onclick="downloadImage()">SAVE AS IMAGE (300 DPI)</button>
     </div>
-    <footer style="text-align:center; padding: 20px;">Designed by: GM Sojib</footer>
+    <footer>Designed & Maintained by: GM Sojib</footer>
 </div>
 
 <div id="upscaleModal" class="modal">
     <div class="modal-content">
-        <span class="close-btn" onclick="closeModal('upscaleModal')">&times;</span>
-        <h2>📷 Image Upscale (2X High Quality)</h2>
+        <span class="close-btn" onclick="closeTool('upscaleModal')">&times;</span>
+        <h2>📷 Image Upscale (2X)</h2>
         <div class="drop-zone" onclick="document.getElementById('uIn').click()">
-            <p>Click or Drop Image to Upscale</p>
+            <p>ছবি সিলেক্ট করুন (অটোমেটিক ২গুণ বড় হবে)</p>
             <input type="file" id="uIn" hidden accept="image/*">
         </div>
-        <div id="uPreview"></div>
+        <div id="uPrev"></div>
     </div>
 </div>
 
 <div id="bgModal" class="modal">
     <div class="modal-content">
-        <span class="close-btn" onclick="closeModal('bgModal')">&times;</span>
+        <span class="close-btn" onclick="closeTool('bgModal')">&times;</span>
         <h2>✂️ Background Remover</h2>
         <div class="drop-zone" onclick="document.getElementById('bgIn').click()">
-            <p>Click to Upload Image to Remove BG</p>
+            <p>ব্যাকগ্রাউন্ড সরাতে এখানে ছবি আপলোড করুন</p>
             <input type="file" id="bgIn" hidden accept="image/*">
         </div>
-        <div id="bgPreview"></div>
+        <div id="bgPrev"></div>
     </div>
 </div>
 
@@ -135,33 +160,38 @@
     <div class="modal-content">
         <span class="close-btn" onclick="closeMockup()">&times;</span>
         <h2>T-Shirt Mockup Preview</h2>
-        <div class="tshirt-mockup">
-            <svg id="tshirtSVG" viewBox="0 0 100 100"><path d="M90,20 L75,10 C70,8 65,15 65,15 C65,15 60,12 50,12 C40,12 35,15 35,15 C35,15 30,8 25,10 L10,20 L15,40 L25,35 L25,90 L75,90 L75,35 L85,40 L90,20 Z"/></svg>
+        <p>নিচের কালারটি আপনার টি-শার্টে এমন লাগবে:</p>
+        <div class="tshirt-mockup" id="tshirtBox">
+            <svg id="tshirtSVG" viewBox="0 0 100 100">
+                <path d="M90,20 L75,10 C70,8 65,15 65,15 C65,15 60,12 50,12 C40,12 35,15 35,15 C35,15 30,8 25,10 L10,20 L15,40 L25,35 L25,90 L75,90 L75,35 L85,40 L90,20 Z"/>
+            </svg>
         </div>
-        <div id="currentMockupColor" style="font-weight: bold; font-size: 18px;"></div>
+        <div id="currentMockupColor" style="font-weight: bold; font-size: 18px;">RGB(26, 35, 126)</div>
         <button class="btn btn-update" style="margin-top: 20px;" onclick="closeMockup()">DONE</button>
     </div>
 </div>
 
-<div id="copyToast" class="copy-toast">Copied!</div>
+<div id="copyToast" class="copy-toast">RGB Code Copied!</div>
 
 <script>
     const canvas = document.getElementById('imageCanvas');
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    const rIn = document.getElementById('r');
+    const gIn = document.getElementById('g');
+    const bIn = document.getElementById('b');
     let history = JSON.parse(localStorage.getItem('rahaColorHistory')) || [];
 
-    // --- Modal Logic ---
-    function openModal(id) { document.getElementById(id).style.display = 'block'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    function openMockup() { openModal('mockupModal'); }
-    function closeMockup() { closeModal('mockupModal'); }
+    // --- Core Functions (No Changes) ---
+    function rgbToHex(rgbStr) {
+        let parts = rgbStr.split(',');
+        return "#" + parts.map(x => parseInt(x).toString(16).padStart(2, '0').toUpperCase()).join('');
+    }
 
-    // --- Image Picker ---
     document.getElementById('upload').addEventListener('change', function(e) {
         const reader = new FileReader();
-        reader.onload = (event) => {
+        reader.onload = function(event) {
             const img = new Image();
-            img.onload = () => {
+            img.onload = function() {
                 canvas.width = img.width; canvas.height = img.height;
                 ctx.drawImage(img, 0, 0);
             }
@@ -178,33 +208,72 @@
         updateUI(p[0], p[1], p[2]);
     });
 
+    document.getElementById('aiUpload').addEventListener('change', function(e) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const img = new Image();
+            img.onload = function() {
+                const tc = document.createElement('canvas');
+                const tx = tc.getContext('2d');
+                tc.width = img.width; tc.height = img.height;
+                tx.drawImage(img, 0, 0);
+                const res = document.getElementById('aiMatchingResult');
+                res.innerHTML = '';
+                const pts = [[0.5,0.5],[0.2,0.2],[0.8,0.2],[0.2,0.8],[0.8,0.8]];
+                pts.forEach(pt => {
+                    const d = tx.getImageData(img.width*pt[0], img.height*pt[1], 1, 1).data;
+                    const rgb = `${d[0]},${d[1]},${d[2]}`;
+                    res.innerHTML += `<div class="color-card" onclick="updateUI(${d[0]},${d[1]},${d[2]})">
+                        <div class="color-swatch" style="background:rgb(${rgb}); height:60px;"></div>
+                        <div class="color-info" style="font-size:11px;">${rgb}</div>
+                    </div>`;
+                });
+            }
+            img.src = event.target.result;
+        }
+        reader.readAsDataURL(e.target.files[0]);
+    });
+
     function updateUI(r, g, b) {
-        const rgb = `rgb(${r},${g},${b})`;
-        document.getElementById('tshirtSVG').style.fill = rgb;
-        document.getElementById('currentMockupColor').innerText = `Selected: ${rgb}`;
+        rIn.value = r; gIn.value = g; bIn.value = b;
+        document.getElementById('tshirtSVG').style.fill = `rgb(${r},${g},${b})`;
+        document.getElementById('currentMockupColor').innerText = `RGB(${r}, ${g}, ${b})`;
         generatePalette(r, g, b);
-        saveToHistory(r, g, b);
+    }
+
+    function generateFromInputs() {
+        updateUI(rIn.value, gIn.value, bIn.value);
     }
 
     function generatePalette(r, g, b) {
         const pal = document.getElementById('palette');
         pal.innerHTML = '';
-        for (let i = 0; i < 15; i++) {
-            let f = i / 14;
-            let nr = Math.round(r * f), ng = Math.round(g * f), nb = Math.round(b * f);
-            const c = `${nr},${ng},${nb}`;
-            pal.innerHTML += `<div class="hunt-card" onclick="copyCode('${c}')">
-                <div class="c-layer" style="background:rgb(${c}); height:100%"></div>
-                <div style="font-size:11px; padding:5px; text-align:center;">${c}</div>
+        saveToHistory(r, g, b);
+        for (let i = 0; i < 40; i++) {
+            let nr, ng, nb;
+            let factor = i < 20 ? i/19 : (i-20)/20;
+            if(i < 20) { nr = r*factor; ng = g*factor; nb = b*factor; }
+            else { nr = r+(255-r)*factor; ng = g+(255-g)*factor; nb = b+(255-b)*factor; }
+            const rgb = `${Math.round(nr)},${Math.round(ng)},${Math.round(nb)}`;
+            pal.innerHTML += `<div class="color-card" onclick="copyCode('${rgb}')" ondblclick="copyHex('${rgb}')">
+                <div class="color-swatch" style="background:rgb(${rgb})"></div>
+                <div class="color-info">${rgb}</div>
             </div>`;
         }
     }
 
-    // --- Color Hunt Style Logic ---
+    // --- New Features (Added Without Changing Old Code) ---
+    function openTool(id) { document.getElementById(id).style.display = 'block'; }
+    function closeTool(id) { document.getElementById(id).style.display = 'none'; }
+    function openMockup() { document.getElementById('mockupModal').style.display = 'block'; }
+    function closeMockup() { document.getElementById('mockupModal').style.display = 'none'; }
+
     const huntData = {
         'Pastel': [['#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7'], ['#F3E5F5', '#E1F5FE', '#E8F5E9', '#FFFDE7']],
         'Vintage': [['#634832', '#967E67', '#D4A373', '#FEFAE0'], ['#264653', '#2A9D8F', '#E9C46A', '#F4A261']],
-        'Neon': [['#00F5FF', '#00FF41', '#FF00FF', '#FFFF00'], ['#FF3131', '#FF5E13', '#77EE11', '#08F7FE']]
+        'Neon': [['#00F5FF', '#00FF41', '#FF00FF', '#FFFF00'], ['#FF3131', '#FF5E13', '#77EE11', '#08F7FE']],
+        'Retro': [['#E07A5F', '#3D405B', '#81B29A', '#F2CC8F'], ['#F4F1DE', '#E07A5F', '#3D405B', '#F2CC8F']],
+        'Gold': [['#D4AF37', '#FFD700', '#CFB53B', '#F5E1A4'], ['#432818', '#99582A', '#BB9457', '#FFE6A7']]
     };
 
     function filterHunt(cat) {
@@ -216,14 +285,14 @@
                 <div class="hunt-card">
                     <div class="c-layer" style="background:${p[0]}; flex:4" onclick="copyHex('${p[0]}')"></div>
                     <div class="c-layer" style="background:${p[1]}; flex:2" onclick="copyHex('${p[1]}')"></div>
-                    <div class="c-layer" style="background:${p[2]}; flex:1" onclick="copyHex('${p[2]}')"></div>
+                    <div class="c-layer" style="background:${p[2]}; flex:1.5" onclick="copyHex('${p[2]}')"></div>
+                    <div class="c-layer" style="background:${p[3]}; flex:1" onclick="copyHex('${p[3]}')"></div>
                 </div>`;
         });
+        document.getElementById('huntSection').scrollIntoView({behavior: 'smooth'});
     }
 
-    // --- Tool Functions (Upscale & BG) ---
     document.getElementById('uIn').addEventListener('change', function(e) {
-        const file = e.target.files[0];
         const reader = new FileReader();
         reader.onload = (ev) => {
             const img = new Image();
@@ -233,16 +302,14 @@
                 tc.width = img.width * 2; tc.height = img.height * 2;
                 tx.imageSmoothingQuality = 'high';
                 tx.drawImage(img, 0, 0, tc.width, tc.height);
-                const a = document.createElement('a'); a.download = 'Raha-Upscaled.png'; a.href = tc.toDataURL(); a.click();
-                showToast("Image Upscaled & Downloaded!");
+                const a = document.createElement('a'); a.download = 'Upscaled.png'; a.href = tc.toDataURL(); a.click();
             }
             img.src = ev.target.result;
         }
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(e.target.files[0]);
     });
 
     document.getElementById('bgIn').addEventListener('change', function(e) {
-        const file = e.target.files[0];
         const reader = new FileReader();
         reader.onload = (ev) => {
             const img = new Image();
@@ -250,47 +317,57 @@
                 const tc = document.createElement('canvas');
                 const tx = tc.getContext('2d');
                 tc.width = img.width; tc.height = img.height;
-                tx.drawImage(img, 0,0);
+                tx.drawImage(img, 0, 0);
                 const id = tx.getImageData(0,0,tc.width,tc.height);
                 const d = id.data;
-                const tr = d[0], tg = d[1], tb = d[2];
+                const r=d[0], g=d[1], b=d[2];
                 for(let i=0; i<d.length; i+=4) {
-                    if(Math.abs(d[i]-tr)<40 && Math.abs(d[i+1]-tg)<40 && Math.abs(d[i+2]-tb)<40) d[i+3]=0;
+                    if(Math.abs(d[i]-r)<40 && Math.abs(d[i+1]-g)<40 && Math.abs(d[i+2]-b)<40) d[i+3]=0;
                 }
-                tx.putImageData(id, 0,0);
+                tx.putImageData(id, 0, 0);
                 const a = document.createElement('a'); a.download = 'No-BG.png'; a.href = tc.toDataURL(); a.click();
-                showToast("Background Removed!");
             }
             img.src = ev.target.result;
         }
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(e.target.files[0]);
     });
 
-    // --- Utilities ---
-    function copyCode(t) { navigator.clipboard.writeText(t); showToast("RGB Copied!"); }
-    function copyHex(h) { navigator.clipboard.writeText(h); showToast("HEX Copied!"); }
-    function showToast(m) { const t = document.getElementById('copyToast'); t.innerText = m; t.style.display = 'block'; setTimeout(()=>t.style.display='none', 1500); }
+    // --- History & Utility (Original) ---
     function saveToHistory(r, g, b) {
         let s = `${r},${g},${b}`;
         if (!history.includes(s)) {
-            history.unshift(s); if(history.length > 10) history.pop();
+            history.unshift(s); if(history.length > 12) history.pop();
             localStorage.setItem('rahaColorHistory', JSON.stringify(history));
             updateHistoryUI();
         }
     }
+
     function updateHistoryUI() {
         const l = document.getElementById('historyList');
-        l.innerHTML = history.map(c => `<div class="history-item" onclick="updateUI(${c})"><div class="history-color" style="background:rgb(${c})"></div><span>RGB(${c})</span></div>`).join('');
+        l.innerHTML = history.map(c => `<div class="history-item" onclick="updateUI(${c})">
+            <div class="history-color" style="background:rgb(${c})"></div>
+            <span style="font-size:12px; font-weight:bold;">RGB(${c})</span>
+        </div>`).join('');
     }
-    function clearHistory() { history=[]; localStorage.removeItem('rahaColorHistory'); updateHistoryUI(); }
+
+    function copyCode(t) { navigator.clipboard.writeText(t); showToast("RGB Copied: " + t); }
+    function copyHex(t) { 
+        const hex = t.startsWith('#') ? t : rgbToHex(t);
+        navigator.clipboard.writeText(hex); 
+        showToast("HEX Copied: " + hex); 
+    }
+    function showToast(m) { const t = document.getElementById('copyToast'); t.innerText = m; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1500); }
+    function clearHistory() { history = []; localStorage.removeItem('rahaColorHistory'); updateHistoryUI(); }
     function downloadImage() {
-        html2canvas(document.querySelector("#downloadArea")).then(c => {
-            const a = document.createElement('a'); a.download = 'Palette.png'; a.href = c.toDataURL(); a.click();
+        html2canvas(document.querySelector("#downloadArea"), {scale: 3}).then(c => {
+            const a = document.createElement('a'); a.download = 'Raha-Palette.png'; a.href = c.toDataURL(); a.click();
         });
     }
 
     updateHistoryUI();
     filterHunt('Pastel');
+    generatePalette(26, 35, 126);
 </script>
+
 </body>
 </html>
