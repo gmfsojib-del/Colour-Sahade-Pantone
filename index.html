@@ -20,7 +20,6 @@
         
         .nav-section-title { font-size: 11px; color: #9e9e9e; text-transform: uppercase; font-weight: 800; margin-bottom: 12px; letter-spacing: 1.5px; }
 
-        /* Category Dropdown Box Style */
         .category-box {
             width: 100%;
             padding: 12px;
@@ -48,7 +47,6 @@
         
         .hunt-card { background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); cursor: pointer; height: 120px; display: flex; flex-direction: column; }
         .c-layer { transition: 0.3s; }
-        .c-layer:hover { opacity: 0.8; }
 
         .rgb-inputs { display: flex; gap: 10px; margin: 15px 0; }
         .rgb-field { width: 60px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; text-align: center; font-weight: bold; }
@@ -74,6 +72,9 @@
         <option value="Gold">👑 Luxury Gold</option>
         <option value="Nature">🌿 Nature Fresh</option>
         <option value="Night">🌑 Deep Night</option>
+        <option value="Summer">☀️ Summer Vibe</option>
+        <option value="Happy">😊 Happy Bright</option>
+        <option value="Earth">🌍 Earthy Tones</option>
     </select>
 
     <div class="history-sidebar" style="margin-top: 20px;">
@@ -85,15 +86,17 @@
 <div class="main-wrapper">
     <div class="main-container">
         <div class="box box-ai">
-            <label style="color: var(--ai-color); font-weight: 800;">✨ AI UNIQUE COLOR MATCHER</label>
-            <p style="font-size: 12px;">RGB বা HEX কোড দিন, AI ৮টি লাক্সারি কালার তৈরি করবে</p>
-            <div class="rgb-inputs">
+            <div style="text-align: center; margin-bottom: 15px;">
+                <label style="color: var(--ai-color); font-weight: 800; font-size: 18px;">✨ AI UNIQUE COLOR MATCHER</label>
+                <p style="font-size: 12px; color: #666;">RGB বা HEX কোড দিন, AI ৮টি লাক্সারি কালার তৈরি করবে</p>
+            </div>
+            <div class="rgb-inputs" style="justify-content: center;">
                 <input type="number" id="ai_r" class="rgb-field" value="28">
                 <input type="number" id="ai_g" class="rgb-field" value="42">
                 <input type="number" id="ai_b" class="rgb-field" value="69">
-                <input type="text" id="ai_hex" style="flex:1; padding:10px; border-radius:8px; border:1px solid #ddd;" placeholder="#1C2A45">
+                <input type="text" id="ai_hex" style="width: 100px; padding:10px; border-radius:8px; border:1px solid #ddd; text-align: center; font-weight: bold;" placeholder="1C2A45">
             </div>
-            <button class="btn btn-ai" onclick="generate8AIColors()">GENERATE 8 UNIQUE COLORS</button>
+            <button class="btn btn-ai" style="text-transform: uppercase; letter-spacing: 1px;" onclick="generate8AIColors()">Generate 8 Unique Colors</button>
             <div id="aiMatchingResult" class="palette-grid"></div>
         </div>
 
@@ -107,7 +110,6 @@
 <div id="copyToast" class="copy-toast">Color Copied!</div>
 
 <script>
-    // বিশাল কালার ডেটাবেস (২০টি করে প্যালেট প্রতি ক্যাটাগরিতে)
     const huntData = {
         'Pastel': [
             ['#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7'], ['#F3E5F5', '#E1F5FE', '#E8F5E9', '#FFFDE7'], ['#B2F7EF', '#EFF7F6', '#F7D1CD', '#E2CFC4'],
@@ -135,8 +137,61 @@
             ['#6C5CE7', '#A29BFE', '#81ECEC', '#00CEC9'], ['#E84393', '#FD79A8', '#FAB1A0', '#FFEAA7'], ['#2D3436', '#636E72', '#B2BEC3', '#DFE6E9'],
             ['#0984E3', '#74B9FF', '#81ECEC', '#00CEC9'], ['#6F1E51', '#ED4C67', '#FFC312', '#C4E538'], ['#1B1464', '#0652DD', '#12CBC4', '#A3CB38'],
             ['#5758BB', '#9980FA', '#D980FA', '#FDA7DF'], ['#EE5A24', '#F79F1F', '#FFC312', '#C4E538']
+        ],
+        'Gold': [
+            ['#D4AF37', '#FFD700', '#CFB53B', '#F5E1A4'], ['#C5A059', '#E1C16E', '#F3E5AB', '#FFF8DC'], ['#8B6220', '#C29B40', '#E5C45D', '#F7E7A0'],
+            ['#432818', '#99582A', '#BB9457', '#FFE6A7'], ['#B8860B', '#DAA520', '#FFD700', '#FFFACD'], ['#302B27', '#635147', '#9D8474', '#D4AF37'],
+            ['#1C1C1C', '#3D3D3D', '#707070', '#D4AF37'], ['#3B2F2F', '#5D4037', '#8D6E63', '#FFD700'], ['#212121', '#424242', '#BDBDBD', '#FFD700'],
+            ['#000000', '#1A1A1A', '#333333', '#CFB53B'], ['#2C3E50', '#34495E', '#D4AF37', '#F1C40F'], ['#4A4A4A', '#808080', '#D3D3D3', '#DAA520'],
+            ['#1B1B1B', '#363636', '#B8860B', '#F5DEB3'], ['#2E2E2E', '#5C5C5C', '#CFB53B', '#FFF9E3'], ['#191919', '#333333', '#FFD700', '#FAFAD2'],
+            ['#4B0082', '#8A2BE2', '#9370DB', '#FFD700'], ['#800000', '#A52A2A', '#D2691E', '#FFD700'], ['#000080', '#00008B', '#4169E1', '#D4AF37'],
+            ['#006400', '#228B22', '#32CD32', '#FFD700'], ['#556B2F', '#6B8E23', '#9ACD32', '#CFB53B']
+        ],
+        'Nature': [
+            ['#11998e', '#38ef7d', '#56ab2f', '#a8e063'], ['#134E5E', '#71B280', '#084594', '#21e6c1'], ['#40513B', '#609966', '#9DC08B', '#EDF1D6'],
+            ['#004225', '#F5F5DC', '#FFB000', '#000000'], ['#344D67', '#6ECCAF', '#ADE781', '#F3ECB0'], ['#1B4332', '#2D6A4F', '#52B788', '#B7E4C7'],
+            ['#2D6A4F', '#40916C', '#74C69D', '#D8F3DC'], ['#004B23', '#006400', '#007200', '#008000'], ['#2C5E1A', '#32CD32', '#7CFC00', '#ADFF2F'],
+            ['#556B2F', '#6B8E23', '#9ACD32', '#CCFF00'], ['#002204', '#004B05', '#056507', '#12821A'], ['#414833', '#656D4A', '#A4AC86', '#C2C5AA'],
+            ['#0B1D12', '#274428', '#597445', '#E7F0DC'], ['#1A3636', '#40534C', '#677D6A', '#D6BD98'], ['#3E5C76', '#748CAB', '#8D99AE', '#EDF2F4'],
+            ['#386641', '#6A994E', '#A7C957', '#F2E8CF'], ['#004F2D', '#007F5F', '#55A630', '#DDE5B6'], ['#155263', '#FF6F3C', '#FF9A3E', '#FFC93C'],
+            ['#003431', '#006241', '#358856', '#9FD3A1'], ['#283618', '#606C38', '#DDA15E', '#FEFAE0']
+        ],
+        'Night': [
+            ['#0F0C29', '#302B63', '#24243E', '#FFFFFF'], ['#232526', '#414345', '#000000', '#FFFFFF'], ['#000428', '#004e92', '#000000', '#FFFFFF'],
+            ['#020024', '#090979', '#00d4ff', '#000000'], ['#141E30', '#243B55', '#000000', '#FFFFFF'], ['#2C3E50', '#000000', '#34495E', '#7F8C8D'],
+            ['#000000', '#434343', '#000000', '#FFFFFF'], ['#4B6CB7', '#182848', '#000000', '#FFFFFF'], ['#070B34', '#2D142C', '#510A32', '#801336'],
+            ['#000000', '#0F2027', '#203A43', '#2C5364'], ['#1a1a2e', '#16213e', '#0f3460', '#e94560'], ['#050505', '#121212', '#1b1b1b', '#313131'],
+            ['#000000', '#0b0c10', '#1f2833', '#c5c6c7'], ['#0d1117', '#161b22', '#21262d', '#30363d'], ['#12100E', '#2B2118', '#000000', '#FFFFFF'],
+            ['#000000', '#141414', '#282828', '#3C3C3C'], ['#191919', '#2C2C2C', '#3F3F3F', '#525252'], ['#000000', '#111111', '#222222', '#333333'],
+            ['#000000', '#151515', '#252525', '#353535'], ['#1B1212', '#28282B', '#343434', '#3B3B3B']
+        ],
+        'Summer': [
+            ['#FF9A8B', '#FF6A88', '#FF99AC', '#FBBC05'], ['#00B4DB', '#0083B0', '#FDC830', '#F37335'], ['#ff4e50', '#f9d423', '#f12711', '#f5af19'],
+            ['#00c6ff', '#0072ff', '#f12711', '#f5af19'], ['#11998e', '#38ef7d', '#FDC830', '#F37335'], ['#ff7e5f', '#feb47b', '#f9d423', '#f12711'],
+            ['#00F260', '#0575E6', '#f9d423', '#FBBC05'], ['#e65245', '#e43a15', '#e65245', '#e43a15'], ['#f7b733', '#fc4a1a', '#f7b733', '#fc4a1a'],
+            ['#74ebd5', '#9FACE6', '#f9d423', '#FBBC05'], ['#f83600', '#f9d423', '#f83600', '#f9d423'], ['#ee0979', '#ff6a00', '#ee0979', '#ff6a00'],
+            ['#3a1c71', '#d76d77', '#ffaf7b', '#FDC830'], ['#4ca1af', '#c4e0e5', '#4ca1af', '#c4e0e5'], ['#ff5f6d', '#ffc371', '#ff5f6d', '#ffc371'],
+            ['#2193b0', '#6dd5ed', '#2193b0', '#6dd5ed'], ['#ee9ca7', '#ffdde1', '#ee9ca7', '#ffdde1'], ['#bdc3c7', '#2c3e50', '#bdc3c7', '#2c3e50'],
+            ['#1565C0', '#b92b27', '#1565C0', '#b92b27'], ['#6a11cb', '#2575fc', '#6a11cb', '#2575fc']
+        ],
+        'Happy': [
+            ['#f9d423', '#ff4e50', '#f12711', '#f5af19'], ['#8E2DE2', '#4A00E0', '#FF0099', '#493240'], ['#fceabb', '#f8b500', '#fceabb', '#f8b500'],
+            ['#00d2ff', '#3a7bd5', '#00d2ff', '#3a7bd5'], ['#4facfe', '#00f2fe', '#4facfe', '#00f2fe'], ['#ff0844', '#ffb199', '#ff0844', '#ffb199'],
+            ['#43e97b', '#38f9d7', '#43e97b', '#38f9d7'], ['#fa709a', '#fee140', '#fa709a', '#fee140'], ['#30cfd0', '#330867', '#30cfd0', '#330867'],
+            ['#a18cd1', '#fbc2eb', '#a18cd1', '#fbc2eb'], ['#f093fb', '#f5576c', '#f093fb', '#f5576c'], ['#5ee7df', '#b490ca', '#5ee7df', '#b490ca'],
+            ['#c31432', '#240b36', '#c31432', '#240b36'], ['#fdfcfb', '#e2d1c3', '#fdfcfb', '#e2d1c3'], ['#667eea', '#764ba2', '#667eea', '#764ba2'],
+            ['#89f7fe', '#66a6ff', '#89f7fe', '#66a6ff'], ['#fccb90', '#d57eeb', '#fccb90', '#d57eeb'], ['#96fbc4', '#f9f586', '#96fbc4', '#f9f586'],
+            ['#009efd', '#2af598', '#009efd', '#2af598'], ['#f067b4', '#8131ff', '#f067b4', '#8131ff']
+        ],
+        'Earth': [
+            ['#312244', '#4E3542', '#826A5C', '#AF9164'], ['#54473F', '#92817A', '#BCAB79', '#F1DABF'], ['#2F3E46', '#354F52', '#52796F', '#84A59D'],
+            ['#432818', '#99582A', '#BB9457', '#FFE6A7'], ['#283618', '#606C38', '#DDA15E', '#FEFAE0'], ['#403D39', '#66615B', '#99948F', '#CCC5B9'],
+            ['#634832', '#967E67', '#D4A373', '#FEFAE0'], ['#14213D', '#FCA311', '#E5E5E5', '#FFFFFF'], ['#332011', '#5B3E25', '#8C6C4F', '#C4A484'],
+            ['#3C2F2F', '#4B3621', '#634433', '#704214'], ['#4D3B2B', '#6D5B4B', '#8E7B6B', '#AE9B8B'], ['#2A1B0A', '#412C17', '#5B4029', '#75543B'],
+            ['#1E130C', '#36231A', '#4E3328', '#664336'], ['#0D0805', '#1D130D', '#2D1E15', '#3D291D'], ['#2E1A0C', '#4A2E1C', '#66422C', '#82563C'],
+            ['#4B301D', '#6B4A37', '#8B6451', '#AB7E6B'], ['#3D2B1F', '#5D4539', '#7D5F53', '#9D796D'], ['#2B1B11', '#412C1E', '#573D2B', '#6D4E38'],
+            ['#1E130B', '#362317', '#4E3323', '#66432F'], ['#0D0804', '#1D130C', '#2D1E14', '#3D291C']
         ]
-        // এভাবেই আপনি অন্যান্য ক্যাটাগরি (Gold, Nature, Night) এ ডাটা বাড়াতে পারেন।
     };
 
     function filterHunt(cat) {
@@ -158,10 +213,34 @@
         });
     }
 
+    function hexToRgb(hex) {
+        hex = hex.replace('#', '');
+        if (hex.length === 3) hex = hex.split('').map(s => s + s).join('');
+        let bigint = parseInt(hex, 16);
+        return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
+    }
+
+    function rgbToHex(r, g, b) {
+        return "#" + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('').toUpperCase();
+    }
+
     function generate8AIColors() {
-        let r = parseInt(document.getElementById('ai_r').value) || 0;
-        let g = parseInt(document.getElementById('ai_g').value) || 0;
-        let b = parseInt(document.getElementById('ai_b').value) || 0;
+        let r, g, b;
+        const hVal = document.getElementById('ai_hex').value.trim();
+        const rInp = document.getElementById('ai_r');
+        const gInp = document.getElementById('ai_g');
+        const bInp = document.getElementById('ai_b');
+
+        if (hVal !== "") {
+            const res = hexToRgb(hVal);
+            r = res.r; g = res.g; b = res.b;
+            rInp.value = r; gInp.value = g; bInp.value = b;
+        } else {
+            r = parseInt(rInp.value) || 0;
+            g = parseInt(gInp.value) || 0;
+            b = parseInt(bInp.value) || 0;
+            document.getElementById('ai_hex').value = rgbToHex(r, g, b).replace('#', '');
+        }
 
         const resDiv = document.getElementById('aiMatchingResult');
         resDiv.innerHTML = '';
@@ -178,11 +257,14 @@
         ];
 
         variations.forEach(v => {
-            const rgb = `${v.r},${v.g},${v.b}`;
+            const hexCode = rgbToHex(v.r, v.g, v.b);
+            const rgbCode = `${v.r},${v.g},${v.b}`;
             resDiv.innerHTML += `
-                <div class="color-card" onclick="copyHex('rgb(${rgb})')">
-                    <div class="color-swatch" style="background:rgb(${rgb})"></div>
-                    <div class="color-info" style="font-size:10px; text-align:center; padding:5px;"><b>${v.n}</b><br>${rgb}</div>
+                <div class="color-card" onclick="copyHex('${hexCode}')">
+                    <div class="color-swatch" style="background:${hexCode}"></div>
+                    <div class="color-info" style="font-size:10px; text-align:center; padding:5px; line-height:1.2;">
+                        <b>${v.n}</b><br>${rgbCode}
+                    </div>
                 </div>`;
         });
     }
@@ -194,16 +276,15 @@
         toast.style.display = 'block';
         setTimeout(() => toast.style.display = 'none', 1500);
         
-        // Add to history
         const hist = document.getElementById('historyList');
         const item = document.createElement('div');
         item.style = `width:30px; height:30px; background:${color}; border-radius:5px; display:inline-block; margin:2px; border:1px solid #ddd; cursor:pointer;`;
         item.title = color;
         item.onclick = () => copyHex(color);
         hist.prepend(item);
+        if(hist.children.length > 20) hist.removeChild(hist.lastChild);
     }
 
-    // Initialize
     filterHunt('Pastel');
 </script>
 
