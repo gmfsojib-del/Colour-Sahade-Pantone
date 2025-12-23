@@ -54,7 +54,6 @@
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
         .modal-content { background: white; margin: 5% auto; padding: 25px; width: 500px; border-radius: 15px; text-align: center; position: relative; }
         .close-btn { position: absolute; right: 20px; top: 10px; font-size: 30px; cursor: pointer; }
-        .drop-zone { border: 3px dashed #bbb; padding: 40px; border-radius: 10px; background: #f9f9f9; cursor: pointer; margin-bottom: 20px; }
         
         /* Mockup */
         .tshirt-mockup { width: 250px; height: 280px; margin: 20px auto; position: relative; background: #eee; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 5px solid #333; }
@@ -69,14 +68,6 @@
 <div class="sidebar-nav">
     <div style="padding: 10px; margin-bottom: 20px;"><strong style="font-size: 20px; color: var(--primary);">RAHA DESIGN</strong></div>
     
-    <div class="nav-section-title">Quick Tools</div>
-    <div class="nav-item" onclick="alert('Find MD stock feature loading...')"><span class="nav-icon">🔍</span> Find MD stock</div>
-    <div class="nav-item" onclick="openTool('bgModal')"><span class="nav-icon">👤</span> Background remove</div>
-    <div class="nav-item" onclick="openTool('upscaleModal')"><span class="nav-icon">🖼️</span> Image upscale</div>
-    <div class="nav-item" onclick="alert('Caption Generator loading...')"><span class="nav-icon">Aa</span> Caption generate</div>
-    <div class="nav-item" onclick="alert('Vector service ready...')"><span class="nav-icon">📐</span> Vector to photo</div>
-    <div class="nav-item" onclick="alert('Sharing feature enabled...')"><span class="nav-icon">✈️</span> Quick image sharing</div>
-
     <div class="nav-section-title">Categories</div>
     <div id="categoryMenu"></div>
 </div>
@@ -147,24 +138,6 @@
     <footer>Designed & Maintained by: GM Sojib</footer>
 </div>
 
-<div id="upscaleModal" class="modal"><div class="modal-content">
-    <span class="close-btn" onclick="closeTool('upscaleModal')">&times;</span>
-    <h2>🖼️ Image Upscale (2X)</h2>
-    <div class="drop-zone" onclick="document.getElementById('uIn').click()">
-        <p>ছবি সিলেক্ট করুন (অটোমেটিক ২গুণ বড় হবে)</p>
-        <input type="file" id="uIn" hidden accept="image/*">
-    </div>
-</div></div>
-
-<div id="bgModal" class="modal"><div class="modal-content">
-    <span class="close-btn" onclick="closeTool('bgModal')">&times;</span>
-    <h2>👤 Background Remover</h2>
-    <div class="drop-zone" onclick="document.getElementById('bgIn').click()">
-        <p>ব্যাকগ্রাউন্ড সরাতে এখানে ছবি আপলোড করুন</p>
-        <input type="file" id="bgIn" hidden accept="image/*">
-    </div>
-</div></div>
-
 <div id="mockupModal" class="modal"><div class="modal-content">
     <span class="close-btn" onclick="closeMockup()">&times;</span>
     <h2>T-Shirt Mockup Preview</h2>
@@ -224,7 +197,6 @@
         return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
     }
 
-    // AI logic for 8 unique matching colors
     function generate8AIColors() {
         let r, g, b;
         const hVal = document.getElementById('ai_hex').value;
@@ -313,8 +285,6 @@
         }
     }
 
-    function openTool(id) { document.getElementById(id).style.display = 'block'; }
-    function closeTool(id) { document.getElementById(id).style.display = 'none'; }
     function openMockup() { document.getElementById('mockupModal').style.display = 'block'; }
     function closeMockup() { document.getElementById('mockupModal').style.display = 'none'; }
 
