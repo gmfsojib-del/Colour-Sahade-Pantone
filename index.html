@@ -30,8 +30,12 @@
         .box-ai { border: 2px solid var(--ai-color); background: #f0fdfa; }
         #picker-container { position: relative; margin-top: 15px; border: 3px solid #333; display: inline-block; cursor: crosshair; line-height: 0; max-width: 100%; }
         #imageCanvas { max-width: 100%; height: auto; display: block; }
-        .rgb-inputs { display: flex; justify-content: center; gap: 10px; margin-top: 20px; margin-bottom: 20px; }
+        .rgb-inputs { display: flex; justify-content: center; gap: 10px; margin-top: 20px; margin-bottom: 20px; flex-wrap: wrap; }
         .rgb-field { width: 65px; padding: 12px; border: 2px solid #ccc; border-radius: 8px; text-align: center; font-weight: 900; font-size: 16px; }
+        
+        /* নতুন স্টাইল হেক্স বক্সের জন্য */
+        .hex-field { width: 110px; padding: 12px; border: 2px solid #ccc; border-radius: 8px; text-align: center; font-weight: 900; font-size: 16px; text-transform: uppercase; }
+        
         .btn { padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.2s; font-size: 16px; }
         .btn-update { background: var(--primary); color: white; }
         .btn-save { background: var(--secondary); color: white; margin-top: 30px; font-size: 20px; }
@@ -103,13 +107,16 @@
                 </div>
 
                 <div class="box">
-                    <label><b>3. INPUT RGB CODE</b></label>
+                    <label><b>3. INPUT RGB OR HEX CODE</b></label>
                     <div class="rgb-inputs">
                         <input type="number" id="r" class="rgb-field" value="26">
                         <input type="number" id="g" class="rgb-field" value="35">
                         <input type="number" id="b" class="rgb-field" value="126">
+                        <span style="align-self: center; font-weight: bold;">OR</span>
+                        <input type="text" id="hexInput" class="hex-field" placeholder="#1A237E">
                     </div>
-                    <button class="btn btn-update" onclick="generateFromInputs()">GENERATE PALETTE</button>
+                    <button class="btn btn-update" onclick="generate8MatchingColors()">GENERATE 8 UNIQUE COLORS</button>
+                    <button class="btn btn-update" style="margin-top:10px; background:#444;" onclick="generateFromInputs()">GENERATE FULL PALETTE</button>
                 </div>
 
                 <div class="box" id="huntSection">
@@ -175,6 +182,7 @@
     const rIn = document.getElementById('r');
     const gIn = document.getElementById('g');
     const bIn = document.getElementById('b');
+    const hexIn = document.getElementById('hexInput'); // নতুন হেক্স ইনপুট
     let history = JSON.parse(localStorage.getItem('rahaColorHistory')) || [];
 
     const categories = ["Pastel", "Vintage", "Retro", "Neon", "Gold", "Nature", "Summer", "Happy", "Night", "Earth"];
@@ -203,6 +211,14 @@
         };
         catMenu.appendChild(item);
     });
+
+    // হেক্স থেকে আরজিবি কনভার্ট করার জন্য নতুন ফাংশন
+    function hexToRgb(hex) {
+        hex = hex.replace('#', '');
+        if (hex.length === 3) hex = hex.split('').map(s => s + s).join('');
+        let bigint = parseInt(hex, 16);
+        return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
+    }
 
     function rgbToHex(rgbStr) {
         let parts = rgbStr.split(',');
@@ -258,13 +274,58 @@
 
     function updateUI(r, g, b) {
         rIn.value = r; gIn.value = g; bIn.value = b;
+        hexIn.value = rgbToHex(`${r},${g},${b}`); // আরজিবি থেকে হেক্স আপডেট
         document.getElementById('tshirtSVG').style.fill = `rgb(${r},${g},${b})`;
         document.getElementById('currentMockupColor').innerText = `RGB(${r}, ${g}, ${b})`;
         generatePalette(r, g, b);
     }
 
+    // আপনার অরিজিনাল জেনারেট ফাংশন
     function generateFromInputs() {
-        updateUI(rIn.value, gIn.value, bIn.value);
+        if(hexIn.value.trim() !== "") {
+            const rgb = hexToRgb(hexIn.value);
+            updateUI(rgb.r, rgb.g, rgb.b);
+        } else {
+            updateUI(rIn.value, gIn.value, bIn.value);
+        }
+    }
+
+    // আপনি যে ৮টি ইউনিক কালার চেয়েছিলেন তার ফাংশন
+    function generate8MatchingColors() {
+        let r, g, b;
+        if(hexIn.value.trim() !== "") {
+            const rgb = hexToRgb(hexIn.value);
+            r = rgb.r; g = rgb.g; b = rgb.b;
+        } else {
+            r = parseInt(rIn.value); g = parseInt(gIn.value); b = parseInt(bIn.value);
+        }
+        
+        rIn.value = r; gIn.value = g; bIn.value = b;
+        hexIn.value = rgbToHex(`${r},${g},${b}`);
+        
+        const pal = document.getElementById('palette');
+        pal.innerHTML = '';
+        saveToHistory(r, g, b);
+
+        // ৮টি ভিন্ন ভিন্ন গাণিতিক কম্বিনেশন যাতে একটির সাথে অন্যটি না মিলে
+        const variations = [
+            {r: r, g: g, b: b}, // Original
+            {r: 255-r, g: 255-g, b: 255-b}, // Complementary
+            {r: g, g: b, b: r}, // Shifted 1
+            {r: b, g: r, b: g}, // Shifted 2
+            {r: Math.round(r*0.5), g: Math.round(g*0.5), b: Math.round(b*0.5)}, // Darker
+            {r: Math.min(255, r+60), g: Math.min(255, g+60), b: Math.min(255, b+60)}, // Brighter
+            {r: Math.round(r*0.8 + 30), g: Math.round(g*0.4), b: Math.round(b*0.2)}, // Warm accent
+            {r: Math.round(r*0.2), g: Math.round(g*0.5 + 40), b: Math.round(b*0.9)}  // Cool accent
+        ];
+
+        variations.forEach(v => {
+            const rgb = `${v.r},${v.g},${v.b}`;
+            pal.innerHTML += `<div class="color-card" onclick="copyCode('${rgb}')" ondblclick="copyHex('${rgb}')">
+                <div class="color-swatch" style="background:rgb(${rgb})"></div>
+                <div class="color-info">${rgb}</div>
+            </div>`;
+        });
     }
 
     function generatePalette(r, g, b) {
