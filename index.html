@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -312,7 +310,6 @@
         if (!history.includes(s)) {
             history.unshift(s); if(history.length > 12) history.pop();
             localStorage.setItem('rahaColorHistory', JSON.stringify(history));
-            
             updateHistoryUI();
         }
     }
@@ -325,65 +322,6 @@
         </div>`).join('');
     }
 
-    // --- Drag & Drop Logic (লাইন ৩২৮ থেকে শুরু করুন) ---
-
-const dropZone = document.getElementById('drop-zone');
-const fileInput = document.getElementById('upload');
-const pickerContainer = document.getElementById('picker-container');
-// আপনার ক্যানভাস এলিমেন্টটি আগে ডিফাইন করা না থাকলে নিচের ২ লাইন জরুরি
-const canvas = document.getElementById('imageCanvas');
-const ctx = canvas.getContext('2d');
-
-// ১. ক্লিক করলে আপলোড উইন্ডো আসবে
-dropZone.onclick = () => fileInput.click();
-
-// ২. ড্র্যাগ করে আনলে রঙ বদলাবে
-dropZone.ondragover = (e) => {
-    e.preventDefault();
-    dropZone.style.background = "#e0e0ff";
-    dropZone.style.borderStyle = "solid";
-};
-
-// ৩. ড্র্যাগ ছেড়ে দিলে বা মাউস সরিয়ে নিলে আগের মতো হবে
-dropZone.ondragleave = () => {
-    dropZone.style.background = "#f9f9ff";
-    dropZone.style.borderStyle = "dashed";
-};
-
-// ৪. ড্রপ করলে ছবি প্রসেস হবে
-dropZone.ondrop = (e) => {
-    e.preventDefault();
-    dropZone.style.background = "#f9f9ff";
-    const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) {
-        handleImage(file);
-    }
-};
-
-// ৫. ম্যানুয়ালি ফাইল সিলেক্ট করলে
-fileInput.onchange = (e) => {
-    const file = e.target.files[0];
-    if (file) handleImage(file);
-};
-
-// ৬. ছবি ক্যানভাসে দেখানোর মেইন ফাংশন
-function handleImage(file) {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-        const img = new Image();
-        img.onload = () => {
-            dropZone.style.display = 'none'; // বক্স হাইড হবে
-            pickerContainer.style.display = 'block'; // ক্যানভাস দেখাবে
-            
-            // ক্যানভাস সাইজ ছবির সমান করা
-            canvas.width = img.width; 
-            canvas.height = img.height; 
-            ctx.drawImage(img, 0, 0); 
-        }
-        img.src = event.target.result;
-    }
-    reader.readAsDataURL(file);
-}
     function copyCode(t) { navigator.clipboard.writeText(t); showToast("RGB Copied: " + t); }
     function copyHex(t) { 
         const hex = t.startsWith('#') ? t : rgbToHex(t);
@@ -405,3 +343,4 @@ function handleImage(file) {
 
 </body>
 </html>
+
