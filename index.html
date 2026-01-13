@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Raha Digital Print - Pro Design Sector</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <style>
         :root { --primary: #1a237e; --secondary: #2e7d32; --ai-color: #00695c; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 0; display: flex; overflow: hidden; }
@@ -51,24 +51,23 @@
         .btn { padding: 14px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.2s; font-size: 15px; text-transform: uppercase; }
         .btn-update { background: var(--primary); color: white; }
         .btn-save { background: var(--secondary); color: white; margin-top: 20px; font-size: 18px; }
+        .btn-save:active { transform: scale(0.98); background: #1b5e20; }
         
         .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-top: 15px; }
         .color-card { border: 1px solid #000; background: #fff; border-radius: 10px; overflow: hidden; cursor: pointer; }
         .color-swatch { width: 100%; height: 80px; border-bottom: 1px solid #000; }
         .color-info { padding: 5px 2px; font-size: 12px; font-weight: 900; text-align: center; color: #000; }
         
-        .hunt-card { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 3px 8px rgba(0,0,0,0.1); cursor: pointer; height: 160px; display: flex; flex-direction: column; }
+        /* Hunt Data Grid */
+        #huntGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; }
+        .hunt-card { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 3px 8px rgba(0,0,0,0.1); cursor: pointer; height: 160px; display: flex; flex-direction: column; border: 1px solid #eee; }
         .c-layer { width: 100%; transition: 0.2s; position: relative; height: 25%; }
 
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
         .modal-content { background: white; margin: 2% auto; padding: 25px; width: 90%; max-width: 800px; border-radius: 15px; text-align: center; position: relative; max-height: 90vh; overflow-y: auto; }
         .close-btn { position: absolute; right: 20px; top: 10px; font-size: 30px; cursor: pointer; color: #333; }
         
-        .tshirt-mockup { width: 220px; height: 250px; margin: 20px auto; position: relative; background: #eee; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 4px solid #333; }
-        .tshirt-mockup svg { width: 180px; fill: #1a237e; transition: 0.5s; }
-        
         .copy-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 12px 25px; border-radius: 30px; display: none; z-index: 3000; font-weight: bold; }
-        footer { text-align: center; padding: 20px; font-weight: bold; color: #1a237e; }
     </style>
 </head>
 <body>
@@ -86,14 +85,6 @@
         <span class="color-box-title">Color Categories</span>
         <div id="categoryMenu"></div>
     </div>
-
-    <div style="margin-top: 20px;">
-        <strong style="font-size: 12px; color: #888; text-transform: uppercase; margin-left: 10px;">Search History</strong>
-        <div id="historyList" style="margin-top:10px;"></div>
-        <button onclick="clearHistory()" style="width: 100%; border:none; color:red; cursor:pointer; font-weight:bold; background:none; font-size: 12px; margin-top: 5px;">CLEAR HISTORY</button>
-    </div>
-    
-    <button class="btn btn-update" style="margin-top: 20px; font-size: 13px;" onclick="openMockup()">👕 T-SHIRT PREVIEW</button>
 </div>
 
 <div class="main-wrapper">
@@ -109,11 +100,11 @@
         </div>
 
         <div class="box box-ai">
-            <label style="color: var(--ai-color);"><b>✨COLOR MATCHER</b></label>
+            <label style="color: var(--ai-color);"><b>✨ AI COLOR MATCHER</b></label>
             <div class="rgb-inputs">
-                <input type="text" id="ai_hex" style="width: 50px; padding:8px; border:1px solid #ccc; border-radius: 5px; text-align: center; font-weight: 700;" placeholder="#HEX">
+                <input type="text" id="ai_hex" style="width: 100px; padding: 10px; border: 2px solid #ccc; border-radius: 8px; text-align: center; font-weight: 900;" placeholder="#HEX">
             </div>
-            <button class="btn" style="background: var(--ai-color); color: white; margin-top: 15px;" onclick="generate8AIColors()">GENERATE UNIQUE COLORS</button>
+            <button class="btn" style="background: var(--ai-color); color: white; margin-top: 15px;" onclick="generate8AIColors()">GENERATE 8 UNIQUE COLORS</button>
             <div id="aiMatchingResult" class="palette-grid"></div>
         </div>
 
@@ -128,24 +119,11 @@
         </div>
 
         <div id="downloadArea" style="padding: 20px; background: white; border: 1px solid #ddd; border-radius: 12px; margin-top: 20px;">
-            <h3 style="text-align: center;">Premium Digital Palette</h3>
+            <h3 style="text-align: center; margin-bottom: 20px; color: #1a237e;">Premium Digital Palette</h3>
             <div id="palette" class="palette-grid"></div>
         </div>
 
-        <button class="btn btn-save" onclick="downloadImage()">SAVE AS IMAGE (300 DPI)</button>
-    </div>
-    <footer>Designed & Maintained by: GM Sojib</footer>
-</div>
-
-<div id="mockupModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeModal('mockupModal')">&times;</span>
-        <h2>T-Shirt Mockup Preview</h2>
-        <div class="tshirt-mockup" id="tshirtBox">
-            <svg id="tshirtSVG" viewBox="0 0 100 100"><path d="M90,20 L75,10 C70,8 65,15 65,15 C65,15 60,12 50,12 C40,12 35,15 35,15 C35,15 30,8 25,10 L10,20 L15,40 L25,35 L25,90 L75,90 L75,35 L85,40 L90,20 Z"/></svg>
-        </div>
-        <div id="currentMockupColor" style="font-weight: bold; margin-bottom: 10px;">RGB(26, 35, 126)</div>
-        <button class="btn btn-update" onclick="closeModal('mockupModal')">DONE</button>
+        <button class="btn btn-save" id="downloadBtn" onclick="downloadImage()">SAVE AS IMAGE (300 DPI)</button>
     </div>
 </div>
 
@@ -153,36 +131,38 @@
     <div class="modal-content">
         <span class="close-btn" onclick="closeModal('huntModal')">&times;</span>
         <h2 id="huntModalTitle">🌈 Explore Hunts</h2>
-        <div id="huntGrid" class="palette-grid" style="grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); padding: 7px;"></div>
-        <button class="btn btn-update" style="margin-top: 15px;" onclick="closeModal('huntModal')">DONE</button>
+        <div id="huntGrid"></div>
+        <button class="btn btn-update" style="margin-top: 20px;" onclick="closeModal('huntModal')">DONE</button>
     </div>
 </div>
 
 <div id="copyToast" class="copy-toast">Code Copied!</div>
 
 <script>
+    // --- Configuration & Data ---
     const canvas = document.getElementById('imageCanvas');
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     const rIn = document.getElementById('r');
     const gIn = document.getElementById('g');
     const bIn = document.getElementById('b');
-    let history = JSON.parse(localStorage.getItem('rahaColorHistory')) || [];
 
     const categories = ["Pastel", "Vintage", "Retro", "Neon", "Gold", "Nature", "Summer", "Happy", "Night", "Earth"];
 
+    // Full Hunt Data Restored
     const huntData = {
         'Pastel': [['#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7'], ['#F3E5F5', '#E1F5FE', '#E8F5E9', '#FFFDE7'], ['#B2F7EF', '#EFF7F6', '#F7D1CD', '#E2CFC4'], ['#FCE1E4', '#FCF4DD', '#DDEDEA', '#DAEAF6'], ['#E8D7F1', '#D3BCC0', '#A5668B', '#69306D'], ['#F08080', '#F4978E', '#F8AD9D', '#FBC4AB'], ['#FF99C8', '#FCF6BD', '#D0F4DE', '#A9DEF9'], ['#E4C1F9', '#D0F4DE', '#FCF6BD', '#FF99C8'], ['#F6EAC2', '#FFD4B2', '#FFBFA3', '#FFADAD'], ['#A0C4FF', '#BDB2FF', '#FFC6FF', '#FFFFFC'], ['#DEE2FF', '#E8E8E8', '#FEEAFA', '#F1F1F1'], ['#B9FBC0', '#98F5E1', '#8EECF5', '#A3C4F3'], ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9'], ['#BAE1FF', '#D1D1D1', '#E2F0CB', '#FFDAC1'], ['#FF9AA2', '#FFB7B2', '#FFDAC1', '#E2F0CB'], ['#C7CEEA', '#B5EAD7', '#E2F0CB', '#FFDAC1'], ['#FAD0C4', '#FFD1FF', '#E0C3FC', '#8EC5FC'], ['#FFDEE9', '#B5FFFC', '#FFFFFF', '#D9AFD9'], ['#A18CD1', '#FBC2EB', '#8FD3F4', '#84FAB0'], ['#FBED64', '#7AFFAF', '#7158E2', '#CD84F1']],
         'Vintage': [['#634832', '#967E67', '#D4A373', '#FEFAE0'], ['#264653', '#2A9D8F', '#E9C46A', '#F4A261'], ['#582F0E', '#7F4F24', '#936639', '#A68A64'], ['#B6AD90', '#C2C5AA', '#A4AC86', '#656D4A'], ['#333D29', '#414833', '#656D4A', '#A4AC86'], ['#7D4F50', '#D1BE9C', '#AA998F', '#E0D8DE'], ['#2C3E50', '#E67E22', '#ECF0F1', '#95A5A6'], ['#1A1A1A', '#4A4A4A', '#9B9B9B', '#D8D8D8'], ['#3E2723', '#5D4037', '#8D6E63', '#D7CCC8'], ['#1B5E20', '#388E3C', '#66BB6A', '#C8E6C9'], ['#827397', '#4D4C7D', '#363062', '#E9D5CA'], ['#433520', '#025955', '#00917C', '#FDE8CD'], ['#5F4B32', '#967E67', '#D4A373', '#FEFAE0'], ['#403D39', '#CCC5B9', '#FFFCF2', '#EB5E28'], ['#252422', '#403D39', '#CCC5B9', '#FFFCF2'], ['#1D3557', '#457B9D', '#A8DADC', '#F1FAEE'], ['#6D597A', '#B56576', '#E56B6F', '#EAAC8B'], ['#283618', '#606C38', '#FEFAE0', '#DDA15E'], ['#540B0E', '#9E2A2B', '#E09F3E', '#FFF3B0'], ['#3D5A80', '#98C1D9', '#E0FBFC', '#EE6C4D']],
         'Retro': [['#E07A5F', '#3D405B', '#81B29A', '#F2CC8F'], ['#FFBE0B', '#FB5607', '#FF006E', '#8338EC'], ['#264653', '#2A9D8F', '#E9C46A', '#F4A261'], ['#D00000', '#FFBA08', '#3F88C5', '#032B43'], ['#606C38', '#283618', '#FEFAE0', '#DDA15E'], ['#EF476F', '#FFD166', '#06D6A0', '#118AB2'], ['#2B2D42', '#8D99AE', '#EDF2F4', '#EF233C'], ['#003049', '#D62828', '#F77F00', '#FCBF49'], ['#7209B7', '#3F37C9', '#4361EE', '#4CC9F0'], ['#FF9F1C', '#FFBF69', '#FFFFFF', '#CBF3F0'], ['#1A535C', '#4ECDC4', '#F7FFF7', '#FF6B6B'], ['#FFBC42', '#D81159', '#8F2D56', '#218380'], ['#50514F', '#F25F5C', '#FFE066', '#247BA0'], ['#70D6FF', '#FF70A6', '#FF9770', '#FFD670'], ['#05668D', '#028090', '#00A896', '#02C39A'], ['#F45B69', '#456990', '#E4FDE1', '#114B5F'], ['#D7263D', '#F46036', '#2E294E', '#1B998B'], ['#3D348B', '#7678ED', '#F7B801', '#F18701'], ['#8E9AAF', '#CBC0D3', '#EFD3D7', '#FEEAFA'], ['#22223B', '#4A4E69', '#9A8C98', '#C9ADA7']],
         'Neon': [['#00F5FF', '#00FF41', '#FF00FF', '#FFFF00'], ['#FF3131', '#FF5E13', '#77EE11', '#08F7FE'], ['#FF0055', '#00FF99', '#00CCFF', '#FFFF00'], ['#BF00FF', '#FF00BF', '#00FFBF', '#FFBF00'], ['#39FF14', '#FF1493', '#00BFFF', '#FFD700'], ['#7FFF00', '#FF00FF', '#00FFFF', '#FF4500'], ['#000000', '#FF0000', '#FFFB00', '#00FF00'], ['#05FFA1', '#B967FF', '#05B2FF', '#FF4848'], ['#BC13FE', '#FF0092', '#FFCA20', '#E50914'], ['#FF00FF', '#00FFFF', '#FFFF00', '#00FF00'], ['#4DEEEA', '#74EE15', '#FFE700', '#F000FF'], ['#001EFF', '#BD00FF', '#D600FF', '#FF00B0'], ['#FFEA00', '#00E5FF', '#00FF00', '#FF00FF'], ['#00E5FF', '#00FF00', '#FF00FF', '#FF0000'], ['#FF1493', '#00CED1', '#FFD700', '#32CD32'], ['#FF4500', '#1E90FF', '#FFFF00', '#00FF7F'], ['#FF69B4', '#00FF00', '#00FFFF', '#DA70D6'], ['#ADFF2F', '#FF00FF', '#FF1493', '#00BFFF'], ['#FF0000', '#00FF00', '#0000FF', '#FFFF00'], ['#00FFFF', '#FF00FF', '#FFFF00', '#000000']],
         'Gold': [['#D4AF37', '#FFD700', '#CFB53B', '#F5E1A4'], ['#BF953F', '#FCF6BA', '#B38728', '#FBF5B7'], ['#C5A059', '#D7BE82', '#7A5C12', '#F1E5AC'], ['#E1C16E', '#CD7F32', '#996515', '#B8860B'], ['#DAA520', '#FFD700', '#EEE8AA', '#FAFAD2'], ['#8A6623', '#C19A6B', '#E5AA70', '#E1C699'], ['#D4AF37', '#996515', '#FFD700', '#000000'], ['#B8860B', '#FFD700', '#DAA520', '#333333'], ['#E6BE8A', '#8E7618', '#A98B11', '#BBA53D'], ['#C5B358', '#D4AF37', '#E6BE8A', '#A67C00'], ['#D9B611', '#F2D06B', '#F2E8DF', '#BF9B30'], ['#FFD700', '#E5C100', '#C0A000', '#998000'], ['#FFD700', '#FFCC33', '#FF9900', '#FF6600'], ['#D4AF37', '#C0C0C0', '#B87333', '#FFD700'], ['#FFD700', '#C5B358', '#D4AF37', '#996515'], ['#D4AF37', '#FFD700', '#FFDF00', '#FFDB58'], ['#E5C100', '#FFD700', '#FFFF00', '#FDEE00'], ['#FFD700', '#EEDC82', '#DAA520', '#B8860B'], ['#D4AF37', '#996515', '#B8860B', '#DAA520'], ['#FFD700', '#C5A059', '#7A5C12', '#4D3B11']],
-        'Nature': [['#11998e', '#38ef7d', '#56ab2f', '#a8e063'], ['#2d6a4f', '#40916c', '#52b788', '#74c69d'], ['#004b23', '#007200', '#008000', '#38b000'], ['#002109', '#003e1f', '#005f39', '#007f5f'], ['#212529', '#343a40', '#495057', '#adb5bd'], ['#355070', '#6d597a', '#b56576', '#e56b6f'], ['#1a535c', '#4ecdc4', '#f7fff7', '#ff6b6b'], ['#264653', '#2a9d8f', '#e9c46a', '#f4a261'], ['#011627', '#fdfffc', '#2ec4b6', '#e71d36'], ['#50514f', '#f25f5c', '#ffe066', '#247ba0'], ['#2b2d42', '#8d99ae', '#edf2f4', '#ef233c'], ['#1d3557', '#457b9d', '#a8dadc', '#f1faee'], ['#606c38', '#283618', '#fefae0', '#dda15e'], ['#22577a', '#38a3a5', '#57cc99', '#80ed99'], ['#3c0919', '#7d1d3f', '#d11149', '#e63946'], ['#003049', '#d62828', '#f77f00', '#fcbf49'], ['#007f5f', '#2b9348', '#55a630', '#80b918'], ['#ff9f1c', '#ffbf69', '#ffffff', '#cbf3f0'], ['#7209b7', '#3f37c9', '#4361ee', '#4cc9f0'], ['#f94144', '#f3722c', '#f8961e', '#f9c74f']],
-        'Summer': [['#FF9A8B', '#FF6A88', '#FF99AC', '#FBBC05'], ['#f72585', '#b5179e', '#7209b7', '#560bad'], ['#480ca8', '#3f37c9', '#4361ee', '#4cc9f0'], ['#4361ee', '#4895ef', '#4cc9f0', '#4ea8de'], ['#ffbe0b', '#fb5607', '#ff006e', '#8338ec'], ['#3a86ff', '#00b4d8', '#90e0ef', '#caf0f8'], ['#ff4d6d', '#ff758f', '#ff85a1', '#ffb3c1'], ['#ffccd5', '#fff0f3', '#ff85a1', '#ff4d6d'], ['#0077b6', '#0096c7', '#00b4d8', '#48cae4'], ['#ade8f4', '#caf0f8', '#0077b6', '#023e8a'], ['#ff006e', '#8338ec', '#3a86ff', '#00b4d8'], ['#ff99c8', '#fcf6bd', '#d0f4de', '#a9def9'], ['#e4c1f9', '#d0f4de', '#fcf6bd', '#ff99c8'], ['#ffadad', '#ffd6a5', '#fdffb6', '#caffbf'], ['#9bf6ff', '#a0c4ff', '#bdb2ff', '#ffc6ff'], ['#ff7b00', '#ff8800', '#ff9500', '#ffa200'], ['#ffaa00', '#ffb700', '#ffc300', '#ffd000'], ['#ffdd00', '#ffea00', '#2a9d8f', '#e9c46a'], ['#f4a261', '#e76f51', '#264653', '#2a9d8f'], ['#e9c46a', '#f4a261', '#e76f51', '#ffffff']],
-        'Happy': [['#f9d423', '#ff4e50', '#f12711', '#f5af19'], ['#ff00cc', '#3333ff', '#ff00cc', '#3333ff'], ['#00ff00', '#ffff00', '#00ff00', '#ffff00'], ['#ff9900', '#ff0000', '#ff9900', '#ff0000'], ['#6600ff', '#ff0066', '#6600ff', '#ff0066'], ['#00ffff', '#ff00ff', '#00ffff', '#ff00ff'], ['#ffcc00', '#ff3300', '#ffcc00', '#ff3300'], ['#33cc33', '#0066cc', '#33cc33', '#0066cc'], ['#cc00cc', '#ff9900', '#cc00cc', '#ff9900'], ['#00ccff', '#ffcc00', '#00ccff', '#ffcc00'], ['#ffff00', '#ff00ff', '#ffff00', '#ff00ff'], ['#ff3399', '#33ffcc', '#ff3399', '#33ffcc'], ['#66ff33', '#ff3366', '#66ff33', '#ff3366'], ['#3399ff', '#ffcc33', '#3399ff', '#ffcc33'], ['#ff6600', '#00cc66', '#ff6600', '#00cc66'], ['#cc33ff', '#ffcc00', '#cc33ff', '#ffcc00'], ['#00ff99', '#ff3399', '#00ff99', '#ff3399'], ['#ffcc33', '#3399ff', '#ffcc33', '#3399ff'], ['#ff00ff', '#00ffff', '#ff00ff', '#00ffff'], ['#ff3300', '#00ff00', '#ff3300', '#00ff00']],
-        'Night': [['#0F0C29', '#302B63', '#24243E', '#FFFFFF'], ['#141E30', '#243B55', '#141E30', '#243B55'], ['#000000', '#434343', '#000000', '#434343'], ['#232526', '#414345', '#232526', '#414345'], ['#0f2027', '#203a43', '#2c5364', '#0f2027'], ['#373b44', '#4286f4', '#373b44', '#4286f4'], ['#1e3c72', '#2a5298', '#1e3c72', '#2a5298'], ['#2c3e50', '#000000', '#2c3e50', '#000000'], ['#4b6cb7', '#182848', '#4b6cb7', '#182848'], ['#000000', '#e74c3c', '#000000', '#e74c3c'], ['#141e30', '#243b55', '#141e30', '#243b55'], ['#232526', '#414345', '#232526', '#414345'], ['#0f2027', '#203a43', '#2c5364', '#0f2027'], ['#373b44', '#4286f4', '#373b44', '#4286f4'], ['#1e3c72', '#2a5298', '#1e3c72', '#2a5298'], ['#2c3e50', '#000000', '#2c3e50', '#000000'], ['#4b6cb7', '#182848', '#4b6cb7', '#182848'], ['#000000', '#e74c3c', '#000000', '#e74c3c'], ['#111111', '#333333', '#555555', '#777777'], ['#000011', '#000033', '#000055', '#000077']],
-        'Earth': [['#4b3621', '#6b4423', '#8b5a2b', '#a0522d'], ['#556b2f', '#6b8e23', '#8fbc8f', '#bdb76b'], ['#8b4513', '#a0522d', '#cd853f', '#d2b48c'], ['#2f4f4f', '#556b2f', '#8b4513', '#bc8f8f'], ['#d2b48c', '#deb887', '#f5f5dc', '#faebd7'], ['#bc8f8f', '#c0c0c0', '#d3d3d3', '#e0e0e0'], ['#8fbc8f', '#98fb98', '#00ff7f', '#00fa9a'], ['#cd853f', '#d2b48c', '#deb887', '#f5deb3'], ['#556b2f', '#6b8e23', '#9acd32', '#adff2f'], ['#8b4513', '#a0522d', '#b8860b', '#daa520'], ['#4b3621', '#6b4423', '#8b5a2b', '#a0522d'], ['#556b2f', '#6b8e23', '#8fbc8f', '#bdb76b'], ['#8b4513', '#a0522d', '#cd853f', '#d2b48c'], ['#2f4f4f', '#556b2f', '#8b4513', '#bc8f8f'], ['#d2b48c', '#deb887', '#f5f5dc', '#faebd7'], ['#bc8f8f', '#c0c0c0', '#d3d3d3', '#e0e0e0'], ['#8fbc8f', '#98fb98', '#00ff7f', '#00fa9a'], ['#cd853f', '#d2b48c', '#deb887', '#f5deb3'], ['#556b2f', '#6b8e23', '#9acd32', '#adff2f'], ['#8b4513', '#a0522d', '#b8860b', '#daa520']]
+        'Nature': [['#11998E', '#38EF7D', '#56AB2F', '#A8E063'], ['#2D6A4F', '#40916C', '#52B788', '#74C69D'], ['#004B23', '#007200', '#008000', '#38B000'], ['#002109', '#003E1F', '#005F39', '#007F5F'], ['#212529', '#343A40', '#495057', '#ADB5BD'], ['#355070', '#6D597A', '#B56576', '#E56B6F'], ['#1A535C', '#4ECDC4', '#F7FFF7', '#FF6B6B'], ['#264653', '#2A9D8F', '#E9C46A', '#F4A261'], ['#011627', '#FDFFFC', '#2EC4B6', '#E71D36'], ['#50514F', '#F25F5C', '#FFE066', '#247BA0'], ['#2B2D42', '#8D99AE', '#EDF2F4', '#EF233C'], ['#1D3557', '#457B9D', '#A8DADC', '#F1FAEE'], ['#606C38', '#283618', '#FEFAE0', '#DDA15E'], ['#22577A', '#38A3A5', '#57CC99', '#80ED99'], ['#3C0919', '#7D1D3F', '#D11149', '#E63946'], ['#003049', '#D62828', '#F77F00', '#FCBF49'], ['#007F5F', '#2B9348', '#55A630', '#80B918'], ['#FF9F1C', '#FFBF69', '#FFFFFF', '#CBF3F0'], ['#7209B7', '#3F37C9', '#4361EE', '#4CC9F0'], ['#F94144', '#F3722C', '#F8961E', '#F9C74F']],
+        'Summer': [['#FF9A8B', '#FF6A88', '#FF99AC', '#FBBC05'], ['#F72585', '#B5179E', '#7209B7', '#560BAD'], ['#480CA8', '#3F37C9', '#4361EE', '#4CC9F0'], ['#4361EE', '#4895EF', '#4CC9F0', '#4EA8DE'], ['#FFBE0B', '#FB5607', '#FF006E', '#8338EC'], ['#3A86FF', '#00B4D8', '#90E0EF', '#CAF0F8'], ['#FF4D6D', '#FF758F', '#FF85A1', '#FFB3C1'], ['#FFCCD5', '#FFF0F3', '#FF85A1', '#FF4D6D'], ['#0077B6', '#0096C7', '#00B4D8', '#48CAE4'], ['#ADE8F4', '#CAF0F8', '#0077B6', '#023E8A'], ['#FF006E', '#8338EC', '#3A86FF', '#00B4D8'], ['#FF99C8', '#FCF6BD', '#D0F4DE', '#A9DEF9'], ['#E4C1F9', '#D0F4DE', '#FCF6BD', '#FF99C8'], ['#FFADAD', '#FFD6A5', '#FDFFB6', '#CAFFBF'], ['#9BF6FF', '#A0C4FF', '#BDB2FF', '#FFC6FF'], ['#FF7B00', '#FF8800', '#FF9500', '#FFA200'], ['#FFAA00', '#FFB700', '#FFC300', '#FFD000'], ['#FFDD00', '#FFEA00', '#2A9D8F', '#E9C46A'], ['#F4A261', '#E76F51', '#264653', '#2A9D8F'], ['#E9C46A', '#F4A261', '#E76F51', '#FFFFFF']],
+        'Happy': [['#F9D423', '#FF4E50', '#F12711', '#F5AF19'], ['#FF00CC', '#3333FF', '#FF00CC', '#3333FF'], ['#00FF00', '#FFFF00', '#00FF00', '#FFFF00'], ['#FF9900', '#FF0000', '#FF9900', '#FF0000'], ['#6600FF', '#FF0066', '#6600FF', '#FF0066'], ['#00FFFF', '#FF00FF', '#00FFFF', '#FF00FF'], ['#FFCC00', '#FF3300', '#FFCC00', '#FF3300'], ['#33CC33', '#0066CC', '#33CC33', '#0066CC'], ['#CC00CC', '#FF9900', '#CC00CC', '#FF9900'], ['#00CCFF', '#FFCC00', '#00CCFF', '#FFCC00'], ['#FFFF00', '#FF00FF', '#FFFF00', '#FF00FF'], ['#FF3399', '#33FFCC', '#FF3399', '#33FFCC'], ['#66FF33', '#FF3366', '#66FF33', '#FF3366'], ['#3399FF', '#FFCC33', '#3399FF', '#FFCC33'], ['#FF6600', '#00CC66', '#FF6600', '#00CC66'], ['#CC33FF', '#FFCC00', '#CC33FF', '#FFCC00'], ['#00FF99', '#FF3399', '#00FF99', '#FF3399'], ['#FFCC33', '#3399FF', '#FFCC33', '#3399FF'], ['#FF00FF', '#00FFFF', '#FF00FF', '#00FFFF'], ['#FF3300', '#00FF00', '#FF3300', '#00FF00']],
+        'Night': [['#0F0C29', '#302B63', '#24243E', '#FFFFFF'], ['#141E30', '#243B55', '#141E30', '#243B55'], ['#000000', '#434343', '#000000', '#434343'], ['#232526', '#414345', '#232526', '#414345'], ['#0F2027', '#203A43', '#2C5364', '#0F2027'], ['#373B44', '#4286F4', '#373B44', '#4286F4'], ['#1E3C72', '#2A5298', '#1E3C72', '#2A5298'], ['#2C3E50', '#000000', '#2C3E50', '#000000'], ['#4B6CB7', '#182848', '#4B6CB7', '#182848'], ['#000000', '#E74C3C', '#000000', '#E74C3C'], ['#141E30', '#243B55', '#141E30', '#243B55'], ['#232526', '#414345', '#232526', '#414345'], ['#0F2027', '#203A43', '#2C5364', '#0F2027'], ['#373B44', '#4286F4', '#373B44', '#4286F4'], ['#1E3C72', '#2A5298', '#1E3C72', '#2A5298'], ['#2C3E50', '#000000', '#2C3E50', '#000000'], ['#4B6CB7', '#182848', '#4B6CB7', '#182848'], ['#000000', '#E74C3C', '#000000', '#E74C3C'], ['#111111', '#333333', '#555555', '#777777'], ['#000011', '#000033', '#000055', '#000077']],
+        'Earth': [['#4B3621', '#6B4423', '#8B5A2B', '#A0522D'], ['#556B2F', '#6B8E23', '#8FBC8F', '#BDB76B'], ['#8B4513', '#A0522D', '#CD853F', '#D2B48C'], ['#2F4F4F', '#556B2F', '#8B4513', '#BC8F8F'], ['#D2B48C', '#DEB887', '#F5F5DC', '#FAEBD7'], ['#BC8F8F', '#C0C0C0', '#D3D3D3', '#E0E0E0'], ['#8FBC8F', '#98FB98', '#00FF7F', '#00FA9A'], ['#CD853F', '#D2B48C', '#DEB887', '#F5DEB3'], ['#556B2F', '#6B8E23', '#9ACD32', '#ADFF2F'], ['#8B4513', '#A0522D', '#B8860B', '#DAA520'], ['#4B3621', '#6B4423', '#8B5A2B', '#A0522D'], ['#556B2F', '#6B8E23', '#8FBC8F', '#BDB76B'], ['#8B4513', '#A0522D', '#CD853F', '#D2B48C'], ['#2F4F4F', '#556B2F', '#8B4513', '#BC8F8F'], ['#D2B48C', '#DEB887', '#F5F5DC', '#FAEBD7'], ['#BC8F8F', '#C0C0C0', '#D3D3D3', '#E0E0E0'], ['#8FBC8F', '#98FB98', '#00FF7F', '#00FA9A'], ['#CD853F', '#D2B48C', '#DEB887', '#F5DEB3'], ['#556B2F', '#6B8E23', '#9ACD32', '#ADFF2F'], ['#8B4513', '#A0522D', '#B8860B', '#DAA520']]
     };
 
+    // Initialize Categories
     const catMenu = document.getElementById('categoryMenu');
     categories.forEach(cat => {
         const item = document.createElement('div');
@@ -215,6 +195,7 @@
         modal.style.display = 'block';
     }
 
+    // --- Core Logic ---
     function rgbToHex(r, g, b) {
         return "#" + [r, g, b].map(x => {
             const hex = parseInt(x).toString(16).toUpperCase();
@@ -229,47 +210,20 @@
         return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
     }
 
-    // --- AI COLOR MATCHER LOGIC ---
     function generate8AIColors() {
         let hVal = document.getElementById('ai_hex').value;
         if (!hVal.startsWith('#')) hVal = '#' + hVal;
-        
         const res = hexToRgb(hVal);
         if(isNaN(res.r)) return showToast("Invalid Hex!");
 
         const aiGrid = document.getElementById('aiMatchingResult');
         aiGrid.innerHTML = '';
         
-        let r = res.r / 255, g = res.g / 255, b = res.b / 255;
-        let max = Math.max(r, g, b), min = Math.min(r, g, b);
-        let h, s, l = (max + min) / 2;
-        if (max == min) { h = s = 0; } 
-        else {
-            let d = max - min;
-            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-            switch (max) {
-                case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-                case g: h = (b - r) / d + 2; break;
-                case b: h = (r - g) / d + 4; break;
-            }
-            h /= 6;
-        }
-
         for(let i=0; i<8; i++) {
-            let newH = (h + (i * 0.125)) % 1; // Different hues
-            let q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-            let p = 2 * l - q;
-            function hue2rgb(p, q, t){
-                if(t < 0) t += 1; if(t > 1) t -= 1;
-                if(t < 1/6) return p + (q - p) * 6 * t;
-                if(t < 1/2) return q;
-                if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-                return p;
-            }
-            let nr = Math.round(hue2rgb(p, q, newH + 1/3) * 255);
-            let ng = Math.round(hue2rgb(p, q, newH) * 255);
-            let nb = Math.round(hue2rgb(p, q, newH - 1/3) * 255);
-            const rgb = `${nr},${ng},${nb}`;
+            let nr = Math.min(255, Math.max(0, res.r + (Math.random() * 60 - 30)));
+            let ng = Math.min(255, Math.max(0, res.g + (Math.random() * 60 - 30)));
+            let nb = Math.min(255, Math.max(0, res.b + (Math.random() * 60 - 30)));
+            const rgb = `${Math.round(nr)},${Math.round(ng)},${Math.round(nb)}`;
             const hex = rgbToHex(nr, ng, nb);
             aiGrid.innerHTML += `<div class="color-card" onclick="copyCode('${rgb}')" ondblclick="copyHex('${hex}')">
                 <div class="color-swatch" style="background:rgb(${rgb})"></div>
@@ -279,7 +233,6 @@
         updateUI(res.r, res.g, res.b);
     }
 
-    // Image Upload
     document.getElementById('upload').addEventListener('change', function(e) {
         const reader = new FileReader();
         reader.onload = function(event) {
@@ -303,8 +256,6 @@
 
     function updateUI(r, g, b) {
         rIn.value = r; gIn.value = g; bIn.value = b;
-        document.getElementById('tshirtSVG').style.fill = `rgb(${r},${g},${b})`;
-        document.getElementById('currentMockupColor').innerText = `RGB(${r}, ${g}, ${b})`;
         generatePalette(r, g, b);
     }
 
@@ -313,7 +264,6 @@
     function generatePalette(r, g, b) {
         const pal = document.getElementById('palette');
         pal.innerHTML = '';
-        saveToHistory(r, g, b);
         for (let i = 0; i < 40; i++) {
             let nr, ng, nb;
             let factor = i < 20 ? i/19 : (i-20)/20;
@@ -328,36 +278,47 @@
         }
     }
 
-    function openMockup() { document.getElementById('mockupModal').style.display = 'block'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    function saveToHistory(r, g, b) {
-        let s = `${r},${g},${b}`;
-        if (!history.includes(s)) {
-            history.unshift(s); if(history.length > 10) history.pop();
-            localStorage.setItem('rahaColorHistory', JSON.stringify(history));
-            updateHistoryUI();
-        }
-    }
+    // --- FIXED DOWNLOAD FUNCTION ---
+    function downloadImage() {
+        const area = document.querySelector("#downloadArea");
+        const btn = document.getElementById("downloadBtn");
+        
+        btn.innerText = "GENERATING IMAGE...";
+        btn.disabled = true;
 
-    function updateHistoryUI() {
-        const l = document.getElementById('historyList');
-        if(!l) return;
-        l.innerHTML = history.map(c => `<div class="history-item" onclick="updateUI(${c})" style="display:flex; align-items:center; gap:8px; padding:5px; cursor:pointer;">
-            <div style="width:20px; height:20px; background:rgb(${c}); border-radius:3px;"></div>
-            <span style="font-size:11px; font-weight:bold;">${c}</span>
-        </div>`).join('');
+        // html2canvas rendering with better settings
+        html2canvas(area, {
+            scale: 3, // High quality 300 DPI approx
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: "#ffffff"
+        }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'Raha-Digital-Palette-' + Date.now() + '.png';
+            link.href = canvas.toDataURL("image/png", 1.0);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            btn.innerText = "SAVE AS IMAGE (300 DPI)";
+            btn.disabled = false;
+            showToast("Palette Downloaded Successfully!");
+        }).catch(err => {
+            console.error("Download Error: ", err);
+            btn.innerText = "ERROR! TRY AGAIN";
+            btn.disabled = false;
+            alert("Download failed. Please try again.");
+        });
     }
 
     function copyCode(t) { navigator.clipboard.writeText(t); showToast("RGB Copied: " + t); }
     function copyHex(t) { navigator.clipboard.writeText(t); showToast("HEX Copied: " + t); }
     function showToast(m) { const t = document.getElementById('copyToast'); t.innerText = m; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1500); }
-    function clearHistory() { history = []; localStorage.removeItem('rahaColorHistory'); updateHistoryUI(); }
-    function downloadImage() { html2canvas(document.querySelector("#downloadArea"), {scale: 3}).then(c => { const a = document.createElement('a'); a.download = 'Raha-Palette.png'; a.href = c.toDataURL(); a.click(); }); }
 
-    updateHistoryUI();
+    // Initial load
     generatePalette(26, 35, 126);
 </script>
 </body>
 </html>
-
