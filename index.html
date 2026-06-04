@@ -175,20 +175,7 @@
     const bIn = document.getElementById('b');
     let history = JSON.parse(localStorage.getItem('rahaColorHistory')) || [];
 
-    const categories = ["Pastel", "Vintage", "Retro", "Neon", "Gold", "Nature", "Summer", "Happy", "Night", "Earth"];
-
-    const huntData = {
-        'Pastel': [['#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7'], ['#F3E5F5', '#E1F5FE', '#E8F5E9', '#FFFDE7'], ['#B2F7EF', '#EFF7F6', '#F7D1CD', '#E2CFC4'], ['#FCE1E4', '#FCF4DD', '#DDEDEA', '#DAEAF6']],
-        'Vintage': [['#634832', '#967E67', '#D4A373', '#FEFAE0'], ['#264653', '#2A9D8F', '#E9C46A', '#F4A261']],
-        'Retro': [['#E07A5F', '#3D405B', '#81B29A', '#F2CC8F'], ['#FFBE0B', '#FB5607', '#FF006E', '#8338EC']],
-        'Neon': [['#00F5FF', '#00FF41', '#FF00FF', '#FFFF00'], ['#FF3131', '#FF5E13', '#77EE11', '#08F7FE']],
-        'Gold': [['#D4AF37', '#FFD700', '#CFB53B', '#F5E1A4'], ['#BF953F', '#FCF6BA', '#B38728', '#FBF5B7']],
-        'Nature': [['#11998e', '#38ef7d', '#56ab2f', '#a8e063'], ['#2d6a4f', '#40916c', '#52b788', '#74c69d']],
-        'Summer': [['#FF9A8B', '#FF6A88', '#FF99AC', '#FBBC05'], ['#f72585', '#b5179e', '#7209b7', '#560bad']],
-        'Happy': [['#f9d423', '#ff4e50', '#f12711', '#f5af19'], ['#ff00cc', '#3333ff', '#ff00cc', '#3333ff']],
-        'Night': [['#0F0C29', '#302B63', '#24243E', '#FFFFFF'], ['#141E30', '#243B55', '#141E30', '#243B55']],
-        'Earth': [['#4b3621', '#6b4423', '#8b5a2b', '#a0522d'], ['#556b2f', '#6b8e23', '#8fbc8f', '#bdb76b']]
-    };
+    
 
     // Original Category Menu Logic
     const catMenu = document.getElementById('categoryMenu');
